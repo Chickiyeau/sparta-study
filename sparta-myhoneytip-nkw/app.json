@@ -18,14 +18,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+      "supportsTablet": true,
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.myhoneytip.nkw",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8113412540427082~9712022613"
       }
     },
+    "android": {
+      "package": "com.myhoneytip.nkw",
+       "versionCode": 1,
+        "config": {
+          "googleMobileAdsAppId": "ca-app-pub-8113412540427082~5994987500"
+        }
+  },
     "web": {
       "favicon": "./assets/favicon.png"
     }

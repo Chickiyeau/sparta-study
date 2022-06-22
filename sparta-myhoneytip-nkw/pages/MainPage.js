@@ -1,5 +1,10 @@
 import React,{useState,useEffect} from 'react';
 //import * as React from 'react';
+//ca-app-pub-8113412540427082/4459695930  ios 가로배너
+//ca-app-pub-8113412540427082/6526907333 android 광고 가로배너
+
+//ca-app-pub-8113412540427082/4958103971 ios 광고 전면
+//ca-app-pub-8113412540427082/7553048540 android 광고 전면
 import main from '../assets/main.png';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView} from 'react-native';
 import data from '../data.json';
@@ -10,6 +15,15 @@ import * as Location from "expo-location";
 import axios from "axios";
 import {firebase_db} from "../firebaseConfig";
 import { createDrawerNavigator } from '@react-navigation/drawer';
+
+import {
+  setTestDeviceIDAsync,
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded
+} from 'expo-ads-admob';
+
 const Drawer = createDrawerNavigator();
 export default function MainPage({navigation,route}) {
   console.disableYellowBox = true;
@@ -140,7 +154,21 @@ export default function MainPage({navigation,route}) {
                 return (<Card content={content} key={i} navigation={navigation}/>)
             })
             }
-            
+                        {Platform.OS === 'ios' ? (
+                <AdMobBanner
+                  bannerSize="fullBanner"
+                  servePersonalizedAds={true}
+                  adUnitID="ca-app-pub-8113412540427082/4459695930"
+                  style={styles.banner}
+                />
+            ) : (
+                <AdMobBanner
+                  bannerSize="fullBanner"
+                  servePersonalizedAds={true}
+                  adUnitID="ca-app-pub-8113412540427082/6526907333"
+                  style={styles.banner}
+                />
+            )}
         </View>
     </ScrollView>
   );
@@ -253,7 +281,12 @@ weather:{
     color:"#fff",
     textAlign:"center",
     marginTop:10
-  }
+  },
+  banner: {
+    //배너 스타일!
+    alignSelf:"center",
+    marginBottom:10
+   }
 
 
 });

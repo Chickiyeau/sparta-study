@@ -16,7 +16,7 @@ export default function LikeCard({content,navigation}){
         const user_id = Constants.installationId;
         firebase_db.ref('/like/'+user_id+'/'+content.idx).remove().then(function(){
             Alert.alert("삭제 완료");
-            navigation.navigate('LikePage')
+            navigation.reset({index: 0, routes:[{name:'LikePage'}]})
             setRefreshing(true);
         })
     }

@@ -8,10 +8,11 @@ import SettingsScreen from '../pages/Settings';
 import ProfileScreen from '../pages/Profile';
 import StackNavigator from './StackNavigator';
 import {Ionicons} from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
+import {Webview} from 'react-native-webview';
 
 const Drawer = createDrawerNavigator();
-
+const REST_API_KEY = '	2e726e0391587bdf6db6c878ca69e208'
+const REDIRECT_URI = ''
 function HeaderR() {
     return (  <TouchableOpacity onPress={() => {Alert.alert("알림 설정 태그","알람이 설정되기 싫어합니다")}}><Ionicons name="notifications-outline"size={30}></Ionicons></TouchableOpacity>);
    

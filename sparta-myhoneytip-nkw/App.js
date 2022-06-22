@@ -10,7 +10,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import DrawerNavigator from './navigation/DrawerNavigator';
 import * as Notifications from 'expo-notifications';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Linking,Alert } from 'react-native';
-import {Webview} from 'react-native-webview';
+import header from './components/header'
+import HeaderComponent from './components/header';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -21,18 +22,6 @@ Notifications.setNotificationHandler({
 });
 
 
-export default class App extends Component{
-  render() {
-    return (
-      <View>
-        <WebView style={{top:50}}
-          source={{html}}
-          onMessage={(event)=> Alert.alert(event.nativeEvent.data) }
-        />
-      </View>
-    );
-  }
-}
 export default function App() {
   console.disableYellowBox = true;
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
@@ -46,10 +35,10 @@ export default function App() {
     }
   }, [lastNotificationResponse]);
   return ( 
+
   <NavigationContainer>
     <StatusBar style="black" />
     <DrawerNavigator/>
-
 
  </NavigationContainer>);
 }

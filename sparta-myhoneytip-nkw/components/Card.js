@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet,TouchableOpacity} from 'react-native'
+import DrawerNavigator from '../navigation/DrawerNavigator';
 
 //MainPage로 부터 navigation 속성을 전달받아 Card 컴포넌트 안에서 사용
 export default function Card({content,navigation}){
