@@ -48,8 +48,8 @@ export default function MainPage({navigation,route}) {
   useEffect(()=>{
 	   
     //뒤의 1000 숫자는 1초를 뜻함
-    //1초 뒤에 실행되는 코드들이 담겨 있는 함수
-    setTimeout(()=>{
+    setTimeout(()=>{    //1초 뒤에 실행되는 코드들이 담겨 있는 함수
+    
         //헤더의 타이틀 변경
         /*navigation.setOptions({
             title:'나만의 꿀팁'
@@ -145,7 +145,7 @@ export default function MainPage({navigation,route}) {
             <TouchableOpacity style={styles.middleButton01} onPress={()=>{category('생활')}}><Text style={styles.middleButtonText}>생활</Text></TouchableOpacity>
             <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
             <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.navigate('LikePage')}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
         </ScrollView>
         <View style={styles.cardContainer}>
             {/* 하나의 카드 영역을 나타내는 View */}

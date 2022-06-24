@@ -63,7 +63,7 @@ const CustomDrawer = props => {
             backgroundColor: '#009DAE',
             padding: 10,
             borderRadius: 3
-          }}onPress={() => alert('Link to logout')}
+          }}onPress={() => (alert(","))}
         >
           <Text style = {styles.logoutText}>로그아웃</Text>
           
@@ -131,6 +131,7 @@ drawerContent={props => <CustomDrawer {...props}/>}
           headerRightContainerStyle: {paddingRight: 10},
           headerLeftContainerStyle: {paddingRight: 10}
         }}/> 
+
 </Drawer.Navigator>
 )}
 const styles = StyleSheet.create({
