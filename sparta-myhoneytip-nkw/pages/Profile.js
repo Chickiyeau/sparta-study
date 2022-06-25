@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, Linking} from 'react-native';
 import * as Notifications from 'expo-notifications';
-import KakaoLogin from '../LoginScreen/kakaoLogin';
+import KakaoLogin from '../LoginScreen/kakao/kakaoLogin';
 
 export default function ProfileScreen({navigation}) {
    return (
@@ -20,7 +20,7 @@ export default function ProfileScreen({navigation}) {
           <Text style={styles.aboutButtonText}>눌러서 알림 발생</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.aboutButton} onPress={() => {KakaoLogin({navigation})}}>
+        <TouchableOpacity style={styles.aboutButton} onPress={() => {navigation.navigate('kakaoLogin')}}>
           <Text style={styles.aboutButtonText}>눌러서 스파르타 이동 알림</Text>
         </TouchableOpacity>
 </View>

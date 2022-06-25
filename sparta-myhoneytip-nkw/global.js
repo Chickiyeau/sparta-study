@@ -1,0 +1,6 @@
+global.name = []
+global.id = []
+global.nickname = []
+global.profile_image = []
+global.email = []
+global.birthday = []

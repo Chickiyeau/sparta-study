@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Image, Text, StyleSheet,TouchableOpacity, Alert, RefreshControl} from 'react-native'
 import {firebase_db} from "../firebaseConfig"
-import Constants from 'expo-constants';
+import '../global.js'
 import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';
 
 
@@ -13,7 +13,7 @@ export default function LikeCard({content,navigation}){
     }
 
     const remove = () => {
-        const user_id = Constants.installationId;
+        const user_id = global.id;
         firebase_db.ref('/like/'+user_id+'/'+content.idx).remove().then(function(){
             Alert.alert("삭제 완료");
             navigation.reset({index: 0, routes:[{name:'LikePage'}]})

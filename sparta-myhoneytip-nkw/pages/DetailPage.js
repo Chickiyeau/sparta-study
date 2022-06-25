@@ -2,12 +2,12 @@ import React,{useState,useEffect} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView,TouchableOpacity,Alert,Share } from 'react-native';
 import * as Linking from 'expo-linking';
 import {firebase_db} from "../firebaseConfig"
-import Constants from 'expo-constants';
+import '../global.js'
 loaded = false //페이지를 최초로 로드했고 데이터를 받을준비
 export default function DetailPage({navigation,route}) {
 
     
-    let user_idx = Constants.installationId
+    let user_idx = global.id
     console.log(user_idx)
     
     const [tip, setTip] = useState({
@@ -72,11 +72,16 @@ export default function DetailPage({navigation,route}) {
         // 특정 찜 데이터 아이디 방안에
         // 특정 찜 데이터 몽땅 저장!
         // 찜 데이터 방 > 사용자 방 > 어떤 찜인지 아이디
-        const user_id = Constants.installationId;
-        firebase_db.ref('/like/'+user_id+'/'+ tip.idx).set(tip,function(error){
-            console.log(error)
-            Alert.alert("찜 완료!")
-        });
+        const user_id = global.id;
+        let name = global.name.nickname
+        if(name != undefined){
+            firebase_db.ref('/like/'+user_id+'/'+ tip.idx).set(tip,function(error){
+                console.log(error)
+                Alert.alert("찜 완료!")
+            });
+        }else{
+            Alert.alert("오류!","이 기능을 사용하려면 먼저 로그인 해야합니다.")
+        }
     }
 
     const share = () => {

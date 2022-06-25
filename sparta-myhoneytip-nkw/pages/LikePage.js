@@ -1,17 +1,11 @@
 import React,{useState, useEffect, Component} from 'react';
-import {ScrollView, Text, StyleSheet, Alert} from 'react-native';
+import {RefreshControl, SafeAreaView,ScrollView, Text, StyleSheet, Alert} from 'react-native';
 import LikeCard from '../components/LikeCard';
 import Loading from '../components/Loading';
-import Constants from 'expo-constants';
 import {firebase_db} from "../firebaseConfig"
 import { createStackNavigator } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
-
-//class LikePage extends react.Component {
-    
-//}
-//LikePage({navigation})
+import '../global.js'
 
 export default function LikePage({navigation}) {
     console.log(navigation)
@@ -19,10 +13,10 @@ export default function LikePage({navigation}) {
     const [ready,setReady] = useState(true)
     let loaded = false
     useEffect( ()=>{
-        /*navigation.setOptions({
-            title:'꿀팁 찜'
-        })*/
-        const user_id = Constants.installationId;
+        
+        let user_id = global.id;
+        let name = global.name.nickname
+        if(name != undefined){
             firebase_db.ref('/like/'+user_id).once('value').then((snapshot) => {
                 
                 console.log("파이어베이스에서 데이터 가져왔습니다!!")
@@ -46,6 +40,11 @@ export default function LikePage({navigation}) {
                 navigation.navigate('MainPage')
                 }
             },3000)
+        }else{
+            Alert.alert("로딩에 실패했습니다.","먼저 로그인을 해주세요!")
+            navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+            navigation.navigate('MainPage')            
+        }
     },[])
 
     return ready ? <Loading/> : (
