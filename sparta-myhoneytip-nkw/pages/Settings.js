@@ -26,7 +26,3 @@ export default function SettingsScreen() {
       });
     }
   };
-let nicname2 = "test"
-console.log("setting ",{nicname2})
- export {nicname2}
- export {url}
