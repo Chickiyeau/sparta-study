@@ -15,6 +15,7 @@ import * as Location from "expo-location";
 import axios from "axios";
 import {firebase_db} from "../firebaseConfig";
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import '../global.js'
 
 import {
   setTestDeviceIDAsync,
@@ -125,53 +126,116 @@ export default function MainPage({navigation,route}) {
 
 	//처음 ready 상태값은 true 이므로 ? 물음표 바로 뒤에 값이 반환(그려짐)됨
   //useEffect로 인해 데이터가 준비되고, ready 값이 변경되면 : 콜론 뒤의 값이 반환(그려짐)
-  return ready ? <Loading/> :  (
-    /*
-      return 구문 안에서는 {슬래시 + * 방식으로 주석
-    */
+  let gname = global.name.nickname
+  if(gname == undefined){
+    return ready ? <Loading/> :  (
     
-
-    <ScrollView style={styles.container}>
-
-        <StatusBar style="black" />
-        {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
-        <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
-        <TouchableOpacity style={styles.aboutButton} onPress={()=>{navigation.navigate('AboutPage')}}>
-          <Text style={styles.aboutButtonText}>소개 페이지</Text>
-        </TouchableOpacity>
-        <Image style={styles.mainImage} source={main}/>
-        <ScrollView style={styles.middleContainer} horizontal indicatorStyle={"white"}>
-            <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{category('전체보기')}}><Text style={styles.middleButtonTextAll}>전체보기</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.middleButton01} onPress={()=>{category('생활')}}><Text style={styles.middleButtonText}>생활</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
-        </ScrollView>
-        <View style={styles.cardContainer}>
-            {/* 하나의 카드 영역을 나타내는 View */}
-            {
-            cateState.map((content,i)=>{
-                return (<Card content={content} key={i} navigation={navigation}/>)
-            })
-            }
-                        {Platform.OS === 'ios' ? (
-                <AdMobBanner
-                  bannerSize="fullBanner"
-                  servePersonalizedAds={true}
-                  adUnitID="ca-app-pub-8113412540427082/4459695930"
-                  style={styles.banner}
-                />
-            ) : (
-                <AdMobBanner
-                  bannerSize="fullBanner"
-                  servePersonalizedAds={true}
-                  adUnitID="ca-app-pub-8113412540427082/6526907333"
-                  style={styles.banner}
-                />
-            )}
-        </View>
-    </ScrollView>
-  );
+      /*
+        return 구문 안에서는 {슬래시 + * 방식으로 주석
+      */
+      
+  
+      <ScrollView style={styles.container}>
+  
+          <StatusBar style="black" />
+          {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
+          <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
+          <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.navigate('kakaoLogin')}}>
+            <Text style={styles.aboutButtonText}>로그인</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.aboutButton} onPress={()=>{navigation.navigate('AboutPage')}}>
+            <Text style={styles.aboutButtonText}>소개 페이지</Text>
+          </TouchableOpacity>
+          <Image style={styles.mainImage} source={main}/>
+          <ScrollView style={styles.middleContainer} horizontal indicatorStyle={"white"}>
+              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{category('전체보기')}}><Text style={styles.middleButtonTextAll}>전체보기</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton01} onPress={()=>{category('생활')}}><Text style={styles.middleButtonText}>생활</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
+          </ScrollView>
+          <View style={styles.cardContainer}>
+              {/* 하나의 카드 영역을 나타내는 View */}
+              {
+              cateState.map((content,i)=>{
+                  return (<Card content={content} key={i} navigation={navigation}/>)
+              })
+              }
+                          {Platform.OS === 'ios' ? (
+                  <AdMobBanner
+                    bannerSize="fullBanner"
+                    servePersonalizedAds={true}
+                    adUnitID="ca-app-pub-8113412540427082/4459695930"
+                    style={styles.banner}
+                  />
+              ) : (
+                  <AdMobBanner
+                    bannerSize="fullBanner"
+                    servePersonalizedAds={true}
+                    adUnitID="ca-app-pub-8113412540427082/6526907333"
+                    style={styles.banner}
+                  />
+              )}
+          </View>
+      </ScrollView>
+    );
+  }else{
+    return ready ? <Loading/> :  (
+    
+      /*
+        return 구문 안에서는 {슬래시 + * 방식으로 주석
+      */
+      
+  
+      <ScrollView style={styles.container}>
+  
+          <StatusBar style="black" />
+          {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
+          <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
+          <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.navigate('tipmake')}}>
+            <Text style={styles.aboutButtonText}>글 쓰기</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.navigate('kakaoLogout')}}>
+            <Text style={styles.aboutButtonText}>로그아웃</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.aboutButton} onPress={()=>{navigation.navigate('AboutPage')}}>
+            <Text style={styles.aboutButtonText}>소개 페이지</Text>
+          </TouchableOpacity>
+          <Image style={styles.mainImage} source={main}/>
+          <ScrollView style={styles.middleContainer} horizontal indicatorStyle={"white"}>
+              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{category('전체보기')}}><Text style={styles.middleButtonTextAll}>전체보기</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton01} onPress={()=>{category('생활')}}><Text style={styles.middleButtonText}>생활</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
+          </ScrollView>
+          <View style={styles.cardContainer}>
+              {/* 하나의 카드 영역을 나타내는 View */}
+              {
+              cateState.map((content,i)=>{
+                  return (<Card content={content} key={i} navigation={navigation}/>)
+              })
+              }
+                          {Platform.OS === 'ios' ? (
+                  <AdMobBanner
+                    bannerSize="fullBanner"
+                    servePersonalizedAds={true}
+                    adUnitID="ca-app-pub-8113412540427082/4459695930"
+                    style={styles.banner}
+                  />
+              ) : (
+                  <AdMobBanner
+                    bannerSize="fullBanner"
+                    servePersonalizedAds={true}
+                    adUnitID="ca-app-pub-8113412540427082/6526907333"
+                    style={styles.banner}
+                  />
+              )}
+          </View>
+      </ScrollView>
+    );    
+  }
+ 
 }
 
 const styles = StyleSheet.create({
@@ -274,6 +338,15 @@ weather:{
     height:40,
     borderRadius:10,
     alignSelf:"flex-end",
+    marginRight:20,
+    marginTop:10
+  },
+  loginButton: {
+    backgroundColor:"magenta",
+    width:100,
+    height:40,
+    borderRadius:10,
+    alignSelf:"flex-start",
     marginRight:20,
     marginTop:10
   },

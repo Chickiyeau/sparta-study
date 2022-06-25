@@ -71,20 +71,6 @@ export const CustomDrawer = props => {
           <Text style = {styles.logoutText}>스파르타로 이동</Text>
           
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            right: 10,
-            left: 10,
-            bottom: 100,
-            backgroundColor: '#009DAE',
-            padding: 10,
-            borderRadius: 3
-          }}onPress={() => (alert(","))}
-        >
-          <Text style = {styles.logoutText}>로그인</Text>
-          
-        </TouchableOpacity>
       </View>
     );}else{
       return (
@@ -120,20 +106,6 @@ export const CustomDrawer = props => {
           }}onPress={() => {Linking.openURL("https://spartacodingclub.kr")}}
         >
           <Text style = {styles.logoutText}>스파르타로 이동</Text>
-          
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            position: 'absolute',
-            right: 10,
-            left: 10,
-            bottom: 100,
-            backgroundColor: '#009DAE',
-            padding: 10,
-            borderRadius: 3
-          }}onPress={() => {navigation.goto('MainPage')}}
-        >
-          <Text style = {styles.logoutText}>로그아웃</Text>
           
         </TouchableOpacity>
       </View>
@@ -200,24 +172,6 @@ drawerContent={props => <CustomDrawer {...props}/>}
           headerRightContainerStyle: {paddingRight: 10},
           headerLeftContainerStyle: {paddingRight: 10}
         }}/> 
-    <Drawer.Screen name="kakaoLogin" component={kakaoLogin} options={{drawerLabel: '카카오로그인',title:'카카오로그인',
-        headerTitle: () => (
-            <TouchableOpacity onPress={() => {Alert.alert("타이틀","나의 꿀팁")}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
-          ),
-          headerTitleAlign: 'center',
-          headerRight: ()=> <HeaderR/>,
-          headerRightContainerStyle: {paddingRight: 10},
-          headerLeftContainerStyle: {paddingRight: 10}
-        }}/>
-    <Drawer.Screen name="kakaoLogout" component={kakaoLogout} options={{drawerLabel: '카카오로그아웃',title:'카카오로그아웃',
-        headerTitle: () => (
-            <TouchableOpacity onPress={() => {Alert.alert("타이틀","나의 꿀팁")}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
-          ),
-          headerTitleAlign: 'center',
-          headerRight: ()=> <HeaderR/>,
-          headerRightContainerStyle: {paddingRight: 10},
-          headerLeftContainerStyle: {paddingRight: 10}
-        }}/>
 
 </Drawer.Navigator>
 )}

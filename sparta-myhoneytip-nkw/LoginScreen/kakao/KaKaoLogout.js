@@ -11,6 +11,7 @@ import * as AuthSession from 'expo-auth-session'
 import * as WebBrowser from 'expo-web-browser'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import * as RNSScreen from '@react-navigation/native'
+import '../../global.js'
 
 
  
@@ -55,7 +56,10 @@ return (
 
         // substringd으로 url에서 code=뒤를 substring하면 된다.
 
-        console.log(data)
+        if(data == "https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw"){
+            global.name = []
+            navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+        }
 
     };
 
@@ -94,6 +98,7 @@ return (
         }).then(function (response) {
             returnValue = response.data.access_token;
             console.log('token',returnValue)
+            
 
  
 

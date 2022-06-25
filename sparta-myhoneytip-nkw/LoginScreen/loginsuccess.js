@@ -1,10 +1,10 @@
 import React, {createContext, useContext, useReducer} from 'react';
 
 import { StyleSheet,Text,View,Button, Alert, Image} from "react-native";
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import '../global.js'
 
-import {nicname2} from '../pages/Settings'
 import CustomDrawer from '../navigation/DrawerNavigator'
 let loggedin = false;
 let route = null;
@@ -29,20 +29,14 @@ export default function loginsuccess({route, navigation}){
     global.birthday = {birthday}
     global.id = String({id}.id)
     console.log(global.id)
+    navigation.reset({index: 0, routes:[{name:'MainPage'}]})
     return ( {service,nickname,profile_image,birthday,email},
         <View>
-            <Text>{service} 로그인 성공!</Text>
-            <Text>닉네임 : {nickname}</Text>
-            <Text>생일 : {birthday}</Text>
-            <Text>이메일 : {email}</Text>
-            <Text>프로필 이미지 : {profile_image}</Text>
-            <Text>변수 : {nicname2}</Text>
-            <Text>id = {id} </Text>
-            <Text>globalid = {global.id}</Text>
-            <Image style={styles.mainImage} source={{uri:profile_image}}></Image>
-
+            <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.reset({index: 0, routes:[{name:'MainPage'}]})}}><Text style={styles.aboutButtonText}>{service} 로그인 성공! 돌아가려면 누르세요.</Text></TouchableOpacity>
+            <Text></Text>
 
         </View>
+        
         
     );
 
@@ -56,6 +50,20 @@ export {route}
 
 
 const styles = StyleSheet.create({
+    loginButton: {
+        backgroundColor:"magenta",
+        width:370,
+        height:40,
+        borderRadius:10,
+        alignSelf:"center",
+        marginRight:20,
+        marginTop:10
+      },
+      aboutButtonText: {
+        color:"#fff",
+        textAlign:"center",
+        marginTop:10
+      },
     mainImage: {
         //컨텐츠의 넓이 값
         width:'90%',
