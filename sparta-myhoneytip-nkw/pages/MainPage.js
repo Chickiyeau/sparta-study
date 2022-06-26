@@ -136,7 +136,7 @@ export default function MainPage({navigation,route}) {
       
   
       <ScrollView style={styles.container}>
-  
+          <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'MainPage'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
           <StatusBar style="black" />
           {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
           <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
@@ -188,7 +188,7 @@ export default function MainPage({navigation,route}) {
       
   
       <ScrollView style={styles.container}>
-  
+        <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'MainPage'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
           <StatusBar style="black" />
           {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
           <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
@@ -359,7 +359,21 @@ weather:{
     //배너 스타일!
     alignSelf:"center",
     marginBottom:10
-   }
+   },
+   refresh: {
+    backgroundColor:"pink",
+    width:350,
+    height:40,
+    borderRadius:10,
+    alignSelf:"flex-end",
+    marginRight:20,
+    marginTop:10
+  },
+  refreshtext: {
+    color:"#fff",
+    textAlign:"center",
+    fontSize:30
+  }
 
 
 });

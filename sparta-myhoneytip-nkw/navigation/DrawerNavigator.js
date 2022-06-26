@@ -34,7 +34,7 @@ export const CustomDrawer = props => {
     let id = global.id
 
     console.log(id)
-    if(profile_image == undefined){
+    if(name == undefined){
     return (
 
       <View style={{ flex: 1 }}>

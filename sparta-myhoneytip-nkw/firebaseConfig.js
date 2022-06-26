@@ -6,7 +6,7 @@ import "firebase/compat/auth";
 import "firebase/compat/database";
 import "firebase/compat/firestore";
 //import "firebase/functions";
-import "firebase/compat/storage";
+import { getStorage } from "firebase/storage";
 
 // Initialize Firebase
 //파이어베이스 사이트에서 봤던 연결정보를 여기에 가져옵니다
@@ -21,7 +21,7 @@ const firebaseConfig = {
    measurementId: "G-LZ8LSC550R"
 };
 
-let app;
+export let app;
 
 if (firebase.apps.length === 0) {
   app = firebase.initializeApp(firebaseConfig)
@@ -37,3 +37,6 @@ export const auth = firebase.auth();
     firebase.initializeApp(firebaseConfig);
 }*/
 export const firebase_db = firebase.database()
+
+const storage = getStorage(app);
+export default storage;

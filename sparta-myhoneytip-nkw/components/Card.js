@@ -3,15 +3,24 @@ import {View, Image, Text, StyleSheet,TouchableOpacity} from 'react-native'
 import DrawerNavigator from '../navigation/DrawerNavigator';
 
 //MainPage로 부터 navigation 속성을 전달받아 Card 컴포넌트 안에서 사용
+
 export default function Card({content,navigation}){
+  let writer = "관리자"
+  if(content.writer == undefined){
+    writer = "관리자"
+  }else{
+    writer = content.writer
+  }
+  console.log(content.writer)
     return(
+      
         //카드 자체가 버튼역할로써 누르게되면 상세페이지로 넘어가게끔 TouchableOpacity를 사용
         <TouchableOpacity style={styles.card} onPress={()=>{navigation.navigate('DetailPage',{idx:content.idx})}}>
             <Image style={styles.cardImage} source={{uri:content.image}}/>
             <View style={styles.cardText}>
                 <Text style={styles.cardTitle} numberOfLines={1}>{content.title}</Text>
                 <Text style={styles.cardDesc} numberOfLines={3}>{content.desc}</Text>
-                <Text style={styles.cardDate}>{content.date}</Text>
+                <Text style={styles.cardDate}>{content.date}  작성자 : {writer}</Text>
             </View>
         </TouchableOpacity>
     )
