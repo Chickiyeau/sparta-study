@@ -9,7 +9,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import '../global.js'
 
 export default function WritePage({navigation}) {
-    console.log(navigation)
     const [tip, setTip] = useState([])
     const [ready,setReady] = useState(true)
     let loaded = false
