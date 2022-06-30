@@ -63,6 +63,7 @@ export default function tipmake({navigation}){
         } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted")
           Alert.alert("오류","폴더 접근 권한을 부여받지 못했습니다.");
+          //navigation.reset({index: 0, routes:[{name:'MainPage'}]})
         }
     })();
 	   
@@ -215,12 +216,8 @@ const uploadImage = async (uri) => {
                     if(value != null){
                         if(Desc != ""){
                             if(image != null){
-                                console.log("name",Name)
-                                console.log("desc",Desc)
-                                console.log("image",image)
-                                console.log("value", value)
-                                console.log("date", currentDate)
                                 let index = state + 1
+                                let id = global.id
                                 let writer = global.name.nickname
                                 console.log("index",index)
                                 let newtip = {
@@ -230,15 +227,16 @@ const uploadImage = async (uri) => {
                                     idx:index,
                                     image:image,
                                     title:Name,
-                                    writer:writer                              
+                                    writer:writer,
+                                    writerid:id                              
                                  }
-                                 console.log(newtip)
                                 
                                 
                                 Alert.alert('작성을 시작합니다.', 'DB에 연결중입니다.')
 
 
                                 firebase_db.ref(`/tipindex`).set(index)
+                                firebase_db.ref(`/write/${id}/${index}`).set(newtip),
                                 firebase_db.ref(`/tip/${index}`).set(newtip,function(error){
                                     console.log(error)
                                     Alert.alert("등록 완료!", "성공적으로 꿀팁을 등록했습니다!",[
@@ -246,7 +244,6 @@ const uploadImage = async (uri) => {
                                         text:'확인',
                                         onPress: () => gohome()}
                                     ])
-                                    gohome()
                                 })
                                 //firebase_db.ref(`/tip/${index}/image`).set(file,)
 

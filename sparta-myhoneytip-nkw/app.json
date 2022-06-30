@@ -31,6 +31,7 @@
         "config": {
           "googleMobileAdsAppId": "ca-app-pub-8113412540427082~5994987500"
         }
+      
   },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -12,6 +12,8 @@ import {Webview} from 'react-native-webview';
 import kakaoLogin from '../LoginScreen/kakao/kakaoLogin';
 import kakaoLogout from '../LoginScreen/kakao/KaKaoLogout';
 import loginsuccess, {route} from '../LoginScreen/loginsuccess';
+import testapi from '../test/testapi';
+
 import { nicname2 } from '../pages/Settings';
 import '../global.js'
 const Drawer = createDrawerNavigator();

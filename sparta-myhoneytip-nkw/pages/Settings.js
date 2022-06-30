@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text } from "react-native";
 import * as AuthSession from 'expo-auth-session';
 
+
 const url = AuthSession.getRedirectUrl();
 console.log("https://nid.naver.com/oauth2.0/authorize?response_type=idToken&client_id=yourClientId&redirect_uri="+{url})
 export default function SettingsScreen() {

@@ -153,6 +153,7 @@ export default function MainPage({navigation,route}) {
               <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'WritePage'}]})}}><Text style={styles.middleButtonText}>내가 쓴 글</Text></TouchableOpacity>
           </ScrollView>
           <View style={styles.cardContainer}>
               {/* 하나의 카드 영역을 나타내는 View */}
@@ -208,6 +209,7 @@ export default function MainPage({navigation,route}) {
               <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'WritePage'}]})}}><Text style={styles.middleButtonText}>내가 쓴 글</Text></TouchableOpacity>
           </ScrollView>
           <View style={styles.cardContainer}>
               {/* 하나의 카드 영역을 나타내는 View */}

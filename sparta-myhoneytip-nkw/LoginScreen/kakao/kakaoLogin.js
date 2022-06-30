@@ -95,7 +95,6 @@ export default function kakaoLogin({ navigation }) {
             returnValue = response.data.access_token;
             console.log('token',returnValue)
             requestplayer(returnValue)
-            //console.log("arrived")
 
  
 
@@ -128,7 +127,6 @@ export default function kakaoLogin({ navigation }) {
 
             returnValue = response.data;
             let nickname = response.data.kakao_account.profile.nickname;
-            console.log('key',returnValue)
             let id = response.data.id
             let service = "kakao"
             let returnValue = returnValue
