@@ -1,30 +1,87 @@
-import React, {createContext, useContext, useReducer} from 'react';
+import React, {useState,useEffect}from 'react';
 
-import { StyleSheet,Text,View,Button, Alert, Image, ScrollView, D} from "react-native";
+import { StyleSheet,Text,View,Button, Alert, Image, ScrollView} from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Fragment } from 'react/cjs/react.production.min.js';
+import Loading from '../components/Loading';
+import {firebase_db} from "../firebaseConfig";
 
+import WriteCard from '../components/WriteCard';
 import '../global.js'
 
 
 export default function ProfileScreen({navigation}) {
-    return (
+    const [tip, setTip] = useState([])
+    const [ready,setReady] = useState(true)
+    const [Return, setReturn] = useState(false)
+    let loaded = false
+    useEffect( ()=>{
+        
+        let user_id = global.id;
+        let name = global.name.nickname
+        let email = global.email.email
+        let profile_image = global.profile_image.profile_image
+        if(name != undefined){
+            firebase_db.ref('/write/'+user_id).once('value').then((snapshot) => {
+                
+                console.log("파이어베이스에서 데이터 가져왔습니다!!")
+                let tip = snapshot.val();
+                let tip_list = Object.values(tip)
+                if(tip_list.length > 0){
+                    setTip(tip_list)
+                    setReady(false)
+                    setReturn(true)
+                    loaded = true;
+                }else{
+                    setReady(false)
+                    setReturn(true)            
+                }
+            
+            });
+        
+            setTimeout(()=>{
+                if(loaded != true){
+                    setReady(false)
+                    setReturn(false)
+                }
+            },3000)
+        }else{
+            Alert.alert("로딩에 실패했습니다.","먼저 로그인을 해주세요!")
+            navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+            navigation.navigate('MainPage')            
+        }
+    },[])
+
+    let user_id = global.id;
+    let name = global.name.nickname
+    let email = global.email.email
+    let profile_image = global.profile_image.profile_image
+
+    return ready ? <Loading/> : (
         <View style={styles.container}>
+            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'ProfileScreen'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
             <View style={styles.titlecontainer}>
+            
                 <Text style={styles.title}>내 정보</Text>
             </View>
 
             <ScrollView style={styles.desccontainer}>
                 <View style={styles.topcontainer1}>
-                    <View style={styles.profileimage}><Text>프로필 이미지 구역</Text></View>
+                <Image style={styles.profileimage} source={{uri:profile_image}}></Image>
                     <View style={styles.namecontainer}>
-                        <Text style={styles.nameText}>이름 : </Text>
-                        <Text style={styles.nameText}>전화번호 : </Text>
-                        <Text style={styles.nameText}>이메일 : </Text>
-                        <Text style={styles.nameText}>나이 : </Text>
+                        <Text style={styles.nameText}>이름 : {name}</Text>
+                        <Text style={styles.nameText}>전화번호 : 지정안됨</Text>
+                        <Text style={styles.nameText}>이메일 : {email}</Text>
+                        <Text style={styles.nameText}>나이 : 지정안됨</Text>
                     </View>   
                 </View>
-
+            
+                <ScrollView style={styles.container}>
+           {
+               tip.map((content,i)=>{
+                   return(<WriteCard key={i} content={content} navigation={navigation}/>)
+               })
+           }
+        </ScrollView>
             </ScrollView>
 
             
@@ -48,13 +105,14 @@ const styles = StyleSheet.create({
     },
     title: {
        fontSize:15,
+       marginTop:0,
        textAlign:'center' 
     },
     //본문
     desccontainer: {
         width:350,
-        height:600,
-        marginTop:10,
+        height:500,
+        marginTop:20,
         marginLeft:17.5,
         marginBottom:5,
         backgroundColor:"green",
@@ -90,5 +148,19 @@ const styles = StyleSheet.create({
     nameText:{
         marginLeft:5,
         fontSize:15
-    }
+    },
+    refresh: {
+        backgroundColor:"pink",
+        width:350,
+        height:40,
+        borderRadius:10,
+        alignSelf:"center",
+        marginRight:20,
+        marginTop:5
+      },
+      refreshtext: {
+        color:"#fff",
+        textAlign:"center",
+        fontSize:30
+      }
 })

@@ -28,6 +28,7 @@ export default function loginsuccess({route, navigation}){
     global.profile_image = {profile_image}
     global.birthday = {birthday}
     global.id = String({id}.id)
+    global.email = {email}
     console.log(global.id)
     navigation.reset({index: 0, routes:[{name:'MainPage'}]})
     return ( {service,nickname,profile_image,birthday,email},
