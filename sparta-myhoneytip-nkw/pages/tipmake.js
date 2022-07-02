@@ -5,7 +5,7 @@
 import React, {useState, useEffect} from 'react';
 
 //import all the components we are going to use
-import { StyleSheet, View, Text, SafeAreaView, TextInput, ScrollView, Platform, Button, Image, Alert, Pressable } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, TextInput, ScrollView, Platform, Button, Image, Alert, BackHandler } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {firebase_db} from "../firebaseConfig";
 import Loading from '../components/Loading';
@@ -86,6 +86,23 @@ export default function tipmake({navigation}){
     setCurrentDate(
       year+ '.' + month + '.' + date
     );
+
+    const backAction = () => {
+      
+      Alert.alert('잠시만요!', '작성을 종료하고 메인페이지로 돌아가시겠나요?', [
+        {
+          text: '아니요',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: '네', onPress: () => navigation.reset({index: 0, routes:[{name:'MainPage'}]}) },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
    
   },[]);
 

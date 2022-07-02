@@ -5,7 +5,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Loading from '../components/Loading';
 import {firebase_db} from "../firebaseConfig";
 
-import WriteCard from '../components/WriteCard';
+import WriteCardProfile from '../components/WriteCardProfile';
 import '../global.js'
 
 
@@ -36,6 +36,8 @@ export default function ProfileScreen({navigation}) {
                     setReturn(true)            
                 }
             
+            }, error => {
+                console.log(error)
             });
         
             setTimeout(()=>{
@@ -62,6 +64,7 @@ export default function ProfileScreen({navigation}) {
             <View style={styles.titlecontainer}>
             
                 <Text style={styles.title}>내 정보</Text>
+                <TouchableOpacity style={styles.profileedit}><Text style={styles.profileedittext}>수정하기</Text></TouchableOpacity>
             </View>
 
             <ScrollView style={styles.desccontainer}>
@@ -78,7 +81,8 @@ export default function ProfileScreen({navigation}) {
                 <ScrollView style={styles.container}>
            {
                tip.map((content,i)=>{
-                   return(<WriteCard key={i} content={content} navigation={navigation}/>)
+                   return(
+                   <WriteCardProfile key={i} content={content} navigation={navigation}/>)
                })
            }
         </ScrollView>
@@ -92,21 +96,39 @@ export default function ProfileScreen({navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex:1,
-        backgroundColor:"blue"
+        //backgroundColor:"blue"
     },
     titlecontainer: {
-        width:300,
-        height:20,
-        backgroundColor:"yellow",
-        alignSelf:"center",
+        width:360,
+        height:40,
+        backgroundColor:"orange",
+        borderRadius:20,
         marginTop:20,
+        alignSelf:"center",
+        alignContent:"center",
+        flexDirection:"row"
+        
+    },
+    title: {
+       fontSize:30,
+       marginTop:0,
+       textAlign:'center',
+       marginLeft:80
+    },
+    profileedit: {
+        width:100,
+        height:30,
+        marginLeft:20,
+        marginTop:5,
+        backgroundColor:"cyan",
+        alignSelf:"flex-end",
         alignContent:"center",
         borderRadius:20
     },
-    title: {
-       fontSize:15,
-       marginTop:0,
-       textAlign:'center' 
+    profileedittext: {
+        textAlign:"center",
+        fontSize:20,
+        marginTop:0
     },
     //본문
     desccontainer: {
@@ -115,13 +137,17 @@ const styles = StyleSheet.create({
         marginTop:20,
         marginLeft:17.5,
         marginBottom:5,
-        backgroundColor:"green",
+        //backgroundColor:"green",
         flexDirection:"column"
     },
     topcontainer1:{
         height:100,
-        backgroundColor:"magenta",
-        flexDirection:"row"
+        //backgroundColor:"magenta",
+        flexDirection:"row",
+        lineHeight:3,
+        borderWidth:2,
+        borderRadius:10,
+        borderColor:"magenta"
     },
     //프로필이미지
     profileimage:{
@@ -131,8 +157,9 @@ const styles = StyleSheet.create({
         marginLeft:5,
         marginRight:5,
         marginBottom:5,
-        backgroundColor:"orange",
+        //backgroundColor:"orange",
         borderRadius:15
+
     },
     //이름
     namecontainer:{
@@ -142,7 +169,7 @@ const styles = StyleSheet.create({
         marginLeft:5,
         marginRight:5,
         marginBottom:5,
-        backgroundColor:"cyan",
+        //backgroundColor:"cyan",
         borderRadius:15
     },
     nameText:{
@@ -154,6 +181,7 @@ const styles = StyleSheet.create({
         width:350,
         height:40,
         borderRadius:10,
+        marginLeft:20,
         alignSelf:"center",
         marginRight:20,
         marginTop:5

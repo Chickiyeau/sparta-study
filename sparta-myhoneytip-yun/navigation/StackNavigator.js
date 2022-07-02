@@ -5,12 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 //페이지로 만든 컴포넌트들을 불러옵니다
 import DetailPage from '../pages/DetailPage';
 import MainPage from '../pages/MainPage';
-import loginsuccess from '../LoginScreen/loginsuccess';
-import kakaoLogin from '../LoginScreen/kakao/kakaoLogin';
-import kakaoLogout from '../LoginScreen/kakao/KaKaoLogout';
-import tipmake from '../pages/tipmake';
-import writepage from '../pages/WritePage';
-import EditPage from '../pages/EditPage';
 
 //스택 네비게이션 라이브러리가 제공해주는 여러 기능이 담겨있는 객체를 사용합니다
 //그래서 이렇게 항상 상단에 선언하고 시작하는게 규칙입니다!
@@ -24,7 +18,7 @@ const StackNavigator = () =>{
         //위에서 선언한 const Stack = createStackNavigator(); Stack 변수에 들어있는 태그를 꺼내 사용합니다.
         //Stack.Navigator 태그 내부엔 페이지(화면)를 스타일링 할 수 있는 다양한 옵션들이 담겨 있습니다.
         <Stack.Navigator
-            /*screenOptions={{
+            screenOptions={{
                 headerStyle: {
                     backgroundColor: "white",
                     borderBottomColor: "white",
@@ -35,23 +29,15 @@ const StackNavigator = () =>{
                 headerTitleAlign:'left',
                 headerTintColor: "#000",
                 headerBackTitleVisible: false
-            }}*/
-            screenOptions={{ headerShown: false }}
+            }}
             
         >
 
             {/* 컴포넌트를 페이지로 만들어주는 엘리먼트에 끼워 넣습니다. 이 자체로 이제 페이지 기능을 합니다*/}
             <Stack.Screen name="MainPage" component={MainPage}/>
             <Stack.Screen name="DetailPage" component={DetailPage}/>
-            <Stack.Screen name="loginsuccess" component={loginsuccess}/>
-            <Stack.Screen name="kakaoLogin" component={kakaoLogin}/>
-            <Stack.Screen name="kakaoLogout" component={kakaoLogout}/>
-            <Stack.Screen name="tipmake" component={tipmake}/>
-            <Stack.Screen name="WritePage" component={writepage}/>
-            <Stack.Screen name="EditPage" component={EditPage}/>
         </Stack.Navigator>
     )
 }
 
 export default StackNavigator;
-export { StackNavigator };

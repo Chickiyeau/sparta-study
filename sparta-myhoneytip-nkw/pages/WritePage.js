@@ -1,5 +1,5 @@
 import React,{useState, useEffect, Component} from 'react';
-import {RefreshControl, SafeAreaView,ScrollView, Text, StyleSheet, Alert} from 'react-native';
+import {RefreshControl, BackHandler, ScrollView, Text, StyleSheet, Alert} from 'react-native';
 import WriteCard from '../components/WriteCard';
 
 import Loading from '../components/Loading';
@@ -45,11 +45,22 @@ export default function WritePage({navigation}) {
             navigation.reset({index: 0, routes:[{name:'MainPage'}]})
             navigation.navigate('MainPage')            
         }
+
+        const backAction = () => {
+      
+            navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+    
+                return true;
+              };
+          
+              const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+          
+              return () => backHandler.remove()
     },[])
 
     return ready ? <Loading/> : (
         <ScrollView style={styles.container}>
-            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'WritePage'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
            {
                tip.map((content,i)=>{
                    return(<WriteCard key={i} content={content} navigation={navigation}/>)

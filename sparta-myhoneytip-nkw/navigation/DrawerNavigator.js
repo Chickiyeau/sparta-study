@@ -13,6 +13,7 @@ import kakaoLogin from '../LoginScreen/kakao/kakaoLogin';
 import kakaoLogout from '../LoginScreen/kakao/KaKaoLogout';
 import loginsuccess, {route} from '../LoginScreen/loginsuccess';
 import testapi from '../test/testapi';
+import DetailPage from '../pages/DetailPage';
 
 import { nicname2 } from '../pages/Settings';
 import '../global.js'
@@ -166,6 +167,15 @@ drawerContent={props => <CustomDrawer {...props}/>}
           headerLeftContainerStyle: {paddingRight: 10}
         }}/> 
     <Drawer.Screen name="ProfileScreen" component={ProfileScreen} options={{drawerLabel: '프로파일',title:'정보',
+        headerTitle: () => (
+            <TouchableOpacity onPress={() => {Alert.alert("타이틀","나의 꿀팁")}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
+          ),
+          headerTitleAlign: 'center',
+          headerRight: ()=> <HeaderR/>,
+          headerRightContainerStyle: {paddingRight: 10},
+          headerLeftContainerStyle: {paddingRight: 10}
+        }}/> 
+    <Drawer.Screen name="DetailPage" component={DetailPage} options={{drawerLabel: '디테일 페이지',title:'디테일 페이지',
         headerTitle: () => (
             <TouchableOpacity onPress={() => {Alert.alert("타이틀","나의 꿀팁")}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
           ),

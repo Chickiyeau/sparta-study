@@ -3,6 +3,7 @@ import {View, Image, Text, StyleSheet,TouchableOpacity, Alert, RefreshControl} f
 import {firebase_db} from "../firebaseConfig"
 import '../global.js'
 import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';
+import { NavigationActions } from 'react-navigation';
 
 
 //MainPage로 부터 navigation 속성을 전달받아 Card 컴포넌트 안에서 사용
@@ -10,6 +11,10 @@ export default function LikeCard({content,navigation}){
 
     const detail = () => {
         navigation.navigate('DetailPage',{idx:content.idx})
+    }
+
+    const edit = () => {
+      navigation.navigate('EditPage',{idx:content.idx})
     }
 
     const remove = () => {
@@ -20,7 +25,7 @@ export default function LikeCard({content,navigation}){
             삭제한 글은 서버에서 완전히 삭제됩니다.`, [
               {
                   text:'취소',
-                  onPress: () => Alert.alert('작성이 취소되었습니다.', '사용자가 작성을 취소했습니다.'),},
+                  onPress: () => Alert.alert('삭제가 취소되었습니다.', '사용자가 삭제를 취소했습니다.'),},
               {
                   text:'확인',
                   onPress: () => {
@@ -42,7 +47,7 @@ export default function LikeCard({content,navigation}){
     }, []);
     return(
         //카드 자체가 버튼역할로써 누르게되면 상세페이지로 넘어가게끔 TouchableOpacity를 사용
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => detail()}>
             <Image style={styles.cardImage} source={{uri:content.image}}/>
             <View style={styles.cardText}>
                 <Text style={styles.cardTitle} numberOfLines={1}>{content.title}</Text>
@@ -50,12 +55,12 @@ export default function LikeCard({content,navigation}){
                 <Text style={styles.cardDate}>{content.date}</Text>
                 
                 <View style={styles.buttonGroup}>
-                    <TouchableOpacity style={styles.button} onPress={()=>detail()}><Text style={styles.buttonText}>자세히보기</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={()=>edit()}><Text style={styles.buttonText}>수정하기</Text></TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={()=>remove()}><Text style={styles.buttonText}>삭제하기</Text></TouchableOpacity>
               
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 }
 

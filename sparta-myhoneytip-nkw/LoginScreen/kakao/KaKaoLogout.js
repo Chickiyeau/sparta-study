@@ -1,6 +1,6 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, useEffect } from 'react';
 
-import { StyleSheet,Text,View,Button, Alert} from "react-native";
+import { StyleSheet,Text,View,BackHandler} from "react-native";
 import *  as Linking from 'expo-linking'
 
 import { WebView } from 'react-native-webview';
@@ -27,6 +27,18 @@ WebBrowser.maybeCompleteAuthSession();
 
  
 export default function kakaoLogout({ navigation }) {
+    useEffect(() => {
+        const backAction = () => {
+      
+            navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+    
+                return true;
+              };
+          
+              const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+          
+              return () => backHandler.remove()
+    })
    /* let re = WebBrowser.openBrowserAsync('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2e726e0391587bdf6db6c878ca69e208&redirect_uri=https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw');
     const discovery = AuthSession.useAutoDiscovery('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2e726e0391587bdf6db6c878ca69e208&redirect_uri=https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw');
 const authUrl = 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2e726e0391587bdf6db6c878ca69e208&redirect_uri=https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw'

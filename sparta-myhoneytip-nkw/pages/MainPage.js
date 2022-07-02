@@ -6,8 +6,7 @@ import React,{useState,useEffect} from 'react';
 //ca-app-pub-8113412540427082/4958103971 ios 광고 전면
 //ca-app-pub-8113412540427082/7553048540 android 광고 전면
 import main from '../assets/main.png';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView} from 'react-native';
-import data from '../data.json';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, BackHandler, Alert} from 'react-native';
 import Card from '../components/Card';
 import Loading from '../components/Loading';
 import { StatusBar } from 'expo-status-bar';
@@ -72,6 +71,22 @@ export default function MainPage({navigation,route}) {
         // },500)
     },1000)
 
+    const backAction = () => {
+      
+      Alert.alert('잠시만요!', '정말 앱을 종료하시겠나요?', [
+        {
+          text: '아니요',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: '네', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+
+    return () => backHandler.remove();
     
   },[])
 

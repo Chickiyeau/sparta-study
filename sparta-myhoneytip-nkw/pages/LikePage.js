@@ -1,5 +1,5 @@
 import React,{useState, useEffect, Component} from 'react';
-import {RefreshControl, SafeAreaView,ScrollView, Text, StyleSheet, Alert} from 'react-native';
+import {BackHandler, ScrollView, Text, StyleSheet, Alert} from 'react-native';
 import LikeCard from '../components/LikeCard';
 import Loading from '../components/Loading';
 import {firebase_db} from "../firebaseConfig"
@@ -45,6 +45,17 @@ export default function LikePage({navigation}) {
             navigation.reset({index: 0, routes:[{name:'MainPage'}]})
             navigation.navigate('MainPage')            
         }
+
+        const backAction = () => {
+      
+            navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+    
+                return true;
+              };
+          
+              const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+          
+              return () => backHandler.remove()
     },[])
 
     return ready ? <Loading/> : (

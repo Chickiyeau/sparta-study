@@ -1,6 +1,6 @@
-import React, { cloneElement, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
-import { StyleSheet,Text,View,Button, Alert} from "react-native";
+import { StyleSheet,Text,View, Alert, BackHandler} from "react-native";
 import *  as Linking from 'expo-linking'
 
 import { WebView } from 'react-native-webview';
@@ -34,7 +34,34 @@ const redirectUri = AuthSession.makeRedirectUri({useProxy,});
 WebBrowser.maybeCompleteAuthSession();
  
 export default function kakaoLogin({ navigation }) {
+    webView = {
+        canGoBack: false,
+        ref: null,
+    }
 
+    useEffect(() => {
+        const backAction = () => {
+
+            if(this.webView.canGoBack && this.webView.ref) {
+                this.webView.ref.goBack();
+                return true;
+            }else{
+                Alert.alert('잠시만요!', '웹페이지에 돌아갈곳이 없는데 메인페이지로 갈까요?', [
+                    {
+                      text: '아니요',
+                      onPress: () => null,
+                      style: 'cancel',
+                    },
+                    { text: '네', onPress: () => navigation.reset({index: 0, routes:[{name:'MainPage'}]}) },
+                ]);
+            
+                return true;
+              }};
+          
+              const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+          
+              return () => backHandler.remove([navState.canGoBack])
+    },[])
     function LogInProgress(data) {
 
         // access code는 url에 붙어 장황하게 날아온다.
@@ -165,6 +192,9 @@ export default function kakaoLogin({ navigation }) {
                 originWhitelist={['*']}
 
                 scalesPageToFit={false}
+                
+                ref={(webView) => { this.webView.ref = webView; }}
+                onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack; }}
 
                 style={{ marginTop: 30 }}
 
