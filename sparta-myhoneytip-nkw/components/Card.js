@@ -11,7 +11,6 @@ export default function Card({content,navigation}){
   }else{
     writer = content.writer
   }
-  console.log(content.writer)
     return(
       
         //카드 자체가 버튼역할로써 누르게되면 상세페이지로 넘어가게끔 TouchableOpacity를 사용

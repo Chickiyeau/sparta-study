@@ -29,6 +29,7 @@
     "expo-ads-admob": "~13.0.0",
     "expo-app-auth": "~11.1.0",
     "expo-auth-session": "~3.6.1",
+    "expo-checkbox": "~2.1.0",
     "expo-cli": "^5.4.12",
     "expo-clipboard": "^3.0.1",
     "expo-constants": "~13.1.1",

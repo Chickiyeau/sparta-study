@@ -69,7 +69,7 @@ return (
         // substringd으로 url에서 code=뒤를 substring하면 된다.
 
         if(data == "https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw"){
-            global.name = []
+            global.id = []
             navigation.reset({index: 0, routes:[{name:'MainPage'}]})
         }
 

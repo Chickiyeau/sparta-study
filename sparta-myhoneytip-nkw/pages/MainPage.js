@@ -44,16 +44,17 @@ export default function MainPage({navigation,route}) {
   //관리할 상태이름과 함수는 자유자재로 정의할 수 있음
   //초기 상태값으로 리스트, 참거짓형, 딕셔너리, 숫자, 문자 등등 다양하게 들어갈 수 있음.
   const [ready,setReady] = useState(true)
-
+  const [istermagree,settermagree] = useState(false)
   useEffect(()=>{
 	   
     //뒤의 1000 숫자는 1초를 뜻함
     setTimeout(()=>{    //1초 뒤에 실행되는 코드들이 담겨 있는 함수
     
         //헤더의 타이틀 변경
-        /*navigation.setOptions({
-            title:'나만의 꿀팁'
-        })*/
+        let id = global.id
+        firebase_db.ref(`/term/${id}/agreed`).once('value').then((agreed) => {
+          settermagree(agreed);
+        })
         firebase_db.ref('/tip').once('value').then((snapshot) => {
           console.log("파이어베이스에서 데이터 가져왔습니다!!")
           let tip = snapshot.val();
@@ -141,8 +142,14 @@ export default function MainPage({navigation,route}) {
 
 	//처음 ready 상태값은 true 이므로 ? 물음표 바로 뒤에 값이 반환(그려짐)됨
   //useEffect로 인해 데이터가 준비되고, ready 값이 변경되면 : 콜론 뒤의 값이 반환(그려짐)
-  let gname = global.name.nickname
-  if(gname == undefined){
+  let id = global.id
+  let name = global.name.nickname
+  if(name == undefined){
+    let name = global.name.name
+  }
+  
+  console.log(id)
+  if(id == undefined || id.length == 0){
     return ready ? <Loading/> :  (
     
       /*
@@ -155,7 +162,7 @@ export default function MainPage({navigation,route}) {
           <StatusBar style="black" />
           {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
           <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
-          <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.navigate('kakaoLogin')}}>
+          <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.navigate('SelectLogin')}}>
             <Text style={styles.aboutButtonText}>로그인</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.aboutButton} onPress={()=>{navigation.navigate('AboutPage')}}>
@@ -208,10 +215,29 @@ export default function MainPage({navigation,route}) {
           <StatusBar style="black" />
           {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
           <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
-          <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.navigate('tipmake')}}>
+          <TouchableOpacity style={styles.loginButton} onPress={()=>{
+            if(istermagree){
+              navigation.navigate('tipmake')
+            }else{
+              Alert.alert("이용약관 동의 안됨","이용약관을 동의 하셔야 글을 쓰실수 있습니다. 지금 바로 이용약관 창으로 이동하시겠습니까?",[
+                {
+                  text:"예",
+                  onPress: () => navigation.navigate("Termagree")
+                },
+                {
+                  text:"아니요",
+                  onPress: () => null
+                }
+              ])
+            }
+            }}>
             <Text style={styles.aboutButtonText}>글 쓰기</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.navigate('kakaoLogout')}}>
+          <TouchableOpacity style={styles.loginButton} onPress={()=>{
+            let service = global.service.service
+            if(service == "kakao"){navigation.navigate('kakaoLogout')}
+            if(service == "naver"){navigation.navigate('NaverLogout')}
+          }}>
             <Text style={styles.aboutButtonText}>로그아웃</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.aboutButton} onPress={()=>{navigation.navigate('AboutPage')}}>

@@ -1,6 +1,6 @@
 import React, {useState,useEffect}from 'react';
 
-import { StyleSheet,Text,View,Button, Alert, Image, ScrollView} from "react-native";
+import { StyleSheet,Text,View,BackHandler, Alert, Image, ScrollView} from "react-native";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Loading from '../components/Loading';
 import {firebase_db} from "../firebaseConfig";
@@ -51,46 +51,155 @@ export default function ProfileScreen({navigation}) {
             navigation.reset({index: 0, routes:[{name:'MainPage'}]})
             navigation.navigate('MainPage')            
         }
+
+        const backAction = () => {
+      
+            navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+    
+                return true;
+              };
+          
+              const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+          
+              return () => backHandler.remove()
     },[])
 
-    let user_id = global.id;
-    let name = global.name.nickname
-    let email = global.email.email
-    let profile_image = global.profile_image.profile_image
 
-    return ready ? <Loading/> : (
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'ProfileScreen'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
-            <View style={styles.titlecontainer}>
-            
-                <Text style={styles.title}>내 정보</Text>
-                <TouchableOpacity style={styles.profileedit}><Text style={styles.profileedittext}>수정하기</Text></TouchableOpacity>
-            </View>
+    
+    let service = global.service.service
 
-            <ScrollView style={styles.desccontainer}>
-                <View style={styles.topcontainer1}>
-                <Image style={styles.profileimage} source={{uri:profile_image}}></Image>
-                    <View style={styles.namecontainer}>
-                        <Text style={styles.nameText}>이름 : {name}</Text>
-                        <Text style={styles.nameText}>전화번호 : 지정안됨</Text>
-                        <Text style={styles.nameText}>이메일 : {email}</Text>
-                        <Text style={styles.nameText}>나이 : 지정안됨</Text>
-                    </View>   
+
+    console.log(service)
+    if(service == "naver"){
+        let user_id = global.id;
+        let nickname = global.name.nickname
+        let email = global.email.email
+        let profile_image = global.profile_image.profile_image
+        let mobile = global.mobile.mobile
+        if(mobile == undefined){
+            mobile = "지정 안됨"
+        }
+         let birthyear = global.birthyear.birthyear
+         if(birthyear == undefined){
+            birthyear = "지정 안됨"
+        }
+        let birthday = global.birthday.birthday
+        if(birthday == undefined){
+            birthday = "지정 안됨"
+        }
+        let gender = global.gender.gender
+        if(gender == undefined){
+            gender = "지정 안됨"
+        }else{
+            if(gender == "M"){
+                gender = "남성"
+            }
+
+            if(gender == "F"){
+                gender = "여성"
+            }
+        }
+
+        return ready ? <Loading/> : (
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'ProfileScreen'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
+                <View style={styles.titlecontainer}>
+                
+                    <Text style={styles.title}>내 정보</Text>
+                    <TouchableOpacity style={styles.profileedit} onPress={() => {
+                        Alert.alert("죄송합니다.","아직 개발중인 기능입니다.")
+                    }} ><Text style={styles.profileedittext}>수정하기</Text></TouchableOpacity>
                 </View>
-            
-                <ScrollView style={styles.container}>
-           {
-               tip.map((content,i)=>{
-                   return(
-                   <WriteCardProfile key={i} content={content} navigation={navigation}/>)
-               })
-           }
-        </ScrollView>
+    
+                <ScrollView style={styles.desccontainer}>
+                    <View style={styles.topcontainer1}>
+                    <Image style={styles.profileimage} source={{uri:profile_image}}></Image>
+                        <ScrollView style={styles.namecontainer}>
+                            <Text style={styles.nameText}>닉네임 : {nickname}</Text>
+                            <Text style={styles.nameText}>이메일 : {email}</Text>
+                            <Text style={styles.nameText}>성별 : {gender}</Text>
+                            <Text style={styles.nameText}>전화번호 : {mobile}</Text>
+                            <Text style={styles.nameText}>생년월일 : {birthyear}-{birthday}</Text>
+                        </ScrollView>   
+                    </View>
+                
+                    <ScrollView style={styles.container}>
+               {
+                   tip.map((content,i)=>{
+                       return(
+                       <WriteCardProfile key={i} content={content} navigation={navigation}/>)
+                   })
+               }
             </ScrollView>
+                </ScrollView>
+    
+                
+            </View>
+        )
+    }
 
-            
-        </View>
-    )
+    if(service == "kakao"){
+        let user_id = global.id;
+        let name = global.name.nickname
+        let email = global.email.email
+        let profile_image = global.profile_image.profile_image
+        let mobile = global.mobile.mobile
+        if(mobile == undefined){
+            mobile = "지정 안됨"
+        }
+        let birthday = global.birthday.birthday
+        if(birthday == undefined){
+            birthday = "지정 안됨"
+        }
+        let gender = global.gender.gender
+        if(gender == undefined){
+            gender = "지정 안됨"
+        }else{
+            if(gender == "male"){
+                gender = "남성"
+            }
+
+            if(gender == "female"){
+                gender = "여성"
+            }
+        }
+
+        return ready ? <Loading/> : (
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'ProfileScreen'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
+                <View style={styles.titlecontainer}>
+                
+                    <Text style={styles.title}>내 정보</Text>
+                    <TouchableOpacity style={styles.profileedit} onPress={() => {
+                        Alert.alert("죄송합니다.","아직 개발중인 기능입니다.")
+                    }} ><Text style={styles.profileedittext}>수정하기</Text></TouchableOpacity>
+                </View>
+    
+                <ScrollView style={styles.desccontainer}>
+                    <View style={styles.topcontainer1}>
+                    <Image style={styles.profileimage} source={{uri:profile_image}}></Image>
+                        <View style={styles.namecontainer}>
+                            <Text style={styles.nameText}>이름 : {name}</Text>
+                            <Text style={styles.nameText}>이메일 : {email}</Text>
+                            <Text style={styles.nameText}>성별 : {gender}</Text>
+                            <Text style={styles.nameText}>생일 : {birthday}</Text>
+                        </View>   
+                    </View>
+                
+                    <ScrollView style={styles.container}>
+               {
+                   tip.map((content,i)=>{
+                       return(
+                       <WriteCardProfile key={i} content={content} navigation={navigation}/>)
+                   })
+               }
+            </ScrollView>
+                </ScrollView>
+    
+                
+            </View>
+        )
+    }
 }
 
 const styles = StyleSheet.create({

@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import {firebase_db} from "../firebaseConfig";
 import Loading from '../components/Loading';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { State } from 'react-native-gesture-handler';
+import Checkbox from 'expo-checkbox';
 
 
 import firebase from 'firebase/compat/app'
@@ -44,6 +44,8 @@ export default function tipmake({navigation}){
   const [Name, setName] = useState('');
   const [Desc, setDesc] = useState('');
   
+  const[isChecked,setChecked] = useState(false)
+
   const [currentDate, setCurrentDate] = useState('');
   const [percent, setPercent] = useState(0);
   const [Caterory, setCategory] = useState([
@@ -222,7 +224,12 @@ const uploadImage = async (uri) => {
         
         </View>
         
-        <Button title="글쓰기" onPress={() => {Alert.alert("글 쓰기 확인","정말 작성하시겠습니까?", [
+
+        <View style={styles.agreecontainer}>
+                <Checkbox style={styles.termcheck} value={isChecked} onValueChange={setChecked}/>
+                <Text style={styles.termchecktext}>이용 약관을 인지하고 동의하며 글 작성시 벌어지는 피해는 작성자 본인이 지겠습니다.</Text>
+        </View>
+        <Button title="글쓰기" disabled={!isChecked} onPress={() => {Alert.alert("글 쓰기 확인","정말 작성하시겠습니까?", [
         {
             text:'취소',
             onPress: () => Alert.alert('작성이 취소되었습니다.', '사용자가 작성을 취소했습니다.'),},
@@ -310,5 +317,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 10,
     backgroundColor: '#e8e8e8'
-  }
+  },
+  agreecontainer:{
+    flexDirection:"row",
+    marginLeft:20,
+    marginBottom:20
+},
+termcheck:{
+    marginRight:8
+}
 });

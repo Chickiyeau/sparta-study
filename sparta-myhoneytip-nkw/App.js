@@ -9,7 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import {NavigationContainer} from '@react-navigation/native';
 import DrawerNavigator from './navigation/DrawerNavigator';
 import * as Notifications from 'expo-notifications';
-import { BackHandler, Linking,Alert } from 'react-native';
+import { BackHandler, Linking,Alert, LogBox } from 'react-native';
 import * as Analytics from 'expo-firebase-analytics';
 import {
   useNavigationContainerRef,
@@ -25,7 +25,7 @@ Notifications.setNotificationHandler({
 
 
 export default function App() {
-  console.disableYellowBox = true;
+  LogBox.ignoreAllLogs(true)
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef();

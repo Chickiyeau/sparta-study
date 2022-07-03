@@ -14,14 +14,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import '../../global.js'
 
 
-export const kakaoGlobal = () => {
-    const [nickname, setnickname] = useState('nickname')
-    const [email, setemail] = useState('email')
-    const [id, setid] = useState('id')
-    const [profile_image ,setprofile_image] = useState('profile_image')
-    const [birthday, setbirthday] = useState('birthday')
-}
-
 const toggleSetting2 = () => {
     setting3 ? setSetting2(true) : setSetting2value(false);
   };
@@ -33,7 +25,7 @@ const redirectUri = AuthSession.makeRedirectUri({useProxy,});
 
 WebBrowser.maybeCompleteAuthSession();
  
-export default function kakaoLogin({ navigation }) {
+export default function NaverLogin({ navigation }) {
     webView = {
         canGoBack: false,
         ref: null,
@@ -76,11 +68,18 @@ export default function kakaoLogin({ navigation }) {
 
             var request_code = data.substring(condition + exp.length);
 
+            var slash = request_code.indexOf("&")
+            var state = request_code.substring(slash+1,exp.length)
+            var sslash = state.indexOf("&")
+            var state = request_code.substring(0,sslash)
+            var request_code = request_code.substring(0,slash)
+
             console.log("access code :: " + request_code);
+            console.log("state : "+ state)
 
             // 토큰값 받기
 
-            requestToken(request_code);
+            requestToken(request_code, state);
 
         }
 
@@ -88,11 +87,11 @@ export default function kakaoLogin({ navigation }) {
 
  
 
-    const requestToken = async (request_code) => {
+    const requestToken = async (request_code, state) => {
 
         var returnValue = "none";
 
-        var request_token_url = "https://kauth.kakao.com/oauth/token";
+        var request_token_url = "https://nid.naver.com/oauth2.0/token";
 
  
 
@@ -104,23 +103,23 @@ export default function kakaoLogin({ navigation }) {
 
             withCredentials:true,
 
-            params: {
+            params:{
 
                 grant_type: 'authorization_code',
 
-                client_id: '2e726e0391587bdf6db6c878ca69e208',
+                client_id: '9TPEaveH0M8aPRdruXed',
 
-                redirect_uri: 'https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw',
-
-                client_screct: '2CvUYsuq8y9NksDqbkFckSm6QrlwIzqB',
+                client_secret: 'm12KJXxNkW',
 
                 code: request_code,
+                
+                state: state,
 
             },
 
         }).then(function (response) {
             returnValue = response.data.access_token;
-            console.log('token',returnValue)
+            console.log(returnValue)
             requestplayer(returnValue)
 
  
@@ -136,7 +135,7 @@ export default function kakaoLogin({ navigation }) {
     const requestplayer = async (returnValue) => {
         var token = returnValue;
 
-        var request_player_url = "https://kapi.kakao.com/v2/user/me";
+        var request_player_url = "https://openapi.naver.com/v1/nid/me";
 
         axios({
 
@@ -153,16 +152,21 @@ export default function kakaoLogin({ navigation }) {
         }).then(function (response) {
 
             returnValue = response.data;
-            let nickname = response.data.kakao_account.profile.nickname;
-            let gender = response.data.kakao_account.gender;
-            let id = response.data.id
-            let service = "kakao"
-            let returnValue = returnValue
-            let profile_image = response.data.kakao_account.profile.profile_image_url
-            let birthday = response.data.kakao_account.birthday
-            let email = response.data.kakao_account.email
+            let name = response.data.response.name
+            let nickname = response.data.response.nickname
+            let id = response.data.response.id
+            let service = "naver"
             console.log(returnValue)
+            let returnValue = returnValue
+            let profile_image = response.data.response.profile_image
+            let birthday = response.data.response.birthday
+            let birthyear = response.data.response.birthyear
+            let mobile = response.data.response.mobile
+            let mobile_e164 = response.data.response.mobile_e164
+            let email = response.data.response.email
+            let gender = response.data.response.gender
 
+            console.log(name)
             const userSettings = {
                 nickname,
                 profile_image,
@@ -172,7 +176,7 @@ export default function kakaoLogin({ navigation }) {
                 toggleSetting2,
               };
 
-            navigation.navigate('loginsuccess', {service,nickname,profile_image,birthday,email,id,gender})
+                navigation.navigate('loginsuccess', {service,nickname,profile_image,birthday,email,id,gender,mobile,mobile_e164,birthyear,name})
 
  
 
@@ -188,7 +192,7 @@ export default function kakaoLogin({ navigation }) {
     return (
 
         <View style={{ flex: 1 }}>
-            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'kakaoLogin'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'NaverLogin'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
 
             <WebView
 
@@ -201,7 +205,7 @@ export default function kakaoLogin({ navigation }) {
 
                 style={{ marginTop: 30 }}
 
-                source={{ uri: 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2e726e0391587bdf6db6c878ca69e208&redirect_uri=https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw' }}
+                source={{ uri: 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=9TPEaveH0M8aPRdruXed&setState(state)&redirect_uri=https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw' }}
 
                 injectedJavaScript={runFirst}
 

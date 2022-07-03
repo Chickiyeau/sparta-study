@@ -111,6 +111,12 @@ export default function DetailPage({navigation,route}) {
     const link = () => {
         Linking.openURL("https://spartacodingclub.kr")
     }
+
+    const report = () => {
+        Alert.alert("신고해주셔서 감사합니다.","신고하신 사항을 면밀히 확인하여 처리하도록 하겠습니다.")
+        Linking.openURL("https://forms.gle/bx1ugybD1UhiNR8j8")
+        
+    }
             
     if(route.params == undefined){
         Alert.alert("이 방식으론 디테일 페이지를 로드할 수 없습니다.")
@@ -138,7 +144,9 @@ export default function DetailPage({navigation,route}) {
                     <TouchableOpacity style={styles.button} onPress={()=>like()}><Text style={styles.buttonText}>팁 찜하기</Text></TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={()=>share()}><Text style={styles.buttonText}>팁 공유하기</Text></TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={()=>link()}><Text style={styles.buttonText}>외부 링크</Text></TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={()=>report()}><Text style={styles.buttonText}>신고 하기</Text></TouchableOpacity>
                 </View>
+                <Text style={styles.title}>해당글의 아이디 : {tip.idx}</Text>
                 
             </View>
             
@@ -178,8 +186,8 @@ const styles = StyleSheet.create({
     button:{
         width:90,
         marginTop:20,
-        marginRight:10,
-        marginLeft:10,
+        marginRight:3,
+        marginLeft:3,
         padding:10,
         borderWidth:1,
         borderColor:'deeppink',

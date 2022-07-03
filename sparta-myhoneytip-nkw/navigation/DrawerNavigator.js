@@ -14,6 +14,7 @@ import kakaoLogout from '../LoginScreen/kakao/KaKaoLogout';
 import loginsuccess, {route} from '../LoginScreen/loginsuccess';
 import testapi from '../test/testapi';
 import DetailPage from '../pages/DetailPage';
+import Termagree from '../pages/Termagree';
 
 import { nicname2 } from '../pages/Settings';
 import '../global.js'
@@ -35,9 +36,12 @@ export const CustomDrawer = props => {
     let birthday = global.birthday.birthday
     let name = global.name.nickname
     let id = global.id
-
-    console.log(id)
     if(name == undefined){
+      let name = global.name.name
+    }
+    
+    console.log(id)
+    if(id == undefined || id.length == 0){
     return (
 
       <View style={{ flex: 1 }}>
@@ -60,6 +64,22 @@ export const CustomDrawer = props => {
           </View>
           <DrawerItemList {...props} />
         </DrawerContentScrollView>
+
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 10,
+            left: 10,
+            bottom: 90,
+            backgroundColor: '#009DAE',
+            padding: 10,
+            borderRadius: 3
+          }}onPress={() => {Linking.openURL("https://desert-carbon-8ac.notion.site/31ffa67bb28545c4a65630a915012ae0")}}
+        >
+          <Text style = {styles.logoutText}>이용 약관</Text>
+          
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: 'absolute',
@@ -69,9 +89,9 @@ export const CustomDrawer = props => {
             backgroundColor: '#009DAE',
             padding: 10,
             borderRadius: 3
-          }}onPress={() => {Linking.openURL("https://spartacodingclub.kr")}}
+          }}onPress={() => {Linking.openURL("https://teamsparta.notion.site/3-f2e359d2a710447db3036ff2a3156869")}}
         >
-          <Text style = {styles.logoutText}>스파르타로 이동</Text>
+          <Text style = {styles.logoutText}>개인정보 처리 방침</Text>
           
         </TouchableOpacity>
       </View>
@@ -91,12 +111,45 @@ export const CustomDrawer = props => {
           >
             <View>
               <Text>{name}님 안녕하세요!</Text>
-              <Text>ID : {id}</Text>
+              <Text style={styles.id}>ID : {id}</Text>
             </View>
             <Image style={styles.mainImage} source={{uri:profile_image}}></Image>
           </View>
           <DrawerItemList {...props} />
         </DrawerContentScrollView>
+
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 10,
+            left: 10,
+            bottom: 140,
+            backgroundColor: '#009DAE',
+            padding: 10,
+            borderRadius: 3
+          }}onPress={() => {
+            Alert.alert("신고해주셔서 감사합니다.","신고하신 사항을 면밀히 확인하여 처리하도록 하겠습니다.")
+            Linking.openURL("https://forms.gle/bx1ugybD1UhiNR8j8")}}
+        >
+          <Text style = {styles.logoutText}>신고하기</Text>
+          
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 10,
+            left: 10,
+            bottom: 90,
+            backgroundColor: '#009DAE',
+            padding: 10,
+            borderRadius: 3
+          }}onPress={() => {Linking.openURL("https://desert-carbon-8ac.notion.site/31ffa67bb28545c4a65630a915012ae0")}}
+        >
+          <Text style = {styles.logoutText}>이용 약관</Text>
+          
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={{
             position: 'absolute',
@@ -106,9 +159,9 @@ export const CustomDrawer = props => {
             backgroundColor: '#009DAE',
             padding: 10,
             borderRadius: 3
-          }}onPress={() => {Linking.openURL("https://spartacodingclub.kr")}}
+          }}onPress={() => {Linking.openURL("https://desert-carbon-8ac.notion.site/3-de87259a28b249c4a79ad03df9129150")}}
         >
-          <Text style = {styles.logoutText}>스파르타로 이동</Text>
+          <Text style = {styles.logoutText}>개인정보 처리방침</Text>
           
         </TouchableOpacity>
       </View>
@@ -184,6 +237,7 @@ drawerContent={props => <CustomDrawer {...props}/>}
           headerRightContainerStyle: {paddingRight: 10},
           headerLeftContainerStyle: {paddingRight: 10}
         }}/> 
+        
 
 </Drawer.Navigator>
 )}
@@ -212,6 +266,9 @@ const styles = StyleSheet.create({
       //컨텐츠 자체가 앱에서 어떤 곳에 위치시킬지 결정(정렬기능)
       //각 속성의 값들은 공식문서에 고대로~ 나와 있음
       alignSelf:"center"
+    },
+    id:{
+      fontSize:5
     }
   })
 

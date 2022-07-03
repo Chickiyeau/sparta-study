@@ -2,7 +2,7 @@
   "expo": {
     "name": "sparta-myhoneytip-nkw",
     "slug": "sparta-myhoneytip-nkw",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.0",
+      "buildNumber": "1.0.3",
       "bundleIdentifier": "com.myhoneytip.nkw",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-8113412540427082~9712022613"
@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "com.myhoneytip.nkw",
-       "versionCode": 1,
+       "versionCode": 4,
         "config": {
           "googleMobileAdsAppId": "ca-app-pub-8113412540427082~5994987500"
         }

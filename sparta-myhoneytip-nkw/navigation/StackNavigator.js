@@ -11,6 +11,10 @@ import kakaoLogout from '../LoginScreen/kakao/KaKaoLogout';
 import tipmake from '../pages/tipmake';
 import writepage from '../pages/WritePage';
 import EditPage from '../pages/EditPage';
+import SelectLogin from '../LoginScreen/SelectLogin'
+import NaverLogin from '../LoginScreen/Naver/NaverLogin';
+import NaverLogout from '../LoginScreen/Naver/NaverLogout';
+import Termagree from '../pages/Termagree'
 
 //스택 네비게이션 라이브러리가 제공해주는 여러 기능이 담겨있는 객체를 사용합니다
 //그래서 이렇게 항상 상단에 선언하고 시작하는게 규칙입니다!
@@ -49,6 +53,10 @@ const StackNavigator = () =>{
             <Stack.Screen name="tipmake" component={tipmake}/>
             <Stack.Screen name="WritePage" component={writepage}/>
             <Stack.Screen name="EditPage" component={EditPage}/>
+            <Stack.Screen name="SelectLogin" component={SelectLogin}/>
+            <Stack.Screen name="NaverLogin" component={NaverLogin}/>
+            <Stack.Screen name="NaverLogout" component={NaverLogout}/>
+            <Stack.Screen name="Termagree" component={Termagree}/>
         </Stack.Navigator>
     )
 }
