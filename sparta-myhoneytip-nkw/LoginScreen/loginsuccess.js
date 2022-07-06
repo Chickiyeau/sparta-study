@@ -24,8 +24,46 @@ export function getParamNames(func) {
 export default function loginsuccess({route, navigation}){
 
     const[data,setdata] = useState()
+    const[pushindex,setpushindex] = useState()
+
+    async function registerForPushNotificationsAsync() {
+      let token;
+      if (Device.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        console.log("finalStatus",finalStatus)
+        if (existingStatus !== 'granted') {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+          alert('푸시 알림을 보내기 위한 토근을 받아올수 없습니다.');
+          return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log(token);
+      } else {
+        alert('푸시 알림을 받기 위해선 실 기기가 있어야합니다.');
+      }
+    
+      if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+          name: 'default',
+          importance: Notifications.AndroidImportance.MAX,
+          vibrationPattern: [0, 250, 250, 250],
+          lightColor: '#FF231F7C',
+        });
+      }
+      firebase_db.ref(`/push/token/`+pushindex).set(token)
+      index = pushindex + 1
+      firebase_db.ref(`/pushindex`).set(index) 
+      return token;
+    }
 
     useEffect(() => {
+      firebase_db.ref('/pushindex').once('value').then((index) => {
+        setpushindex(index)
+      })
       firebase_db.ref(`/user/${id}`).once('value').then((user) => {
         if(user.hasChildren() == false){
           setdata("nodata")
@@ -56,7 +94,9 @@ export default function loginsuccess({route, navigation}){
         firebase_db.ref(`/user/${global.id}/profile_image`).set(profile_image)
         
         firebase_db.ref(`/user/${global.id}/gender`).set(gender)
+        
       }
+      registerForPushNotificationsAsync()
       navigation.reset({index: 0, routes:[{name:'MainPage'}]})
     }
 
@@ -84,9 +124,11 @@ export default function loginsuccess({route, navigation}){
         firebase_db.ref(`/user/${id}/service`).set(service)
         firebase_db.ref(`/user/${id}/profile_image`).set(profile_image)
         firebase_db.ref(`/user/${id}/realname`).set(realname)
+        
       }
+      registerForPushNotificationsAsync()
       console.log(data)
-      //navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+      navigation.reset({index: 0, routes:[{name:'MainPage'}]})
     }
 
     return ( {service,nickname,profile_image,birthday,email},

@@ -6,7 +6,7 @@ import React,{useState,useEffect} from 'react';
 //ca-app-pub-8113412540427082/4958103971 ios 광고 전면
 //ca-app-pub-8113412540427082/7553048540 android 광고 전면
 import main from '../assets/main.png';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, BackHandler, Alert} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, BackHandler, Alert, Linking} from 'react-native';
 import Card from '../components/Card';
 import Loading from '../components/Loading';
 import { StatusBar } from 'expo-status-bar';
@@ -14,6 +14,9 @@ import * as Location from "expo-location";
 import axios from "axios";
 import {firebase_db} from "../firebaseConfig";
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import * as Device from 'expo-device';
+
+import * as Notifications from 'expo-notifications';
 import '../global.js'
 
 import {
@@ -45,24 +48,29 @@ export default function MainPage({navigation,route}) {
   //초기 상태값으로 리스트, 참거짓형, 딕셔너리, 숫자, 문자 등등 다양하게 들어갈 수 있음.
   const [ready,setReady] = useState(true)
   const [istermagree,settermagree] = useState(false)
+  const [pushindex,setpushIndex] = useState()
   useEffect(()=>{
 	   
     //뒤의 1000 숫자는 1초를 뜻함
     setTimeout(()=>{    //1초 뒤에 실행되는 코드들이 담겨 있는 함수
     
+      firebase_db.ref('/pushindex').once('value').then((index) => {
+        setpushIndex(index);
+      
         //헤더의 타이틀 변경
         let id = global.id
         firebase_db.ref(`/term/${id}/agreed`).once('value').then((agreed) => {
           settermagree(agreed);
-        })
         firebase_db.ref('/tip').once('value').then((snapshot) => {
           console.log("파이어베이스에서 데이터 가져왔습니다!!")
           let tip = snapshot.val();
           setState(tip)
           setCateState(tip)
           getLocation()
+          registerForPushNotificationsAsync()
+          makeAlert('위치 정보를 수집했습니다.', '날씨 표시를 위해 위치정보를 수집했습니다.', '')
           setReady(false)
-        });
+        })  }) });
         // setTimeout(()=>{
         //     let tip = data.tip;
         //     setState(tip)
@@ -71,6 +79,22 @@ export default function MainPage({navigation,route}) {
         //     setReady(false)
         // },500)
     },1000)
+
+    const makeAlert = (title, body, uri) => {
+      //const prefix = Linking.createURL('/MainPage'); 
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: title,
+          body: body,
+          data: {
+            uri: uri
+          }
+        },
+        trigger: {
+          seconds: 1, //onPress가 클릭이 되면 60초 뒤에 알람이 발생합니다.
+        },
+      });
+    }
 
     const backAction = () => {
       
@@ -90,6 +114,43 @@ export default function MainPage({navigation,route}) {
     return () => backHandler.remove();
     
   },[])
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      console.log("finalStatus",finalStatus)
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+    
+    let index = 0;
+    firebase_db.ref(`/push/token/`+JSON.stringify(pushindex)).set(token);
+    index = parseInt(JSON.stringify(pushindex)) + 1;
+    console.log("pusg333",index)
+    firebase_db.ref(`/pushindex`).set(index);
+    return token;
+  }
 
   const getLocation = async () => {
     //수많은 로직중에 에러가 발생하면
@@ -116,6 +177,7 @@ export default function MainPage({navigation,route}) {
       setWeather({
         temp,condition
       })
+      
 
 
     } catch (error) {

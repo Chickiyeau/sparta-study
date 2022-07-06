@@ -33,6 +33,7 @@
     "expo-cli": "^5.4.12",
     "expo-clipboard": "^3.0.1",
     "expo-constants": "~13.1.1",
+    "expo-device": "~4.2.0",
     "expo-file-system": "^14.0.0",
     "expo-firebase-analytics": "^7.0.0",
     "expo-google-sign-in": "~10.2.0",
