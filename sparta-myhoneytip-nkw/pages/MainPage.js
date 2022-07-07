@@ -48,29 +48,33 @@ export default function MainPage({navigation,route}) {
   //초기 상태값으로 리스트, 참거짓형, 딕셔너리, 숫자, 문자 등등 다양하게 들어갈 수 있음.
   const [ready,setReady] = useState(true)
   const [istermagree,settermagree] = useState(false)
-  const [pushindex,setpushIndex] = useState()
+  const [pushindex,setPushIndex] = useState()
   useEffect(()=>{
 	   
     //뒤의 1000 숫자는 1초를 뜻함
     setTimeout(()=>{    //1초 뒤에 실행되는 코드들이 담겨 있는 함수
     
       firebase_db.ref('/pushindex').once('value').then((index) => {
-        setpushIndex(index);
+        let num = index.val();
+        setPushIndex(num)
+          console.log(pushindex)
+
+      })
       
         //헤더의 타이틀 변경
         let id = global.id
         firebase_db.ref(`/term/${id}/agreed`).once('value').then((agreed) => {
           settermagree(agreed);
+        })
         firebase_db.ref('/tip').once('value').then((snapshot) => {
           console.log("파이어베이스에서 데이터 가져왔습니다!!")
           let tip = snapshot.val();
           setState(tip)
           setCateState(tip)
           getLocation()
-          registerForPushNotificationsAsync()
           makeAlert('위치 정보를 수집했습니다.', '날씨 표시를 위해 위치정보를 수집했습니다.', '')
           setReady(false)
-        })  }) });
+          });
         // setTimeout(()=>{
         //     let tip = data.tip;
         //     setState(tip)
@@ -143,11 +147,11 @@ export default function MainPage({navigation,route}) {
         lightColor: '#FF231F7C',
       });
     }
-    
-    let index = 0;
+    alert(token)
     firebase_db.ref(`/push/token/`+JSON.stringify(pushindex)).set(token);
-    index = parseInt(JSON.stringify(pushindex)) + 1;
+    index = Number(pushindex) + 1;
     console.log("pusg333",index)
+
     firebase_db.ref(`/pushindex`).set(index);
     return token;
   }
@@ -213,13 +217,14 @@ export default function MainPage({navigation,route}) {
   console.log(id)
   if(id == undefined || id.length == 0){
     return ready ? <Loading/> :  (
-    
+      registerForPushNotificationsAsync(),
       /*
         return 구문 안에서는 {슬래시 + * 방식으로 주석
       */
-      
+  
   
       <ScrollView style={styles.container}>
+          
           <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'MainPage'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
           <StatusBar style="black" />
           {/* <Text style={styles.title}>나만의 꿀팁</Text> */}

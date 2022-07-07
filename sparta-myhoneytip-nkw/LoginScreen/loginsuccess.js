@@ -37,13 +37,13 @@ export default function loginsuccess({route, navigation}){
           finalStatus = status;
         }
         if (finalStatus !== 'granted') {
-          alert('푸시 알림을 보내기 위한 토근을 받아올수 없습니다.');
+          alert('Failed to get push token for push notification!');
           return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
         console.log(token);
       } else {
-        alert('푸시 알림을 받기 위해선 실 기기가 있어야합니다.');
+        alert('Must use physical device for Push Notifications');
       }
     
       if (Platform.OS === 'android') {
@@ -54,15 +54,18 @@ export default function loginsuccess({route, navigation}){
           lightColor: '#FF231F7C',
         });
       }
-      firebase_db.ref(`/push/token/`+pushindex).set(token)
-      index = pushindex + 1
-      firebase_db.ref(`/pushindex`).set(index) 
+      
+      let index = 0;
+      firebase_db.ref(`/push/token/`+JSON.stringify(pushindex)).set(token);
+      index = parseInt(JSON.stringify(pushindex)) + 1;
+      console.log("pusg333",index)
+      firebase_db.ref(`/pushindex`).set(index);
       return token;
     }
 
     useEffect(() => {
       firebase_db.ref('/pushindex').once('value').then((index) => {
-        setpushindex(index)
+        setpushIndex(index);
       })
       firebase_db.ref(`/user/${id}`).once('value').then((user) => {
         if(user.hasChildren() == false){
@@ -96,7 +99,6 @@ export default function loginsuccess({route, navigation}){
         firebase_db.ref(`/user/${global.id}/gender`).set(gender)
         
       }
-      registerForPushNotificationsAsync()
       navigation.reset({index: 0, routes:[{name:'MainPage'}]})
     }
 
@@ -126,7 +128,6 @@ export default function loginsuccess({route, navigation}){
         firebase_db.ref(`/user/${id}/realname`).set(realname)
         
       }
-      registerForPushNotificationsAsync()
       console.log(data)
       navigation.reset({index: 0, routes:[{name:'MainPage'}]})
     }
