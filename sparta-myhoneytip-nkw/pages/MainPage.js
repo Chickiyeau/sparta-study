@@ -15,6 +15,7 @@ import axios from "axios";
 import {firebase_db} from "../firebaseConfig";
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import * as Device from 'expo-device';
+import { registerForPushNotificationsAsync } from '../components/Alert';
 
 import * as Notifications from 'expo-notifications';
 import '../global.js'
@@ -57,6 +58,7 @@ export default function MainPage({navigation,route}) {
       firebase_db.ref('/pushindex').once('value').then((index) => {
         let num = index.val();
         setPushIndex(num)
+        global.pushindex = num
           console.log(pushindex)
 
       })
@@ -119,42 +121,7 @@ export default function MainPage({navigation,route}) {
     
   },[])
 
-  async function registerForPushNotificationsAsync() {
-    let token;
-    if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      console.log("finalStatus",finalStatus)
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
-  
-    if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-    alert(token)
-    firebase_db.ref(`/push/token/`+JSON.stringify(pushindex)).set(token);
-    index = Number(pushindex) + 1;
-    console.log("pusg333",index)
 
-    firebase_db.ref(`/pushindex`).set(index);
-    return token;
-  }
 
   const getLocation = async () => {
     //수많은 로직중에 에러가 발생하면
@@ -217,7 +184,6 @@ export default function MainPage({navigation,route}) {
   console.log(id)
   if(id == undefined || id.length == 0){
     return ready ? <Loading/> :  (
-      registerForPushNotificationsAsync(),
       /*
         return 구문 안에서는 {슬래시 + * 방식으로 주석
       */

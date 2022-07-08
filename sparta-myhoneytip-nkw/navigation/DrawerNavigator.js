@@ -15,6 +15,7 @@ import loginsuccess, {route} from '../LoginScreen/loginsuccess';
 import testapi from '../test/testapi';
 import DetailPage from '../pages/DetailPage';
 import Termagree from '../pages/Termagree';
+import { registerForPushNotificationsAsync } from '../components/Alert';
 
 import { nicname2 } from '../pages/Settings';
 import '../global.js'
@@ -26,7 +27,8 @@ export const myComponent = () => {
 
 
 function HeaderR() {
-    return (  <TouchableOpacity onPress={() => {Alert.alert("알림 설정 태그","알람이 설정되기 싫어합니다")}}><Ionicons name="notifications-outline"size={30}></Ionicons></TouchableOpacity>);
+  let id = global.id
+    return (  <TouchableOpacity onPress={() => {registerForPushNotificationsAsync("add")}}><Ionicons name="notifications-outline"size={30}></Ionicons></TouchableOpacity>);
    
   }
 

@@ -10,3 +10,5 @@ global.mobile = []
 global.mobile_e164 = []
 global.gender = []
 global.birthyear = []
+//푸시알림
+global.pushindex = []
