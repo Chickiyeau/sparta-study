@@ -51,14 +51,14 @@ export function ToastAlert(message){
 
 export function SnackAlert(message){
 
-  return(
-    <Snackbar
-      visible={true}
-      duration={5000}
-    >
-      스파르타코딩클럽에 오신걸 환영합니다!!
-    </Snackbar>
-  )
+    return(
+      <Snackbar
+        visible={true}
+        duration={5000}
+      >
+        스파르타코딩클럽에 오신걸 환영합니다!!
+      </Snackbar>
+    );
   /*Snackbar.show({
     text: message,
     duration: Snackbar.LENGTH_SHORT
