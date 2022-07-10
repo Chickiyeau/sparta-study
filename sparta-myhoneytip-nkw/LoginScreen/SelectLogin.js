@@ -7,9 +7,29 @@ import {firebase_db} from "../firebaseConfig";
 
 import WriteCardProfile from '../components/WriteCardProfile';
 import '../global.js'
-import { localAssets } from 'expo-updates';
+import { GoogleLogin } from 'react-google-login';
 
 export default function SelectLogin({navigation}) {
+
+    const clientId =
+    "53440918166-mghgh63e9rh5pj4k4jfjj3d8creg1alv.apps.googleusercontent.com";
+
+  async function onSuccess(res) {
+    const profile = res.getBasicProfile();
+    const userdata = {
+      email: profile.getEmail(),
+      image: profile.getImageUrl(),
+      name: profile.getName(),
+    }; 
+    // 로그인 성공 후 실행하기 원하는 코드 작성.
+  
+  }
+
+  const onFailure = (res) => {
+    alert("구글 로그인에 실패하였습니다");
+    console.log("err", res);
+  };
+
     return(
         <View style={styles.container}>
         <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'ProfileScreen'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
@@ -20,6 +40,7 @@ export default function SelectLogin({navigation}) {
 
         <TouchableOpacity onPress={() => {navigation.navigate("kakaoLogin")}}><Image source={require('../assets/kakao_login_medium_wide.png')} style={styles.kakaologin}></Image></TouchableOpacity>
         <TouchableOpacity onPress={() => {navigation.navigate("NaverLogin")}}><Image source={require('../assets/btnG_완성형.png')} style={styles.Naverlogin}></Image></TouchableOpacity>
+        <TouchableOpacity onPress={() => {navigation.navigate("GoogleLogin")}}><Image source={require('../assets/btnG_완성형.png')} style={styles.Googlelogin}></Image></TouchableOpacity>
         </View>
     )
 }
@@ -133,6 +154,13 @@ const styles = StyleSheet.create({
         height:50,
         borderRadius:10,
         marginTop:20
+    },
+    Googlelogin: {
+        alignSelf:"center",
+        width:300,
+        height:50,
+        borderRadius:10,
+        marginTop:30
     },
     termcontainer: {
         width:360,

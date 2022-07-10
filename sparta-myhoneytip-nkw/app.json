@@ -28,6 +28,8 @@
     "android": {
       "package": "com.myhoneytip.nkw",
        "versionCode": 5,
+       "googleServicesFile": "./google-service.json",
+       "useNextNotificationsApi": true,
         "config": {
           "googleMobileAdsAppId": "ca-app-pub-8113412540427082~5994987500"
         }
