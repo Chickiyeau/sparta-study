@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Users\lk\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add @babel/runtime/helpers --ignore-engines
+  C:\Program Files\nodejs\node.exe C:\Users\lk\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add react-native-root-snackbar
 
 PATH: 
   C:\Program Files\OpenJDK\jdk-8.0.262.10-hotspot\bin;C:\Program Files\Microsoft\jdk-11.0.12.7-hotspot\bin;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\ojdkbuild\java-11-openjdk-11.0.14-1\bin;C:\Program Files\dotnet\;C:\Program Files (x86)\IncrediBuild;C:\ProgramData\chocolatey\bin;C:\Users\lk\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Program Files\nodejs\;C:\Program Files\Git\cmd;C:\Users\lk\AppData\Local\Microsoft\WindowsApps;C:\Users\lk\.dotnet\tools;C:\Users\lk\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\PyCharm 2022.1.2\bin;;C:\Users\lk\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\lk\AppData\Roaming\npm;C:\Users\lk\AppData\Local\GitHubDesktop\bin
@@ -14,8 +14,8 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@babel%2fruntime/helpers: Request "https://registry.yarnpkg.com/@babel%2fruntime/helpers" returned a 405
-      at params.callback [as _callback] (C:\Users\lk\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66154:18)
+  Error: https://registry.yarnpkg.com/react-native-root-snackbar: Not found
+      at params.callback [as _callback] (C:\Users\lk\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
       at self.callback (C:\Users\lk\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
       at Request.emit (node:events:537:28)
       at Request.<anonymous> (C:\Users\lk\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
@@ -107,6 +107,7 @@ npm manifest:
       "react-native-web": "0.17.7",
       "react-native-webview": "11.18.1",
       "react-navigation": "^4.4.4",
+      "rn-snackbar": "^1.0.7",
       "router": "^1.3.7",
       "sharp-cli": "^2.1.1",
       "uuid": "^8.3.2"
@@ -1173,14 +1174,7 @@ Lockfile:
     dependencies:
       regenerator-runtime "^0.13.4"
   
-  "@babel/runtime@^7.14.0", "@babel/runtime@^7.8.4":
-    version "7.18.6"
-    resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.18.6.tgz"
-    integrity sha512-t9wi7/AW6XtKahAe20Yw0/mMljKq0B1r2fPdvaAdV/KPDZewFXdaaa6K7lxmZBZ8FBNpCiAT6iHPmd6QO9bKfQ==
-    dependencies:
-      regenerator-runtime "^0.13.4"
-  
-  "@babel/runtime@^7.18.6":
+  "@babel/runtime@^7.1.2", "@babel/runtime@^7.14.0", "@babel/runtime@^7.18.6", "@babel/runtime@^7.8.4":
     version "7.18.6"
     resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.18.6.tgz#6a1ef59f838debd670421f8c7f2cbb8da9751580"
     integrity sha512-t9wi7/AW6XtKahAe20Yw0/mMljKq0B1r2fPdvaAdV/KPDZewFXdaaa6K7lxmZBZ8FBNpCiAT6iHPmd6QO9bKfQ==
@@ -12851,7 +12845,7 @@ Lockfile:
       kleur "^3.0.3"
       sisteransi "^1.0.5"
   
-  prop-types@*, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+  prop-types@*, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
     version "15.8.1"
     resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
     integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -13183,7 +13177,7 @@ Lockfile:
       "@types/react" "*"
       prop-types "^15.6.0"
   
-  "react-is@^16.12.0 || ^17.0.0", react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0:
+  "react-is@^16.12.0 || ^17.0.0", react-is@^16.13.0, react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
     version "16.13.1"
     resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
     integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -13197,6 +13191,19 @@ Lockfile:
     version "2.1.0"
     resolved "https://registry.npmjs.org/react-kakao-login/-/react-kakao-login-2.1.0.tgz"
     integrity sha512-yvwe9Qc5cG+ucDAWOoIW4QjMB55M0Y97v040pbjcmc3Ud+bYHbQ+SwcVkOBvfDynyQbLPPoGJ+iN8rCRD4lzJw==
+  
+  react-lifecycles-compat@^3.0.0:
+    version "3.0.4"
+    resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+    integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+  
+  react-mixin@3.0.5:
+    version "3.0.5"
+    resolved "https://registry.yarnpkg.com/react-mixin/-/react-mixin-3.0.5.tgz#e0b7b6713fdc9ddc429267df808b6ac5184c6706"
+    integrity sha512-RFODesKEh9VDfVj+mTg3jOn50QMelGENwEkdMY+dyKu/nPgUWLpNOh7EZ11QvN7K7im35etHAoMfDBuVqPuicg==
+    dependencies:
+      object-assign "^4.0.1"
+      smart-mixin "^2.0.0"
   
   react-native-animatable@1.3.3:
     version "1.3.3"
@@ -13256,6 +13263,13 @@ Lockfile:
       lodash.isequal "^4.5.0"
       setimmediate "^1.0.5"
       string-hash-64 "^1.0.3"
+  
+  react-native-root-siblings@2.2.0:
+    version "2.2.0"
+    resolved "https://registry.yarnpkg.com/react-native-root-siblings/-/react-native-root-siblings-2.2.0.tgz#57bb2f7b0a5399c48e14b36d5f3ae7015cd3fb95"
+    integrity sha512-MR0FIbpiDlgqfsiSXSpcdbBWVKjxOdRbBOHPGZpYwowbeFiVm7RBUuT3PTy66SVBtFkBB+lo/XFTc9njEe6EQQ==
+    dependencies:
+      static-container "^1.0.0"
   
   react-native-safe-area-context@4.2.4:
     version "4.2.4"
@@ -13349,6 +13363,19 @@ Lockfile:
       "@react-navigation/core" "^3.7.9"
       "@react-navigation/native" "^3.8.4"
   
+  react-redux@^5.0.7:
+    version "5.1.2"
+    resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-5.1.2.tgz#b19cf9e21d694422727bf798e934a916c4080f57"
+    integrity sha512-Ns1G0XXc8hDyH/OcBHOxNgQx9ayH3SPxBnFCOidGKSle8pKihysQw2rG/PmciUQRoclhVBO8HMhiRmGXnDja9Q==
+    dependencies:
+      "@babel/runtime" "^7.1.2"
+      hoist-non-react-statics "^3.3.0"
+      invariant "^2.2.4"
+      loose-envify "^1.1.0"
+      prop-types "^15.6.1"
+      react-is "^16.6.0"
+      react-lifecycles-compat "^3.0.0"
+  
   react-refresh@^0.4.0:
     version "0.4.3"
     resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.4.3.tgz"
@@ -13361,6 +13388,11 @@ Lockfile:
     dependencies:
       object-assign "^4.1.1"
       react-is "^16.12.0 || ^17.0.0"
+  
+  react-timer-mixin@0.13.3:
+    version "0.13.3"
+    resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
+    integrity sha512-o4GhDSefBYEYuBbHdOA5Jx9QW51x1bW5f9k2VK2x6+k9in6TQdmcsWCCJGMbG/+ReqZ+Y/UBQExlRdwXvaSwPA==
   
   react@17.0.2:
     version "17.0.2"
@@ -13912,6 +13944,17 @@ Lockfile:
       hash-base "^3.0.0"
       inherits "^2.0.1"
   
+  rn-snackbar@^1.0.7:
+    version "1.0.7"
+    resolved "https://registry.yarnpkg.com/rn-snackbar/-/rn-snackbar-1.0.7.tgz#abeb5802e660a6dc7284bdeba1a6f9bdb8c62fdf"
+    integrity sha512-KBsemJFuYoDfFS4++VRJtLbDJFS4otK6S/MP8VuK01JxAPJvQMLhD43oQwNAiCHEToVjy7zgVZRtxkBArfrEwQ==
+    dependencies:
+      react-mixin "3.0.5"
+      react-native-root-siblings "2.2.0"
+      react-redux "^5.0.7"
+      react-timer-mixin "0.13.3"
+      static-container "^1.2.0"
+  
   router-ips@^1.0.0:
     version "1.0.0"
     resolved "https://registry.npmjs.org/router-ips/-/router-ips-1.0.0.tgz"
@@ -14373,6 +14416,11 @@ Lockfile:
     resolved "https://registry.npmjs.org/slugify/-/slugify-1.6.5.tgz"
     integrity sha512-8mo9bslnBO3tr5PEVFzMPIWwWnipGS0xVbYf65zxDqfNwmzYn1LpiKNrR6DlClusuvo+hDHd1zKpmfAe83NQSQ==
   
+  smart-mixin@^2.0.0:
+    version "2.0.0"
+    resolved "https://registry.yarnpkg.com/smart-mixin/-/smart-mixin-2.0.0.tgz#a34a1055e32a75b30d2b4e3ca323dc99cb53f437"
+    integrity sha512-ZsbOrUEqBiRMLqZltlg/E6tYBTQjw3q0iboj1KiOyJ/Mp75+fc5YAKoYqvDXdtr5RAk4UYNi3hHUREdrUWRzRQ==
+  
   snapdragon-node@^2.0.1:
     version "2.1.1"
     resolved "https://registry.npmjs.org/snapdragon-node/-/snapdragon-node-2.1.1.tgz"
@@ -14595,6 +14643,11 @@ Lockfile:
     integrity sha512-KJP1OCML99+8fhOHxwwzyWrlUuVX5GQ0ZpJTd1DFXhdkrvg1szxfHhawXUZ3g9TkXORQd4/WG68jMlQZ2p8wlg==
     dependencies:
       type-fest "^0.7.1"
+  
+  static-container@^1.0.0, static-container@^1.2.0:
+    version "1.7.1"
+    resolved "https://registry.yarnpkg.com/static-container/-/static-container-1.7.1.tgz#2391d137255f1cd5db47ab3970c4aa277031dedf"
+    integrity sha512-rsUMpoUZ4sHsFyy+Wp9Kqnv3HU+LD5ShPRd+ocg8US9juKckq+7VgDEK+ZbG8sQ1EOaw2LBpF8XLwpozqGHGBQ==
   
   static-extend@^0.1.1:
     version "0.1.2"

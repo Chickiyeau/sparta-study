@@ -1,6 +1,6 @@
 import '../global.js'
 import { Alert, Platform, ToastAndroid } from 'react-native'
-import Snackbar from 'react-native-snackbar';
+import { Snackbar } from 'react-native-paper';
 import * as Device from 'expo-device';
 import {firebase_db} from "../firebaseConfig";
 import * as Notifications from 'expo-notifications';
@@ -47,6 +47,22 @@ export function ToastAlert(message){
   }else{
     ToastAndroid.show(message, ToastAndroid.SHORT)
   }
+}
+
+export function SnackAlert(message){
+
+  return(
+    <Snackbar
+      visible={true}
+      duration={5000}
+    >
+      스파르타코딩클럽에 오신걸 환영합니다!!
+    </Snackbar>
+  )
+  /*Snackbar.show({
+    text: message,
+    duration: Snackbar.LENGTH_SHORT
+  }) */
 }
 
 export function MakeAlert(title, body, token){
@@ -151,6 +167,7 @@ export async function registerForPushNotificationsAsync() {
         firebase_db.ref(`/user/${id}/pushindex`).once('value').then((pindex) => {
             if(pindex.exists()){
                 Alert.alert("모든 알림을 헤제하시겠습니까?","자세한 알림 설정은 설정창을 사용해주세요.")
+                SnackAlert("스파르타코딩클럽에 오신걸 환영합니다!!")
                 ToastAlert("스파르타코딩클럽에 오신걸 환영합니다!!")
 
             }else{
