@@ -14,7 +14,7 @@ import kakaoLogout from '../LoginScreen/kakao/KaKaoLogout';
 import loginsuccess, {route} from '../LoginScreen/loginsuccess';
 import testapi from '../test/testapi';
 import DetailPage from '../pages/DetailPage';
-import Termagree from '../pages/Termagree';
+import Viewsparta from '../spartacomm/Viewsparta';
 import { registerForPushNotificationsAsync } from '../components/Alert';
 
 import { nicname2 } from '../pages/Settings';
@@ -231,6 +231,15 @@ drawerContent={props => <CustomDrawer {...props}/>}
           headerLeftContainerStyle: {paddingRight: 10}
         }}/> 
     <Drawer.Screen name="DetailPage" component={DetailPage} options={{drawerLabel: '디테일 페이지',title:'디테일 페이지',
+        headerTitle: () => (
+            <TouchableOpacity onPress={() => {Alert.alert("타이틀","나의 꿀팁")}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
+          ),
+          headerTitleAlign: 'center',
+          headerRight: ()=> <HeaderR/>,
+          headerRightContainerStyle: {paddingRight: 10},
+          headerLeftContainerStyle: {paddingRight: 10}
+        }}/> 
+    <Drawer.Screen name="Viewsparta" component={Viewsparta} options={{drawerLabel: '디테일 페이지',title:'디테일 페이지',
         headerTitle: () => (
             <TouchableOpacity onPress={() => {Alert.alert("타이틀","나의 꿀팁")}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
           ),

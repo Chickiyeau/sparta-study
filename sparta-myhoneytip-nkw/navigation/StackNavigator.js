@@ -16,6 +16,7 @@ import NaverLogin from '../LoginScreen/Naver/NaverLogin';
 import NaverLogout from '../LoginScreen/Naver/NaverLogout';
 import Termagree from '../pages/Termagree'
 import LoginGoogle from '../LoginScreen/google/GoogleLogin';
+import sparta from '../spartacomm/sparta';
 
 //스택 네비게이션 라이브러리가 제공해주는 여러 기능이 담겨있는 객체를 사용합니다
 //그래서 이렇게 항상 상단에 선언하고 시작하는게 규칙입니다!
@@ -59,6 +60,7 @@ const StackNavigator = () =>{
             <Stack.Screen name="NaverLogout" component={NaverLogout}/>
             <Stack.Screen name="Termagree" component={Termagree}/>
             <Stack.Screen name="GoogleLogin" component={LoginGoogle}/>
+            <Stack.Screen name="sparta" component={sparta}/>
         </Stack.Navigator>
     )
 }

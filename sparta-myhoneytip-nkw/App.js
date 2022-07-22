@@ -23,7 +23,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-
 export default function App() {
   LogBox.ignoreAllLogs(true)
   const lastNotificationResponse = Notifications.useLastNotificationResponse();

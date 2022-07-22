@@ -1,4 +1,4 @@
-//import * as firebase from 'firebase/app';
+///import * as firebase from 'firebase/app';
 import firebase from 'firebase/compat/app';
 
 // 사용할 파이어베이스 서비스 주석을 해제합니다

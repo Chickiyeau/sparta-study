@@ -1,13 +1,13 @@
 import React,{useState,useEffect} from 'react';
-import { StyleSheet, Text, View, Image, ScrollView,TouchableOpacity,Alert,Share} from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView,TouchableOpacity,Alert,Share, BackHandler } from 'react-native';
 import * as Linking from 'expo-linking';
 import {firebase_db} from "../firebaseConfig"
-//import '../global.js'
+import '../global.js'
 loaded = false //페이지를 최초로 로드했고 데이터를 받을준비
 export default function DetailPage({navigation,route}) {
 
     
-    //let user_idx = global.id
+    let user_idx = global.id
     console.log(user_idx)
     
     const [tip, setTip] = useState({
@@ -62,7 +62,7 @@ export default function DetailPage({navigation,route}) {
         })
         //넘어온 데이터는 route.params에 들어 있습니다.\
 
-        /*const backAction = () => {
+        const backAction = () => {
       
             navigation.reset({index: 0, routes:[{name:'MainPage'}]})
     
@@ -71,7 +71,7 @@ export default function DetailPage({navigation,route}) {
           
               const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
           
-              return () => backHandler.remove()*/
+              return () => backHandler.remove()
 
 };
     },[])
@@ -83,17 +83,10 @@ export default function DetailPage({navigation,route}) {
         // 특정 찜 데이터 아이디 방안에
         // 특정 찜 데이터 몽땅 저장!
         // 찜 데이터 방 > 사용자 방 > 어떤 찜인지 아이디
-        //const user_id = global.id;
-        //let name = global.name.nickname
-        let userUniqueId;
-        if(isIOS){
-        let iosId = await Application.getIosIdForVendorAsync();
-            userUniqueId = iosId
-        }else{
-            userUniqueId = await Application.androidId
-        }
-        if(userUniqueId != undefined){
-            firebase_db.ref('/like/'+userUniqueId+'/'+ tip.idx).set(tip,function(error){
+        const user_id = global.id;
+        let name = global.name.nickname
+        if(name != undefined){
+            firebase_db.ref('/like/'+user_id+'/'+ tip.idx).set(tip,function(error){
                 console.log(error)
                 Alert.alert("찜 완료!"," 지금 바로 찜 화면으로 이동하시겠어요?", [
                     {
@@ -153,6 +146,7 @@ export default function DetailPage({navigation,route}) {
                     <TouchableOpacity style={styles.button} onPress={()=>link()}><Text style={styles.buttonText}>외부 링크</Text></TouchableOpacity>
                     <TouchableOpacity style={styles.button} onPress={()=>report()}><Text style={styles.buttonText}>신고 하기</Text></TouchableOpacity>
                 </View>
+                <Text style={styles.title}>해당글의 아이디 : {tip.idx}</Text>
                 
             </View>
             
