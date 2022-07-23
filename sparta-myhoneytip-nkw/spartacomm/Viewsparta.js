@@ -5,22 +5,31 @@ import Loading from '../components/Loading';
 import {firebase_db} from "../firebaseConfig"
 import { createStackNavigator } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import sparta from './sparta';
 import '../global.js'
 
 export default function Viewsparta({navigation, route}) {
     const [tip, setTip] = useState([])
     const [ready,setReady] = useState(true)
     let loaded = false
-    useEffect(() => {setTip(route.params.array)
+    useEffect(() => {
+      setTip(route.params.array)
+
+      
     })
-     let page = 2
+     let page = route.params.page
+     if(page == undefined){
+      page = 1
+  }
     
      function goBack() {
-        alert("뒤로가자!")
+      page -= 1
+      navigation.navigate('sparta', {navigation, page})
      }
 
-     function goNext() {
-        alert("앞으로 가자!")
+     function goNext( ) {
+        page += 1
+        navigation.navigate('sparta', {navigation, page})
 
      }
 
