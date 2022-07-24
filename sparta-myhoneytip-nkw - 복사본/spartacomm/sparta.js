@@ -41,6 +41,7 @@ export default function sparta({navigation, route}){
                 
                 let id = content._id
                 let author = content.author.name
+                let profile = `https://spartacodingclub.kr/v5/images/profile/${content.author.profile}.png`
                 let commentCount = content.commentCount
                 let title = content.title
                 let status = content.tutorResponse.status
@@ -50,23 +51,32 @@ export default function sparta({navigation, route}){
                 let week = content.week
                 let desc = content.content.replace('<br>', '\n')
                 let image = desc.match(/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g)
+                console.log(image)
                 if(image != null){
                     image.map((link, i) => {
-                        image = link.match(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9ㄱ-ㅎ가-힣+&@#\/%=~_|$])/igm)
+                        image = link.match(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
                         let image2 = link.replace(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
                         image = image+image2.split('undefined')[1].replace('\">',"")
+                        console.log(i, image)
                     })
                 }
                 desc = desc.replace(/<[^>]*>?/g, '')
-                desc = desc.replace(/&lt;/g,'<')
+                desc = desc.replace(/&lt;/g,'\n<')
                 desc = desc.replace(/&gt;/g,'>')
+                desc = desc.replace(/&nbsp;/gi, '\n')
+                desc = desc.replace(/{/gi, '\n{\n')
+                desc = desc.replace(/}/gi, '\n}\n')
+                desc = desc.replace(/;/gi, ';\n')
+                desc = desc.replace(/@/gi, '\n@')
                 let descout = desc.indexOf('</pre>')
                 let descin = desc.indexOf('<pre class="ql-syntax" spellcheck="false">')
                 let cdesc = desc.substring(descin, desc.length)
                 let createdAt = content.createdAt
                 let courseTitle = content.courseTitle  
+                
+                console.log("profile",profile)
                 let comm = {
-                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, image
+                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, image, profile
                 }
                 array.push(comm)
             })
@@ -86,12 +96,10 @@ export default function sparta({navigation, route}){
 
     useEffect(() => {
         let page = route.params
-        console.log(page)
         if(page == undefined){
             page = 1
         }else{
             page = page.page
-            console.log("dddd", page)
         }
         requestList(page)
     })

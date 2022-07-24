@@ -70,6 +70,7 @@
     "react-google-login": "^5.2.2",
     "react-kakao-login": "^2.1.0",
     "react-native": "0.68.2",
+    "react-native-auto-height-image": "^3.2.4",
     "react-native-dropdown-picker": "^5.4.2",
     "react-native-gesture-handler": "~2.2.1",
     "react-native-modal": "^13.0.1",

@@ -19,6 +19,7 @@ import LoginGoogle from '../LoginScreen/google/GoogleLogin';
 import sparta from '../spartacomm/sparta';
 import Viewsparta from '../spartacomm/Viewsparta';
 import Detailsparta from '../spartacomm/Detailsparta';
+import Selcourse from '../spartacomm/Selcourse';
 
 //스택 네비게이션 라이브러리가 제공해주는 여러 기능이 담겨있는 객체를 사용합니다
 //그래서 이렇게 항상 상단에 선언하고 시작하는게 규칙입니다!
@@ -65,6 +66,7 @@ const StackNavigator = () =>{
             <Stack.Screen name="sparta" component={sparta}/>
             <Stack.Screen name="Viewsparta" component={Viewsparta}/>
             <Stack.Screen name="Detailsparta" component={Detailsparta}/>
+            <Stack.Screen name="Selcourse" component={Selcourse}/>
         </Stack.Navigator>
     )
 }

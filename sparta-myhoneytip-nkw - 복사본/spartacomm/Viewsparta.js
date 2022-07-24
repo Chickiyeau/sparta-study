@@ -37,8 +37,8 @@ export default function Viewsparta({navigation, route}) {
 
     return (
         <ScrollView style={styles.container}>
-            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'sparta'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
-            {
+            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'sparta'}]})}}><Text style={styles.refreshtext}>즉문즉답 눌러서 새로 고침</Text></TouchableOpacity>
+              {
                    tip.map((content,i)=>{
                        return(
                        <SpartaCard key={i} content={content} navigation={navigation}/>)
@@ -61,11 +61,14 @@ const styles = StyleSheet.create({
     },
     refresh: {
         backgroundColor:"pink",
-        width:350,
+        
         height:40,
         borderRadius:10,
-        alignSelf:"flex-end",
-        marginRight:20,
+        alignSelf:"center",
+        paddingLeft:25,
+        paddingRight:25,
+        marginLeft:5,
+        marginRight:5,
         marginTop:10
       },
       refreshtext: {
@@ -74,8 +77,8 @@ const styles = StyleSheet.create({
         fontSize:30
       },
       button: {
-        flexDirection:"row"
-        
+        flexDirection:"row",
+        justifyContent:"space-between"
       },
       buttonleft: {
         marginLeft: 50,
@@ -84,6 +87,68 @@ const styles = StyleSheet.create({
       buttonright: {
         marginLeft: 30,
         flex: 0.5
+      },
+      middleContainer:{
+        marginTop:20,
+        marginLeft:10,
+        marginBottom:60,
+        borderColor:"black",
+        borderWidth:2,
+        height:60
+      },
+      middleButtonAll: {
+        width:100,
+        height:50,
+        padding:15,
+        backgroundColor:"#20b2aa",
+        borderColor:"deeppink",
+        borderRadius:15,
+        margin:7
+      },
+      middleButton01: {
+        width:100,
+        height:50,
+        padding:15,
+        backgroundColor:"#fdc453",
+        borderColor:"deeppink",
+        borderRadius:15,
+        margin:7
+      },
+      middleButton02: {
+        width:100,
+        height:50,
+        padding:15,
+        backgroundColor:"#fe8d6f",
+        borderRadius:15,
+        margin:7
+      },
+      middleButton03: {
+        width:100,
+        height:50,
+        padding:15,
+        backgroundColor:"#9adbc5",
+        borderRadius:15,
+        margin:7
+      },
+      middleButton04: {
+        width:100,
+        height:50,
+        padding:15,
+        backgroundColor:"#f886a8",
+        borderRadius:15,
+        margin:7
+      },
+      middleButtonText: {
+        color:"#fff",
+        fontWeight:"700",
+        //텍스트의 현재 위치에서의 정렬 
+        textAlign:"center"
+      },
+      middleButtonTextAll: {
+        color:"#fff",
+        fontWeight:"700",
+        //텍스트의 현재 위치에서의 정렬 
+        textAlign:"center"
       }
 })
 

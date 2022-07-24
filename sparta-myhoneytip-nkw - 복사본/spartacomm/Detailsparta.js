@@ -1,8 +1,8 @@
 import React,{useState, useEffect, Component} from 'react';
-import {BackHandler, ScrollView, Text, StyleSheet, Alert, Image, View} from 'react-native';
+import {BackHandler, ScrollView, Text, StyleSheet, Alert, Image, View, useWindowDimensions } from 'react-native';
 import SpartaCardComment from '../components/SpartaCardComment';
 import Loading from '../components/Loading';
-import {firebase_db} from "../firebaseConfig"
+import AutoHeightImage from "react-native-auto-height-image";
 import { createStackNavigator } from 'react-navigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -20,10 +20,16 @@ export default function Detailsparta({route, navigation, beforeid}){
 
     let array = []
     let bef = ""
+    let { width } = useWindowDimensions();
+    console.log(width)
     const [ready,setReady] = useState(true)
     const [comm, setcomm] = useState(array)
-
-    let curcourse = `즉문즉답 > ${courseTitle} > ${week}주차`
+    let curcourse = ``
+    if(week == 100){
+        curcourse = `즉문즉답 > ${courseTitle} > 기타`
+    }else{
+        curcourse = `즉문즉답 > ${courseTitle} > ${week}주차`
+    }
 
     function getcomment() {
 
@@ -67,11 +73,15 @@ export default function Detailsparta({route, navigation, beforeid}){
                             image = image+image2.split('undefined')[1].replace('\">',"")
                         })
                     }
-
+                    
                     desc = desc.replace(/<[^>]*>?/g, '')
-                    desc = desc.replace(/&lt;/g,'<')
+                    desc = desc.replace(/&lt;/g,'\n<')
                     desc = desc.replace(/&gt;/g,'>')
-                    console.log("image", image)
+                    desc = desc.replace(/&nbsp;/gi, '\n')
+                    desc = desc.replace(/{/gi, '\n{\n')
+                    desc = desc.replace(/}/gi, '\n}\n')
+                    desc = desc.replace(/;/gi, ';\n')
+                    desc = desc.replace(/@/gi, '\n@')
                     let comm = {
                         author, id, desc, createdAt, isTutor, isWriter, profile, image
                     }
@@ -131,9 +141,17 @@ export default function Detailsparta({route, navigation, beforeid}){
         return (
             <ScrollView> 
                 <View style={styles.cardText}>
+                <View style={styles.cardTop}>
+              <Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'contain',borderRadius:5}} source={{uri:content.profile}} />
+                <Text style={styles.cardTitle} numberOfLines={1}> {content.author}</Text>
+              </View>
                     <Text style={styles.cardTitle}>{content.title}</Text>
                     <Text style={styles.cardDate}>{curcourse}</Text>
-                    <Image style={styles.image} source={{uri:image}}/>
+                    <AutoHeightImage
+                        style={styles.image}
+                        width={width}
+                        source={{uri:image}}
+                    />
                     <Text style={styles.cardDesc}>{content.desc}</Text>
                     <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author}</Text>
                 
@@ -153,6 +171,10 @@ export default function Detailsparta({route, navigation, beforeid}){
         return (
             <ScrollView> 
                 <View style={styles.cardText}>
+                <View style={styles.cardTop}>
+              <Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'contain',borderRadius:5}} source={{uri:content.profile}} />
+                <Text style={styles.cardTitle} numberOfLines={1}> {content.author}</Text>
+              </View>
                     <Text style={styles.cardTitle}>{content.title}</Text>
                     <Text style={styles.cardDate}>{curcourse}</Text>
                     <Text style={styles.cardDesc}>{content.desc}</Text>
@@ -223,8 +245,15 @@ const styles = StyleSheet.create({
         textAlign:'center'
     },
     image:{
-        height:200,
-        margin:10,
-        marginTop:40
-    }
+        alignSelf:'center',
+        marginRight:10,
+        marginTop:10,
+        marginBottom:10,
+        borderBottomColor:"#aaa"
+    },
+    cardTop:{
+        flexDirection:"row",
+        borderBottomWidth:0.5,
+        borderBottomColor:"#aaa"
+      }
 });

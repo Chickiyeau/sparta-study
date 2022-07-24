@@ -203,7 +203,7 @@ export default function MainPage({navigation,route}) {
           </TouchableOpacity>
           <Image style={styles.mainImage} source={main}/>
           <ScrollView style={styles.middleContainer} horizontal indicatorStyle={"white"}>
-              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{category('전체보기')}}><Text style={styles.middleButtonTextAll}>전체보기</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{navigation.reset({index: 0, routes:[{name:'Selcourse'}]})}}><Text style={styles.middleButtonTextAll}>즉문즉답</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton01} onPress={()=>{category('생활')}}><Text style={styles.middleButtonText}>생활</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>

@@ -1,14 +1,15 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet,TouchableOpacity, Alert, RefreshControl, Linking} from 'react-native'
+import {View, Image, Text, StyleSheet,TouchableOpacity, Alert, RefreshControl, useWindowDimensions} from 'react-native'
 import {firebase_db} from "../firebaseConfig"
 import '../global.js'
-import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';
+import AutoHeightImage from "react-native-auto-height-image";
 
 
 //MainPage로 부터 navigation 속성을 전달받아 Card 컴포넌트 안에서 사용
 export default function SpartaCardComment({content,navigation}){
 
     let array = []
+    let { width } = useWindowDimensions();
     const detail = () => {
       array.push({content})
       navigation.navigate('Detailsparta', {content})
@@ -23,16 +24,19 @@ export default function SpartaCardComment({content,navigation}){
       wait(2000).then(() => setRefreshing(false));
     }, []);
         
-    console.log(content.isTutor)
-    console.log(content.isWriter)
+
     if(content.image != null){
-        image = content.image
+        let image = content.image
         if(content.isTutor == true){
           if(content.isWriter == true){
             return(
               <View style={styles.card} onPress={() => detail()}>
                   <View style={styles.cardText}>
-                      <Image style={styles.image} source={{uri:image}}/>
+                  <AutoHeightImage
+                        style={styles.image}
+                        width={width}
+                        source={{uri:image}}
+                    />
                       <Text style={styles.cardDesc}>{content.desc}</Text>
                       <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author}  튜터이면서 이글의 작성자입니다</Text>
                       
@@ -43,7 +47,11 @@ export default function SpartaCardComment({content,navigation}){
             return(
               <View style={styles.card} onPress={() => detail()}>
                   <View style={styles.cardText}>
-                      <Image style={styles.image} source={{uri:image}}/>
+                  <AutoHeightImage
+                        style={styles.image}
+                        width={width}
+                        source={{uri:image}}
+                    />
                       <Text style={styles.cardDesc}>{content.desc}</Text>
                       <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author}  튜터입니다.</Text>
                       
@@ -56,7 +64,11 @@ export default function SpartaCardComment({content,navigation}){
             return(
               <View style={styles.card} onPress={() => detail()}>
                   <View style={styles.cardText}>
-                      <Image style={styles.image} source={{uri:image}}/>
+                  <AutoHeightImage
+                        style={styles.image}
+                        width={width}
+                        source={{uri:image}}
+                    />
                       <Text style={styles.cardDesc}>{content.desc}</Text>
                       <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author} 이글의 작성자입니다.</Text>
                       
@@ -67,7 +79,11 @@ export default function SpartaCardComment({content,navigation}){
             return(
               <View style={styles.card} onPress={() => detail()}>
                   <View style={styles.cardText}>
-                      <Image style={styles.image} source={{uri:image}}/>
+                  <AutoHeightImage
+                        style={styles.image}
+                        width={width}
+                        source={{uri:image}}
+                    />
                       <Text style={styles.cardDesc}>{content.desc}</Text>
                       <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author}</Text>
                       
@@ -134,7 +150,10 @@ const styles = StyleSheet.create({
       margin:10,
       borderBottomWidth:0.5,
       borderBottomColor:"#eee",
-      paddingBottom:10
+      paddingBottom:10,
+      backgroundColor:"#ccc",
+      borderRadius:5,
+      paddingTop:10
     },
     cardImage: {
       flex:1,
@@ -155,8 +174,9 @@ const styles = StyleSheet.create({
       fontSize:15
     },
     cardDate: {
+      marginTop:10,
       fontSize:10,
-      color:"#A6A6A6",
+      color:"white",
     },
     buttonGroup: {
         flexDirection:"row",
@@ -176,8 +196,7 @@ const styles = StyleSheet.create({
         textAlign:'center'
     },
     image:{
-        height:200,
-        margin:10,
-        marginTop:40
+        alignSelf:'center',
+        marginRight:10,
     }
 });

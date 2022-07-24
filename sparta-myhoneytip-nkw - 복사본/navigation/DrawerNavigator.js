@@ -12,7 +12,7 @@ import {Webview} from 'react-native-webview';
 import kakaoLogin from '../LoginScreen/kakao/kakaoLogin';
 import kakaoLogout from '../LoginScreen/kakao/KaKaoLogout';
 import loginsuccess, {route} from '../LoginScreen/loginsuccess';
-import testapi from '../test/testapi';
+import Selcourse from '../spartacomm/Selcourse';
 import DetailPage from '../pages/DetailPage';
 import Viewsparta from '../spartacomm/Viewsparta';
 import { registerForPushNotificationsAsync } from '../components/Alert';
@@ -248,7 +248,15 @@ drawerContent={props => <CustomDrawer {...props}/>}
           headerRightContainerStyle: {paddingRight: 10},
           headerLeftContainerStyle: {paddingRight: 10}
         }}/> 
-        
+    <Drawer.Screen name="Selcourse" component={Selcourse} options={{drawerLabel: '즉문즉답 과목 선택',title:'즉문즉답 과목 선택',
+        headerTitle: () => (
+            <TouchableOpacity onPress={() => {Alert.alert("타이틀","나의 꿀팁")}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
+          ),
+          headerTitleAlign: 'center',
+          headerRight: ()=> <HeaderR/>,
+          headerRightContainerStyle: {paddingRight: 10},
+          headerLeftContainerStyle: {paddingRight: 10}
+        }}/>         
 
 </Drawer.Navigator>
 )}
