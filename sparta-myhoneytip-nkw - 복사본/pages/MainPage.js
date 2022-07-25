@@ -74,7 +74,7 @@ export default function MainPage({navigation,route}) {
           setState(tip)
           setCateState(tip)
           getLocation()
-          makeAlert('위치 정보를 수집했습니다.', '날씨 표시를 위해 위치정보를 수집했습니다.', '')
+          //makeAlert('위치 정보를 수집했습니다.', '날씨 표시를 위해 위치정보를 수집했습니다.', '')
           setReady(false)
           });
         // setTimeout(()=>{
@@ -86,7 +86,7 @@ export default function MainPage({navigation,route}) {
         // },500)
     },1000)
 
-    const makeAlert = (title, body, uri) => {
+    /*const makeAlert = (title, body, uri) => {
       //const prefix = Linking.createURL('/MainPage'); 
       Notifications.scheduleNotificationAsync({
         content: {
@@ -100,7 +100,7 @@ export default function MainPage({navigation,route}) {
           seconds: 1, //onPress가 클릭이 되면 60초 뒤에 알람이 발생합니다.
         },
       });
-    }
+    }*/
 
     const backAction = () => {
       
@@ -203,7 +203,7 @@ export default function MainPage({navigation,route}) {
           </TouchableOpacity>
           <Image style={styles.mainImage} source={main}/>
           <ScrollView style={styles.middleContainer} horizontal indicatorStyle={"white"}>
-              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{navigation.reset({index: 0, routes:[{name:'Selcourse'}]})}}><Text style={styles.middleButtonTextAll}>즉문즉답</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{navigation.reset({index: 0, routes:[{name:'spartaja'}]})}}><Text style={styles.middleButtonTextAll}>즉문즉답</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton01} onPress={()=>{category('생활')}}><Text style={styles.middleButtonText}>생활</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
               <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>

@@ -13,14 +13,14 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
 import '../global.js'
 
-export default function sparta({navigation, route}){
+export default function spartaja({navigation, route}){
 
 
     const requestList = async (page) => {
 
         var returnValue = "none";
 
-        var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&pageChunkSize=10&curPage=${page}`;
+        var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=freeboard&sort=latest&pageChunkSize=10&curPage=${page}`;
 
  
 
@@ -41,6 +41,7 @@ export default function sparta({navigation, route}){
                 
                 let id = content._id
                 let author = content.author.name
+                let profile = `https://spartacodingclub.kr/v5/images/profile/${content.author.profile}.png`
                 let commentCount = content.commentCount
                 let title = content.title
                 let status = content.tutorResponse.status
@@ -50,21 +51,36 @@ export default function sparta({navigation, route}){
                 let week = content.week
                 let desc = content.content.replace('<br>', '\n')
                 let image = desc.match(/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g)
+                let imagelist = []
+                console.log(image)
                 if(image != null){
                     image.map((link, i) => {
-                        image = link.match(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
+                        image = link.match(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
+                        let image2 = link.replace(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
+                        imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
                     })
                 }
                 desc = desc.replace(/<[^>]*>?/g, '')
-                desc = desc.replace(/&lt;/g,'<')
+                desc = desc.replace(/\n/g, "")
+                desc = desc.replace(/\r/g, "")
+                desc = desc.replace(/&lt;/g,'\n<')
                 desc = desc.replace(/&gt;/g,'>')
+                desc = desc.replace(/&nbsp;/gi, '\n')
+                desc = desc.replace(/{/gi, '\n{\n')
+                desc = desc.replace(/}/gi, '\n}\n')
+                desc = desc.replace(/;/gi, ';\n')
+                desc = desc.replace(/@/gi, '\n@')
+
+
                 let descout = desc.indexOf('</pre>')
                 let descin = desc.indexOf('<pre class="ql-syntax" spellcheck="false">')
                 let cdesc = desc.substring(descin, desc.length)
                 let createdAt = content.createdAt
                 let courseTitle = content.courseTitle  
+                
+                console.log("ill",imagelist)
                 let comm = {
-                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, image
+                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, imagelist, profile
                 }
                 array.push(comm)
             })
@@ -75,7 +91,7 @@ export default function sparta({navigation, route}){
 
         }).catch(function (error) {
 
-            console.log('error', error);
+            Alert.alert('자유게시판을 불러오던중 오류 발생', error.toString());
 
         });
 
@@ -84,19 +100,28 @@ export default function sparta({navigation, route}){
 
     useEffect(() => {
         let page = route.params
-        console.log(page)
         if(page == undefined){
             page = 1
         }else{
             page = page.page
-            console.log("dddd", page)
         }
         requestList(page)
+
+        const backAction = () => {
+      
+            navigation.navigate("MainPage")
+    
+                return true;
+              };
+          
+              const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+          
+              return () => backHandler.remove()
     })
 
     return(
         <ScrollView>
-             <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'sparta'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
+             <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'spartaja'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
              <Text>로딩중입니다.</Text>
         </ScrollView>
     )

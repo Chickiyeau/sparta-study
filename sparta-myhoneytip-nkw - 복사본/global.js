@@ -12,3 +12,5 @@ global.gender = []
 global.birthyear = []
 //푸시알림
 global.pushindex = []
+global.page = []
+global.load = []

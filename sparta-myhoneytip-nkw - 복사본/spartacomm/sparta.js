@@ -7,15 +7,15 @@ import { WebView } from 'react-native-webview';
 
 import axios from 'axios';
 
-import * as AuthSession from 'expo-auth-session'
-import * as WebBrowser from 'expo-web-browser'
+import { Box, Image } from "native-base";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
 import '../global.js'
 
 export default function sparta({navigation, route}){
 
-
+    const loading = require("../assets/loading.gif");
     const requestList = async (page) => {
 
         var returnValue = "none";
@@ -51,16 +51,18 @@ export default function sparta({navigation, route}){
                 let week = content.week
                 let desc = content.content.replace('<br>', '\n')
                 let image = desc.match(/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g)
+                let imagelist = []
                 console.log(image)
                 if(image != null){
                     image.map((link, i) => {
                         image = link.match(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
                         let image2 = link.replace(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
-                        image = image+image2.split('undefined')[1].replace('\">',"")
-                        console.log(i, image)
+                        imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
                     })
                 }
                 desc = desc.replace(/<[^>]*>?/g, '')
+                desc = desc.replace(/\n/g, "")
+                desc = desc.replace(/\r/g, "")
                 desc = desc.replace(/&lt;/g,'\n<')
                 desc = desc.replace(/&gt;/g,'>')
                 desc = desc.replace(/&nbsp;/gi, '\n')
@@ -68,26 +70,29 @@ export default function sparta({navigation, route}){
                 desc = desc.replace(/}/gi, '\n}\n')
                 desc = desc.replace(/;/gi, ';\n')
                 desc = desc.replace(/@/gi, '\n@')
+
+
                 let descout = desc.indexOf('</pre>')
                 let descin = desc.indexOf('<pre class="ql-syntax" spellcheck="false">')
                 let cdesc = desc.substring(descin, desc.length)
                 let createdAt = content.createdAt
                 let courseTitle = content.courseTitle  
                 
-                console.log("profile",profile)
+                console.log("ill",imagelist)
                 let comm = {
-                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, image, profile
+                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, imagelist, profile
                 }
                 array.push(comm)
             })
-            navigation.navigate('Viewsparta',{navigation, array, page})
+            navigation.navigate('Home',{navigation, array, page})
             
 
  
 
         }).catch(function (error) {
 
-            console.log('error', error);
+            Alert.alert('오류 발생', error.toString());
+
 
         });
 
@@ -102,13 +107,25 @@ export default function sparta({navigation, route}){
             page = page.page
         }
         requestList(page)
+
+        const backAction = () => {
+      
+            navigation.navigate("MainPage")
+    
+                return true;
+              };
+          
+              const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+          
+              return () => backHandler.remove()
     })
 
     return(
-        <ScrollView>
-             <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'sparta'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
-             <Text>로딩중입니다.</Text>
-        </ScrollView>
+        <SafeAreaView style={styles.container}>
+        <Box style={styles.textBox}>
+          <Image source={loading} alt="progress" />
+        </Box>
+      </SafeAreaView>
     )
 }
 
@@ -126,5 +143,22 @@ const styles = StyleSheet.create({
         color:"#fff",
         textAlign:"center",
         fontSize:30
+      },
+      container: {
+        flex: 1,
+        backgroundColor: "white",
+      },
+      textBox: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+    
+      profileBox: {
+        marginHorizontal: 30,
+      },
+      inputBox: {
+        marginHorizontal: 40,
+        marginVertical: 20,
       }
 })
