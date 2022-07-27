@@ -40,7 +40,7 @@ export default function SelectLogin({navigation}) {
 
         <TouchableOpacity onPress={() => {navigation.navigate("kakaoLogin")}}><Image source={require('../assets/kakao_login_medium_wide.png')} style={styles.kakaologin}></Image></TouchableOpacity>
         <TouchableOpacity onPress={() => {navigation.navigate("NaverLogin")}}><Image source={require('../assets/btnG_완성형.png')} style={styles.Naverlogin}></Image></TouchableOpacity>
-        <TouchableOpacity onPress={() => {navigation.navigate("sparta")}}><Image source={{uri:'https://spartacodingclub.kr/v5/images/icon-beta.png'}} style={styles.Googlelogin}></Image></TouchableOpacity>
+        <TouchableOpacity onPress={() => {global.search = "false",navigation.navigate("sparta")}}><Image source={{uri:'https://spartacodingclub.kr/v5/images/icon-beta.png'}} style={styles.Googlelogin}></Image></TouchableOpacity>
         </View>
     )
 }

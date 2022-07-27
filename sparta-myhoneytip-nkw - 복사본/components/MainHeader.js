@@ -9,7 +9,7 @@ import {
 import { StyleSheet, ScrollView } from "react-native";
 import ListHeaderItem from "./ListHeaderItem";
 
-export default function ListHeader({navigation}) {
+export default function ListHeader() {
   return (
     <ScrollView style = {{flexDirection:"row"}} horizontal>
       <HStack justifyContent="center">

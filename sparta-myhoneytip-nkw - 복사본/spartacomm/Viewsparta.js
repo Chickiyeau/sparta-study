@@ -44,7 +44,7 @@ export default function Viewsparta({navigation, route}) {
 
     return (
         <ScrollView style={styles.container}>
-            <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'sparta'}]})}}><Text style={styles.refreshtext}>즉문즉답 눌러서 새로 고침</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.refresh} onPress={() => {global.search = "false",navigation.reset({index: 0, routes:[{name:'sparta'}]})}}><Text style={styles.refreshtext}>즉문즉답 눌러서 새로 고침</Text></TouchableOpacity>
               <MainHeader/>
               <TextInput style = {{backgroundColor:"gray",height:50}} placeholder={"검색할 것을 입력하세요."} onChangeText={(keyworld) => {setText(keyworld)}}></TextInput>
               <Button title='검색'  onPress={() => {search()}}></Button>
