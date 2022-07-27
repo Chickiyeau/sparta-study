@@ -10,10 +10,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import DrawerNavigator from './navigation/DrawerNavigator';
 import * as Notifications from 'expo-notifications';
 import { BackHandler, Linking,Alert, LogBox } from 'react-native';
+import { navigationRef } from './RootNavigation';
 import * as Analytics from 'expo-firebase-analytics';
 import {
   useNavigationContainerRef,
 } from '@react-navigation/native';
+import { NativeBaseProvider } from 'native-base';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -26,7 +28,7 @@ Notifications.setNotificationHandler({
 export default function App() {
   LogBox.ignoreAllLogs(true)
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
-  const navigationRef = useNavigationContainerRef();
+  //const navigationRef = useNavigationContainerRef();
   const routeNameRef = useRef();
 
   React.useEffect(() => {
@@ -41,7 +43,7 @@ export default function App() {
     }
   }, [lastNotificationResponse]);
   return ( 
-
+<NativeBaseProvider>
   <NavigationContainer
   ref={navigationRef}
   onReady={() => {
@@ -67,5 +69,6 @@ export default function App() {
     <StatusBar style="black" />
     <DrawerNavigator/>
 
- </NavigationContainer>);
+ </NavigationContainer>
+ </NativeBaseProvider>);
 }

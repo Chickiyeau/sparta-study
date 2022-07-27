@@ -13,18 +13,21 @@ export default function Detailsparta({route, navigation, beforeid}){
     let scrollX = new Animated.Value(0)
     let position = Animated.divide(scrollX, width);
 
-    let content = route.params.data
+    let { width } = useWindowDimensions()
+    let content = route.params.content
+    console.log("content",content)
     let id = content.id
     let courseTitle = content.courseTitle
     let week = content.week
     let title = content.title
     let image = content.image
+    
 
     const [Desc, setDesc] = useState('');
 
     let array = []
     let bef = ""
-    let { width } = useWindowDimensions();
+     
     console.log(width)
     const [ready,setReady] = useState(true)
     const [comm, setcomm] = useState(array)
@@ -104,7 +107,7 @@ export default function Detailsparta({route, navigation, beforeid}){
                     let isTutor = content.author.isTutor
                     let isWriter = content.author.isWriter
                     let profile = content.author.profile
-                    let createdAt = content.author.createdAt
+                    let createdAt = content.createdAt
                     let desc = content.content.replace('<br>', '\n')
                     let imagelist = []
                     let image2 = ""
@@ -173,8 +176,7 @@ export default function Detailsparta({route, navigation, beforeid}){
 
         const backAction = () => {
       
-                global.load = "false"
-                navigation.push("Home")
+                navigation.goBack()
     
                 return true;
               };
@@ -185,6 +187,64 @@ export default function Detailsparta({route, navigation, beforeid}){
 
         
 })
+
+if(content.week == 100){
+    curcourse = `즉문즉답 > ${content.courseTitle} > 기타`
+}else{
+    curcourse = `즉문즉답 > ${content.courseTitle} > ${content.week}주차`
+}
+let date = content.createdAt.split("T")[0].split("-")
+let time = content.createdAt.split("T")[1].split(".")[0].split(":")
+let ms = content.createdAt.split("T")[1].split(".")[1].replace("Z", "")
+let aa = ``
+let hour = ``
+if(time[0] > 12){
+  aa = "오후"
+  hour = time[0] - 12
+}else{
+  aa = "오전"
+  hour = time[0]
+}
+function formatDate(date) {
+  return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`)
+}
+
+var write = new Date(content.createdAt);
+var now = new Date();
+
+let year = now.getFullYear()
+let month = now.getMonth()
+let day = now.getDate()
+let hours = now.getHours()+9
+let minutes = now.getMinutes()
+let seconds = now.getSeconds()
+
+let nowdate = new Date(year, month, day, hours, minutes, seconds)
+
+let elti = nowdate.getTime() - write.getTime()
+
+let chai = elti
+
+let a = ``
+
+if(chai < 1000 * 60)
+  a += Math.floor(chai / 1000 / 60) + ' 초전';
+else if(chai < 1000 * 60 * 60)
+  a += Math.floor(chai / (1000 * 60)) + ' 분전';
+else if(chai < 1000 * 60 * 60 * 24)
+  a += Math.floor(chai / (1000 * 60 * 60)) + ' 시간전';
+else if(chai < 1000 * 60 * 60 * 24 * 30)
+  a += Math.floor(chai / (1000 * 60 * 60 * 24)) + ' 일전';
+else if(chai < 1000 * 60 * 60 * 24 * 30 * 12)
+  a += Math.floor(chai / (1000 * 60 * 60 * 24 * 30)) + ' 달전';
+
+  
+  if(content.week == 100){
+    curcourse = `즉문즉답 > ${content.courseTitle} > 기타`
+}else{
+    curcourse = `즉문즉답 > ${content.courseTitle} > ${content.week}주차`
+}
+date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분 `
     if(content.imagelist.length != 0){
         return (
             <ScrollView style={styles.main}> 
@@ -209,12 +269,13 @@ export default function Detailsparta({route, navigation, beforeid}){
                     </View>
                     <Text style={styles.cardDesc2}>이미지를 터치하면 이미지의 링크로 이동합니다.</Text>
                     <Text style={styles.cardDesc}>{content.desc}</Text>
-                    <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author}</Text>
+                    <Text style={styles.cardDate}>{date}            작성자 : {content.author}                 {a}</Text>
                 
                 </View>
                 <ScrollView>
                 {
                     comm.map((content,i)=>{
+                        console.log(i, content)
                         return(
                         <SpartaCardComment key={i} content={content} navigation={navigation}/>)
                     })
@@ -240,7 +301,7 @@ export default function Detailsparta({route, navigation, beforeid}){
                     <Text style={styles.cardTitle}>{content.title}</Text>
                     <Text style={styles.cardDate}>{curcourse}</Text>
                     <Text style={styles.cardDesc}>{content.desc}</Text>
-                    <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author}</Text>
+                    <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author}   {a}</Text>
                 
                 </View>
                 <ScrollView>

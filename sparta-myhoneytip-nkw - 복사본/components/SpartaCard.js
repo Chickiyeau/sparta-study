@@ -56,6 +56,7 @@ export default function SpartaCard({content,navigation}){
     let seconds = now.getSeconds()
 
     let nowdate = new Date(year, month, day, hours, minutes, seconds)
+    let mode = global.search
 
     let elti = nowdate.getTime() - write.getTime()
 
@@ -81,28 +82,28 @@ export default function SpartaCard({content,navigation}){
         curcourse = `즉문즉답 > ${content.courseTitle} > ${content.week}주차`
     }
     date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분 ${time[2]}초 `
-    
+    let keyworld = global.search_keyword
+      console.log(content.title.includes(keyworld) || content.desc.includes(keyworld))
+          return(
+              //카드 자체가 버튼역할로써 누르게되면 상세페이지로 넘어가게끔 TouchableOpacity를 사용
+              <TouchableOpacity style={styles.card} onPress={() => detail()}>
+                    <View style={styles.cardTop}>
+                    <Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'contain',borderRadius:5}} source={{uri:content.profile}} />
+                      <Text style={styles.cardTitle} numberOfLines={1}> {content.author}</Text>
+                    </View>
 
-    return(
-        //카드 자체가 버튼역할로써 누르게되면 상세페이지로 넘어가게끔 TouchableOpacity를 사용
-        <TouchableOpacity style={styles.card} onPress={() => detail()}>
-              <View style={styles.cardTop}>
-              <Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'contain',borderRadius:5}} source={{uri:content.profile}} />
-                <Text style={styles.cardTitle} numberOfLines={1}> {content.author}</Text>
-              </View>
+                    <View style={styles.cardText}>
+                      <Text style={{fontWeight:"600"}} numberOfLines={1}>제목 : {content.title}</Text>
+                      <Text style={styles.cardDesc} numberOfLines={1}>{content.desc}</Text>
+                      <Text style={styles.cardDate}>{curcourse}</Text>     
+                  </View>
 
-              <View style={styles.cardText}>
-                <Text style={{fontWeight:"600"}} numberOfLines={1}>제목 : {content.title}</Text>
-                <Text style={styles.cardDesc} numberOfLines={1}>{content.desc}</Text>
-                <Text style={styles.cardDate}>{curcourse}</Text>     
-            </View>
-
-            <View style={styles.cardday}>
-              <Text style={styles.cardDate}>    {date}  </Text>
-              <Text style={styles.cardElst}>{a}   </Text>
-            </View>
-        </TouchableOpacity>
-    )
+                  <View style={styles.cardday}>
+                    <Text style={styles.cardDate}>    {date}  </Text>
+                    <Text style={styles.cardElst}>{a}   </Text>
+                  </View>
+              </TouchableOpacity>
+          )
 }
 
 
@@ -112,14 +113,14 @@ const styles = StyleSheet.create({
       flex:1,
       flexDirection:"column",
       margin:10,
-      borderBottomWidth:0.5,
+      borderBottomWidth:2,
       borderTopWidth:0.5,
       borderLeftWidth:0.5,
-      borderRightWidth:0.5,
-      borderBottomColor:"#aaa",
-      borderTopColor:"#aaa",
-      borderLeftColor:"#aaa",
-      borderRightColor:"#aaa",
+      borderRightWidth:2,
+      borderBottomColor:"pink",
+      borderTopColor:"pink",
+      borderLeftColor:"pink",
+      borderRightColor:"pink",
       paddingBottom:10,
       borderRadius:5
     },

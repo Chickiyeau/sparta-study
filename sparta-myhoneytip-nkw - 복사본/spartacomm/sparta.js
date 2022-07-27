@@ -1,26 +1,33 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-import { StyleSheet,Text,View, Alert, BackHandler} from "react-native";
+import { StyleSheet,Text,Image,View, Alert, BackHandler, useWindowDimensions} from "react-native";
 import *  as Linking from 'expo-linking'
 
 import { WebView } from 'react-native-webview';
 
 import axios from 'axios';
 
-import { Box, Image } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
 import '../global.js'
 
 export default function sparta({navigation, route}){
+  
 
     const loading = require("../assets/loading.gif");
     const requestList = async (page) => {
 
+      if(global.search == "true"){
+        var returnValue = "none";
+
+        var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&pageChunkSize=9999&curPage=${page}`;
+      }else{
+
         var returnValue = "none";
 
         var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&pageChunkSize=10&curPage=${page}`;
+      }
 
  
 
@@ -52,12 +59,15 @@ export default function sparta({navigation, route}){
                 let desc = content.content.replace('<br>', '\n')
                 let image = desc.match(/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g)
                 let imagelist = []
-                console.log(image)
                 if(image != null){
                     image.map((link, i) => {
                         image = link.match(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
                         let image2 = link.replace(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
-                        imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
+                        if(image2.split('undefined')[1] == undefined){
+                          imagelist.push(image)
+                        }else{
+                          imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
+                        }
                     })
                 }
                 desc = desc.replace(/<[^>]*>?/g, '')
@@ -83,8 +93,10 @@ export default function sparta({navigation, route}){
                     author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, imagelist, profile
                 }
                 array.push(comm)
+                
             })
-            navigation.navigate('Home',{navigation, array, page})
+            console.log("arrr",array)
+            navigation.navigate('Viewsparta',{navigation, array, page})
             
 
  
@@ -122,9 +134,7 @@ export default function sparta({navigation, route}){
 
     return(
         <SafeAreaView style={styles.container}>
-        <Box style={styles.textBox}>
-          <Image source={loading} alt="progress" />
-        </Box>
+          <Image source={loading} alt="progress" style = {styles.loading} />
       </SafeAreaView>
     )
 }
@@ -160,5 +170,9 @@ const styles = StyleSheet.create({
       inputBox: {
         marginHorizontal: 40,
         marginVertical: 20,
+      },
+      loading:{
+        alignSelf:"center",
+        resizeMode: 'contain'
       }
 })

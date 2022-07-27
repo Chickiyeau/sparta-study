@@ -4,13 +4,15 @@ import SpartaCard from '../components/SpartaCard';
 import Loading from '../components/Loading';
 import {firebase_db} from "../firebaseConfig"
 import { createStackNavigator } from 'react-navigation';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import MainHeader from "../components/MainHeader";
 import sparta from './sparta';
 import '../global.js'
 
 export default function Viewsparta({navigation, route}) {
     const [tip, setTip] = useState([])
     const [ready,setReady] = useState(true)
+    const [text, setText] = useState('')
     let loaded = false
     useEffect(() => {
       setTip(route.params.array)
@@ -33,15 +35,31 @@ export default function Viewsparta({navigation, route}) {
 
      }
 
-
+     function search() {
+      global.search = "true"
+      global.search_keyword = text
+      console.log("global:",global.search_keyword)
+      navigation.navigate('sparta', {navigation, page})
+     }
 
     return (
         <ScrollView style={styles.container}>
             <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'sparta'}]})}}><Text style={styles.refreshtext}>즉문즉답 눌러서 새로 고침</Text></TouchableOpacity>
+              <MainHeader/>
+              <TextInput style = {{backgroundColor:"gray",height:50}} placeholder={"검색할 것을 입력하세요."} onChangeText={(keyworld) => {setText(keyworld)}}></TextInput>
+              <Button title='검색'  onPress={() => {search()}}></Button>
               {
                    tip.map((content,i)=>{
-                       return(
-                       <SpartaCard key={i} content={content} navigation={navigation}/>)
+                    if(global.search == "true"){
+                      if((content.title.includes(global.search_keyword) || content.desc.includes(global.search_keyword)) == true){
+                        return(
+                        <SpartaCard key={i} content={content} navigation={navigation}/>)
+                        }
+                      }else{
+                        return(
+                          <SpartaCard key={i} content={content} navigation={navigation}/>)
+                                                  
+                      }
                    })
                }
             <View style={styles.button}>
