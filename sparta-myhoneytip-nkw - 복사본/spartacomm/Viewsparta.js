@@ -8,6 +8,7 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import MainHeader from "../components/MainHeader";
 import sparta from './sparta';
 import '../global.js'
+import { ToastAlert } from '../components/Alert';
 
 export default function Viewsparta({navigation, route}) {
     const [tip, setTip] = useState([])
@@ -39,6 +40,7 @@ export default function Viewsparta({navigation, route}) {
       global.search = "true"
       global.search_keyword = text
       console.log("global:",global.search_keyword)
+      ToastAlert(`검색의 경우 1페이지에 모든 데이터가 표시됩니다!`)
       navigation.navigate('sparta', {navigation, page})
      }
 

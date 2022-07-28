@@ -27,16 +27,6 @@ export default function SpartaCardComment({content,navigation}){
     }, []);
         
     let desc = content.desc
-    desc = desc.replace(/<[^>]*>?/g, '')
-    desc = desc.replace(/\n/gi, "")
-    desc = desc.replace(/\r/gi, "")
-    desc = desc.replace(/&lt;/g,'\n<')
-    desc = desc.replace(/&gt;/g,'>')
-    desc = desc.replace(/&nbsp;/gi, '\n')
-    desc = desc.replace(/{/gi, '\n{\n')
-    desc = desc.replace(/}/gi, '\n}\n')
-    desc = desc.replace(/;/gi, ';\n')
-    desc = desc.replace(/@/gi, '\n@')
 
   let date = content.createdAt.split("T")[0].split("-")
   let time = content.createdAt.split("T")[1].split(".")[0].split(":")

@@ -108,7 +108,7 @@ export default function Detailsparta({route, navigation, beforeid}){
                     let isWriter = content.author.isWriter
                     let profile = content.author.profile
                     let createdAt = content.createdAt
-                    let desc = content.content.replace('<br>', '\n')
+                    let desc = content.content
                     let imagelist = []
                     let image2 = ""
                     let image = desc.match(/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g)
@@ -121,16 +121,18 @@ export default function Detailsparta({route, navigation, beforeid}){
                             imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
                         })
                     }
-                    
-                    desc = desc.replace(/<[^>]*>?/g, '')
                     desc = desc.replace(/\n/gi, "")
                     desc = desc.replace(/\r/gi, "")
-                    desc = desc.replace(/&lt;/g,'\n<')
-                    desc = desc.replace(/&gt;/g,'>')
+                    desc = desc.replace(/<p><br><\/p>/g, "")
+                    desc = desc.replace(/<\/p>/g, '\n')
+                    desc = desc.replace(/<[^>]*>?/g, '')
+                    
+                    desc = desc.replace(/&lt;/g,'<')
+                    desc = desc.replace(/&gt/g,'>')
+                    desc = desc.replace(/;/gi, '\n')
                     desc = desc.replace(/&nbsp;/gi, '\n')
                     desc = desc.replace(/{/gi, '\n{\n')
                     desc = desc.replace(/}/gi, '\n}\n')
-                    desc = desc.replace(/;/gi, ';\n')
                     desc = desc.replace(/@/gi, '\n@')
                     let comm = {
                         author, id, desc, createdAt, isTutor, isWriter, profile, imagelist

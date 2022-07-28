@@ -16,6 +16,7 @@ export default function ListHeader() {
         <ListHeaderItem title="전체" />
         <ListHeaderItem title="앱개발종합반" />
         <ListHeaderItem title="웹개발종합반" />
+        <ListHeaderItem title="웹개발종합반 (내배단)" />
         <ListHeaderItem title="액셀보다 쉬운 SQL" />
         <ListHeaderItem title="무료특강" />
         

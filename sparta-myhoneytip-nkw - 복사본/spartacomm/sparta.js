@@ -16,17 +16,31 @@ export default function sparta({navigation, route}){
   
 
     const loading = require("../assets/loading.gif");
+    console.log(route)
+    console.log(`https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&course=${global.course}&pageChunkSize=9999&curPage=${page}&userId=626be1411d008bf29af0e436&courseKeyword=${global.courseKeyword}&`)
     const requestList = async (page) => {
+      if(global.course.length > 0){
+        if(global.search == "true"){
+          var returnValue = "none";
 
-      if(global.search == "true"){
-        var returnValue = "none";
+          var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&course=${global.course}&pageChunkSize=9999&curPage=${page}&userId=626be1411d008bf29af0e436&courseKeyword=${global.courseKeyword}&`;
+        }else{
 
-        var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&pageChunkSize=9999&curPage=${page}`;
+          var returnValue = "none";
+
+          var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&course=${global.course}&pageChunkSize=10&curPage=${page}&userId=626be1411d008bf29af0e436&courseKeyword=${global.courseKeyword}&`;
+        }
       }else{
+        if(global.search == "true"){
+          var returnValue = "none";
 
-        var returnValue = "none";
+          var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&pageChunkSize=9999&curPage=${page}`;
+        }else{
 
-        var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&pageChunkSize=10&curPage=${page}`;
+          var returnValue = "none";
+
+          var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&pageChunkSize=10&curPage=${page}`;
+        }
       }
 
  
@@ -56,7 +70,7 @@ export default function sparta({navigation, route}){
                 let firstViewedDate = content.tutorResponse.firstViewedDate
                 let viewCount = content.viewCount
                 let week = content.week
-                let desc = content.content.replace('<br>', '\n')
+                let desc = content.content
                 let image = desc.match(/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g)
                 let imagelist = []
                 if(image != null){
@@ -70,11 +84,13 @@ export default function sparta({navigation, route}){
                         }
                     })
                 }
+                desc = desc.replace(/\n/gi, "")
+                desc = desc.replace(/\r/gi, "")
+                desc = desc.replace(/<p><br><\/p>/g, "")
+                desc = desc.replace(/<\/p>/g, '\n')
                 desc = desc.replace(/<[^>]*>?/g, '')
-                desc = desc.replace(/\n/g, "")
-                desc = desc.replace(/\r/g, "")
-                desc = desc.replace(/&lt;/g,'\n<')
-                desc = desc.replace(/&gt;/g,'>')
+                desc = desc.replace(/&lt;/g,'<')
+                desc = desc.replace(/&gt;/g,'>\n')
                 desc = desc.replace(/&nbsp;/gi, '\n')
                 desc = desc.replace(/{/gi, '\n{\n')
                 desc = desc.replace(/}/gi, '\n}\n')
@@ -88,14 +104,12 @@ export default function sparta({navigation, route}){
                 let createdAt = content.createdAt
                 let courseTitle = content.courseTitle  
                 
-                console.log("ill",imagelist)
                 let comm = {
                     author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, imagelist, profile
                 }
                 array.push(comm)
                 
             })
-            console.log("arrr",array)
             navigation.navigate('Viewsparta',{navigation, array, page})
             
 
@@ -116,7 +130,11 @@ export default function sparta({navigation, route}){
         if(page == undefined){
             page = 1
         }else{
+          if(page.page == undefined){
+            page = 1
+          }else{
             page = page.page
+          }
         }
         requestList(page)
 
