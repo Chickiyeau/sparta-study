@@ -16,8 +16,7 @@ export default function sparta({navigation, route}){
   
 
     const loading = require("../assets/loading.gif");
-    console.log(route)
-    console.log(`https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&course=${global.course}&pageChunkSize=9999&curPage=${page}&userId=626be1411d008bf29af0e436&courseKeyword=${global.courseKeyword}&`)
+    //console.log(`https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&course=${global.course}&pageChunkSize=9999&curPage=${page}&userId=626be1411d008bf29af0e436&courseKeyword=${global.courseKeyword}&`)
     const requestList = async (page) => {
       if(global.course.length > 0){
         if(global.search == "true"){
@@ -84,28 +83,48 @@ export default function sparta({navigation, route}){
                         }
                     })
                 }
-                desc = desc.replace(/\n/gi, "")
+                
+                let codesnipet = desc.match(/<pre class="ql-syntax" spellcheck="false">(.*)<\/pre>/ims)
                 desc = desc.replace(/\r/gi, "")
                 desc = desc.replace(/<p><br><\/p>/g, "")
                 desc = desc.replace(/<\/p>/g, '\n')
                 desc = desc.replace(/<[^>]*>?/g, '')
                 desc = desc.replace(/&lt;/g,'<')
-                desc = desc.replace(/&gt;/g,'>\n')
-                desc = desc.replace(/&nbsp;/gi, '\n')
-                desc = desc.replace(/{/gi, '\n{\n')
-                desc = desc.replace(/}/gi, '\n}\n')
-                desc = desc.replace(/;/gi, ';\n')
+                desc = desc.replace(/&gt;/g,'>')
+                desc = desc.replace(`"`,"")
+                desc = desc.replace(/&nbsp/gi, '\n')
+                desc = desc.replace(/{/gi, '{')
+                desc = desc.replace(/}/gi, '}')
+                desc = desc.replace(/;/gi, '')
                 desc = desc.replace(/@/gi, '\n@')
 
+                if(codesnipet != null){
+                  codesnipet.map((code, i) => {
+                    code = code.replace(/\r/gi, "")
+                    code = code.replace(/<p><br><\/p>/g, "")
+                    code = code.replace(/<\/p>/g, '\n')
+                    code = code.replace(/<[^>]*>?/g, '')
+                    code = code.replace(/&lt;/g,'<')
+                    code = code.replace(/&gt;/g,'>')
+                    code = code.replace(`"`,"")
+                    code = code.replace(/&nbsp/gi, '\n')
+                    code = code.replace(/{/gi, '{')
+                    code = code.replace(/}/gi, '}')
+                    code = code.replace(/;/gi, '')
+                    code = code.replace(/@/gi, '\n@')
+                    
+                    if(desc.includes(code)){
+                      //desc = desc.replace(code,`code${i}`)
+                    }
 
-                let descout = desc.indexOf('</pre>')
-                let descin = desc.indexOf('<pre class="ql-syntax" spellcheck="false">')
-                let cdesc = desc.substring(descin, desc.length)
+                  })
+                }
                 let createdAt = content.createdAt
                 let courseTitle = content.courseTitle  
                 
+                
                 let comm = {
-                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, imagelist, profile
+                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, imagelist, profile, codesnipet
                 }
                 array.push(comm)
                 

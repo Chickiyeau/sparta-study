@@ -1,26 +1,48 @@
 import React, { useRef, useEffect, useState } from 'react';
 
-import { StyleSheet,Text,View, Alert, BackHandler} from "react-native";
+import { StyleSheet,Text,Image,View, Alert, BackHandler, useWindowDimensions} from "react-native";
 import *  as Linking from 'expo-linking'
 
 import { WebView } from 'react-native-webview';
 
 import axios from 'axios';
 
-import * as AuthSession from 'expo-auth-session'
-import * as WebBrowser from 'expo-web-browser'
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 
 import '../global.js'
 
-export default function spartaja({navigation, route}){
+export default function sparta({navigation, route}){
+  
 
-
+    const loading = require("../assets/loading.gif");
+    //console.log(`https://api.scc.spartacodingclub.kr/community?channelName=fastqna&sort=latest&course=${global.course}&pageChunkSize=9999&curPage=${page}&userId=626be1411d008bf29af0e436&courseKeyword=${global.courseKeyword}&`)
     const requestList = async (page) => {
+      if(global.course.length > 0){
+        if(global.search == "true"){
+          var returnValue = "none";
 
-        var returnValue = "none";
+          var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=freeboard&sort=latest&course=${global.course}&pageChunkSize=9999&curPage=${page}&userId=626be1411d008bf29af0e436&courseKeyword=${global.courseKeyword}&`;
+        }else{
 
-        var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=freeboard&sort=latest&pageChunkSize=10&curPage=${page}`;
+          var returnValue = "none";
+        
+          var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=freeboard&sort=latest&course=${global.course}&pageChunkSize=10&curPage=${page}&userId=626be1411d008bf29af0e436&courseKeyword=${global.courseKeyword}&`;
+          console.log(request_token_url)
+          console.log('https://api.scc.spartacodingclub.kr/community?channelName=freeboard&sort=latest&course=bunch_of_words&pageChunkSize=10&curPage=1&userId=626be1411d008bf29af0e436&courseKeyword=bunch_of_words&')
+        }
+      }else{
+        if(global.search == "true"){
+          var returnValue = "none";
+
+          var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=freeboard&sort=latest&pageChunkSize=9999&curPage=${page}`;
+        }else{
+
+          var returnValue = "none";
+
+          var request_token_url = `https://api.scc.spartacodingclub.kr/community?channelName=freeboard&sort=latest&pageChunkSize=10&curPage=${page}`;
+        }
+      }
 
  
 
@@ -49,40 +71,65 @@ export default function spartaja({navigation, route}){
                 let firstViewedDate = content.tutorResponse.firstViewedDate
                 let viewCount = content.viewCount
                 let week = content.week
-                let desc = content.content.replace('<br>', '\n')
+                let desc = content.content
                 let image = desc.match(/<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g)
                 let imagelist = []
-                console.log(image)
                 if(image != null){
                     image.map((link, i) => {
                         image = link.match(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
                         let image2 = link.replace(/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[-A-Z0-9+&@#\/%=~_|$?!:,.])*(?:\([-A-Z0-9+&@#\/%=~_|$?!:,.]*\)|[A-Z0-9+&@#\/%=~_|$])/igm)
-                        imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
+                        if(image2.split('undefined')[1] == undefined){
+                          imagelist.push(image)
+                        }else{
+                          imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
+                        }
                     })
                 }
+                
+                let codesnipet = desc.match(/<pre class="ql-syntax" spellcheck="false">(.*)<\/pre>/ims)
+                desc = desc.replace(/\r/gi, "")
+                desc = desc.replace(/<p><br><\/p>/g, "")
+                desc = desc.replace(/<\/p>/g, '\n')
                 desc = desc.replace(/<[^>]*>?/g, '')
-                desc = desc.replace(/\n/g, "")
-                desc = desc.replace(/\r/g, "")
-                desc = desc.replace(/&lt;/g,'\n<')
+                desc = desc.replace(/&lt;/g,'<')
                 desc = desc.replace(/&gt;/g,'>')
-                desc = desc.replace(/&nbsp;/gi, '\n')
-                desc = desc.replace(/{/gi, '\n{\n')
-                desc = desc.replace(/}/gi, '\n}\n')
-                desc = desc.replace(/;/gi, ';\n')
+                desc = desc.replace(`"`,"")
+                desc = desc.replace(/&nbsp/gi, '\n')
+                desc = desc.replace(/{/gi, '{')
+                desc = desc.replace(/}/gi, '}')
+                desc = desc.replace(/;/gi, '')
                 desc = desc.replace(/@/gi, '\n@')
 
+                if(codesnipet != null){
+                  codesnipet.map((code, i) => {
+                    code = code.replace(/\r/gi, "")
+                    code = code.replace(/<p><br><\/p>/g, "")
+                    code = code.replace(/<\/p>/g, '\n')
+                    code = code.replace(/<[^>]*>?/g, '')
+                    code = code.replace(/&lt;/g,'<')
+                    code = code.replace(/&gt;/g,'>')
+                    code = code.replace(`"`,"")
+                    code = code.replace(/&nbsp/gi, '\n')
+                    code = code.replace(/{/gi, '{')
+                    code = code.replace(/}/gi, '}')
+                    code = code.replace(/;/gi, '')
+                    code = code.replace(/@/gi, '\n@')
+                    
+                    if(desc.includes(code)){
+                      //desc = desc.replace(code,`code${i}`)
+                    }
 
-                let descout = desc.indexOf('</pre>')
-                let descin = desc.indexOf('<pre class="ql-syntax" spellcheck="false">')
-                let cdesc = desc.substring(descin, desc.length)
+                  })
+                }
                 let createdAt = content.createdAt
                 let courseTitle = content.courseTitle  
                 
-                console.log("ill",imagelist)
+                
                 let comm = {
-                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, imagelist, profile
+                    author, commentCount, title, id, status, answeredDate, firstViewedDate, viewCount, week, desc, createdAt, courseTitle, imagelist, profile, codesnipet
                 }
                 array.push(comm)
+                
             })
             navigation.navigate('Viewsparta',{navigation, array, page})
             
@@ -91,7 +138,8 @@ export default function spartaja({navigation, route}){
 
         }).catch(function (error) {
 
-            Alert.alert('자유게시판을 불러오던중 오류 발생', error.toString());
+            Alert.alert('오류 발생', error.toString());
+
 
         });
 
@@ -103,7 +151,11 @@ export default function spartaja({navigation, route}){
         if(page == undefined){
             page = 1
         }else{
+          if(page.page == undefined){
+            page = 1
+          }else{
             page = page.page
+          }
         }
         requestList(page)
 
@@ -120,10 +172,9 @@ export default function spartaja({navigation, route}){
     })
 
     return(
-        <ScrollView>
-             <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'spartaja'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
-             <Text>로딩중입니다.</Text>
-        </ScrollView>
+        <SafeAreaView style={styles.container}>
+          <Image source={loading} alt="progress" style = {styles.loading} />
+      </SafeAreaView>
     )
 }
 
@@ -141,5 +192,26 @@ const styles = StyleSheet.create({
         color:"#fff",
         textAlign:"center",
         fontSize:30
+      },
+      container: {
+        flex: 1,
+        backgroundColor: "white",
+      },
+      textBox: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+    
+      profileBox: {
+        marginHorizontal: 30,
+      },
+      inputBox: {
+        marginHorizontal: 40,
+        marginVertical: 20,
+      },
+      loading:{
+        alignSelf:"center",
+        resizeMode: 'contain'
       }
 })

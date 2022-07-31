@@ -1,5 +1,5 @@
-import React,{useState, useEffect, Component} from 'react';
-import {BackHandler, ScrollView, Text, StyleSheet, Alert, Image, View, useWindowDimensions, Button, Animated } from 'react-native';
+import React,{useState, useEffect, PureComponent} from 'react';
+import RN, {BackHandler, ScrollView, Text, StyleSheet, Alert, Image, View, useWindowDimensions, Button, Animated } from 'react-native';
 import SpartaCardComment from '../components/SpartaCardComment';
 import * as Linking from 'expo-linking';
 import AutoHeightImage from "react-native-auto-height-image";
@@ -8,19 +8,82 @@ import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import axios from 'axios';
 import '../global.js';
 import { SliderBox } from 'react-native-image-slider-box';
+import RNJsxParser from 'react-native-jsx-parser'
+import { copyAsync } from 'expo-file-system';
 loaded = false;
+
+
 export default function Detailsparta({route, navigation, beforeid}){
     let scrollX = new Animated.Value(0)
     let position = Animated.divide(scrollX, width);
 
     let { width } = useWindowDimensions()
     let content = route.params.content
-    console.log("content",content)
     let id = content.id
     let courseTitle = content.courseTitle
     let week = content.week
     let title = content.title
     let image = content.image
+    
+    function mapStringToComponent(stringToRender, list) {
+      let parseResult = stringToRender.match(/<([a-z]*)>(.*)<\/[a-z]*>/i);
+      if(parseResult == null){
+        parseResult = stringToRender.match(/<([a-z]*) (.*)<\/[a-z]*>/i);
+      }
+      
+       // result of this regex ["<Text>hello</Text>", "Text", "hello"]
+      if (parseResult !== null && parseResult.length == 3) {
+        
+        let [, compName, innerText] = parseResult;
+        let style = ''
+        if(innerText.includes("style")){
+          style = innerText.match(/style={styles.([a-z]*)}>/i)
+          if(style != null){
+            code = style[0]
+            innerText = innerText.replace(code, "")
+            code = code.replace(">", "")
+            code = '{'+code+'}'     
+            
+            list.push(React.createElement(
+              RN[compName],
+              {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+              innerText,
+            ));
+          }
+        }else{
+          if(innerText.length != 1){
+            if(compName == 'Text'){
+              list.push(React.createElement(
+                RN[compName],
+                null, // here may be an object with attributes if your node has any
+                innerText,
+              ));
+            }else{
+              if(compName == 'head'){
+                list.push(React.createElement(
+                  RN['Text'],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  '<head>',
+                ));
+              }
+
+              if(compName == 'body'){
+                list.push(React.createElement(
+                  RN['Text'],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  '<body>',
+                ));
+              }
+            }
+          }
+        }
+
+        
+
+      }
+    
+      return null
+    }
     
 
     const [Desc, setDesc] = useState('');
@@ -28,7 +91,6 @@ export default function Detailsparta({route, navigation, beforeid}){
     let array = []
     let bef = ""
      
-    console.log(width)
     const [ready,setReady] = useState(true)
     const [comm, setcomm] = useState(array)
     let curcourse = ``
@@ -121,16 +183,14 @@ export default function Detailsparta({route, navigation, beforeid}){
                             imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
                         })
                     }
-                    desc = desc.replace(/\n/gi, "")
                     desc = desc.replace(/\r/gi, "")
                     desc = desc.replace(/<p><br><\/p>/g, "")
                     desc = desc.replace(/<\/p>/g, '\n')
                     desc = desc.replace(/<[^>]*>?/g, '')
-                    
-                    desc = desc.replace(/&lt;/g,'<')
+                    desc = desc.replace(/;/g,"")
+                    desc = desc.replace(/&lt/g,'<')
                     desc = desc.replace(/&gt/g,'>')
-                    desc = desc.replace(/;/gi, '\n')
-                    desc = desc.replace(/&nbsp;/gi, '\n')
+                    desc = desc.replace(/&nbsp/gi, ' ')
                     desc = desc.replace(/{/gi, '\n{\n')
                     desc = desc.replace(/}/gi, '\n}\n')
                     desc = desc.replace(/@/gi, '\n@')
@@ -210,7 +270,6 @@ if(time[0] > 12){
 function formatDate(date) {
   return new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`)
 }
-
 var write = new Date(content.createdAt);
 var now = new Date();
 
@@ -229,8 +288,25 @@ let chai = elti
 
 let a = ``
 
+let desc = `<Text>${content.desc}</Text>`
+
+desc = desc.replace(/\n/gi, '</Text>\n<Text>')
+
+desc = desc.replace(/<Text><\/Text>/g, "")
+
+desc = desc.replace(/<Text></sg, '<Text style={styles.lt}><')
+
+//desc = mapStringToComponent(desc);
+
+let descsplit = desc.split("\n")
+let descmap = []
+descsplit.map((value, i) => {
+  mapStringToComponent(value, descmap)
+})
+//console.log(descmap)
+
 if(chai < 1000 * 60)
-  a += Math.floor(chai / 1000 / 60) + ' 초전';
+  a = '방금';
 else if(chai < 1000 * 60 * 60)
   a += Math.floor(chai / (1000 * 60)) + ' 분전';
 else if(chai < 1000 * 60 * 60 * 24)
@@ -270,14 +346,13 @@ date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분
                         />
                     </View>
                     <Text style={styles.cardDesc2}>이미지를 터치하면 이미지의 링크로 이동합니다.</Text>
-                    <Text style={styles.cardDesc}>{content.desc}</Text>
+                    <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                     <Text style={styles.cardDate}>{date}            작성자 : {content.author}                 {a}</Text>
                 
                 </View>
                 <ScrollView>
                 {
                     comm.map((content,i)=>{
-                        console.log(i, content)
                         return(
                         <SpartaCardComment key={i} content={content} navigation={navigation}/>)
                     })
@@ -302,7 +377,10 @@ date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분
               </View>
                     <Text style={styles.cardTitle}>{content.title}</Text>
                     <Text style={styles.cardDate}>{curcourse}</Text>
-                    <Text style={styles.cardDesc}>{content.desc}</Text>
+                    <View style={styles.cardDesc}>
+                      <Text style={styles.lt}></Text>
+                      {descmap.map((value) => {return(value)})}
+                    </View>
                     <Text style={styles.cardDate}>{content.createdAt}  작성자 : {content.author}   {a}</Text>
                 
                 </View>
@@ -424,5 +502,8 @@ const styles = StyleSheet.create({
       },
       main:{
         marginTop:30
+      },
+      lt:{
+        color:"#FFFF00"
       }
 });

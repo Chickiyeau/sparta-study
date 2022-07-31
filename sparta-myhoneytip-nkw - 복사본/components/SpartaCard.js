@@ -24,10 +24,19 @@ export default function SpartaCard({content,navigation}){
     }, []);
         
     let curcourse = ``
-    if(content.week == 100){
-        curcourse = `즉문즉답 > ${content.courseTitle} > 기타`
+
+
+
+    if(global.selpage.toString() == "free"){
+      console.log("success")
+      curcourse = `자유게시판 > ${content.courseTitle}`
     }else{
-        curcourse = `즉문즉답 > ${content.courseTitle} > ${content.week}주차`
+      console.log("fail")
+      if(content.week == 100){
+        curcourse = `즉문즉답 > ${content.courseTitle} > 기타`
+      }else{
+          curcourse = `즉문즉답 > ${content.courseTitle} > ${content.week}주차`
+      }
     }
     let date = content.createdAt.split("T")[0].split("-")
     let time = content.createdAt.split("T")[1].split(".")[0].split(":")
@@ -75,15 +84,9 @@ export default function SpartaCard({content,navigation}){
     else if(chai < 1000 * 60 * 60 * 24 * 30 * 12)
       a += Math.floor(chai / (1000 * 60 * 60 * 24 * 30)) + ' 달전';
 
-      
-      if(content.week == 100){
-        curcourse = `즉문즉답 > ${content.courseTitle} > 기타`
-    }else{
-        curcourse = `즉문즉답 > ${content.courseTitle} > ${content.week}주차`
-    }
+    
     date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분 ${time[2]}초 `
     let keyworld = global.search_keyword
-      console.log(content.title.includes(keyworld) || content.desc.includes(keyworld))
           return(
               //카드 자체가 버튼역할로써 누르게되면 상세페이지로 넘어가게끔 TouchableOpacity를 사용
               <TouchableOpacity style={styles.card} onPress={() => detail()}>

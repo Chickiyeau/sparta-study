@@ -73,7 +73,7 @@ export default function MainPage({navigation,route}) {
           let tip = snapshot.val();
           setState(tip)
           setCateState(tip)
-          getLocation()
+          //getLocation()
           //makeAlert('위치 정보를 수집했습니다.', '날씨 표시를 위해 위치정보를 수집했습니다.', '')
           setReady(false)
           });
@@ -175,14 +175,18 @@ export default function MainPage({navigation,route}) {
 
 	//처음 ready 상태값은 true 이므로 ? 물음표 바로 뒤에 값이 반환(그려짐)됨
   //useEffect로 인해 데이터가 준비되고, ready 값이 변경되면 : 콜론 뒤의 값이 반환(그려짐)
-  let id = global.id
-  let name = global.name.nickname
-  if(name == undefined){
-    let name = global.name.name
-  }
   
-  console.log(id)
-  if(id == undefined || id.length == 0){
+  function goSlack(){
+    Linking.openURL('https://join.slack.com/t/spartacodingclub/shared_invite/zt-1d11rq0k7-ZiCee_xmbE72TnPMNTrOsg')
+  }
+
+  function goHomePage(){
+    Linking.openURL('https://spartacodingclub.kr/community/fastqna/all')
+  }
+
+  function goGather(){
+    Linking.openURL('https://app.gather.town/app/uqfFhchUsf1fCPsi/study')
+  }
     return ready ? <Loading/> :  (
       /*
         return 구문 안에서는 {슬래시 + * 방식으로 주석
@@ -194,123 +198,25 @@ export default function MainPage({navigation,route}) {
           <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'MainPage'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
           <StatusBar style="black" />
           {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
-          <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
-          <TouchableOpacity style={styles.loginButton} onPress={()=>{navigation.navigate('SelectLogin')}}>
-            <Text style={styles.aboutButtonText}>로그인</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.aboutButton} onPress={()=>{navigation.navigate('AboutPage')}}>
-            <Text style={styles.aboutButtonText}>소개 페이지</Text>
-          </TouchableOpacity>
           <Image style={styles.mainImage} source={main}/>
-          <ScrollView style={styles.middleContainer} horizontal indicatorStyle={"white"}>
-              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{navigation.reset({index: 0, routes:[{name:'spartaja'}]})}}><Text style={styles.middleButtonTextAll}>즉문즉답</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton01} onPress={()=>{category('생활')}}><Text style={styles.middleButtonText}>생활</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'WritePage'}]})}}><Text style={styles.middleButtonText}>내가 쓴 글</Text></TouchableOpacity>
+
+          <ScrollView style={styles.middleContainer} indicatorStyle={"white"}>
+              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{navigation.reset({index: 0, routes:[{name:'sparta'}]}),global.selpage = 'quiz'}}><Text style={styles.middleButtonTextAll}>즉문즉답</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton01} onPress={()=>{navigation.reset({index: 0, routes:[{name:'spartaja'}]}),global.selpage = 'free'}}><Text style={styles.middleButtonTextAll}>자유게시판</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton02} onPress={()=>{goSlack()}}><Text style={styles.middleButtonTextAll}>슬랙</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton03} onPress={()=>{goHomePage()}}><Text style={styles.middleButtonTextAll}>홈페이지</Text></TouchableOpacity>
+              <TouchableOpacity style={styles.middleButton04} onPress={()=>{goGather()}}><Text style={styles.middleButtonTextAll}>스온스 (게더)</Text></TouchableOpacity>
           </ScrollView>
           <View style={styles.cardContainer}>
               {/* 하나의 카드 영역을 나타내는 View */}
-              {
-              cateState.map((content,i)=>{
+             {
+               /*cateState.map((content,i)=>{
                   return (<Card content={content} key={i} navigation={navigation}/>)
-              })
+              })*/
               }
-                          {Platform.OS === 'ios' ? (
-                  <AdMobBanner
-                    bannerSize="fullBanner"
-                    servePersonalizedAds={true}
-                    adUnitID="ca-app-pub-8113412540427082/4459695930"
-                    style={styles.banner}
-                  />
-              ) : (
-                  <AdMobBanner
-                    bannerSize="fullBanner"
-                    servePersonalizedAds={true}
-                    adUnitID="ca-app-pub-8113412540427082/6526907333"
-                    style={styles.banner}
-                  />
-              )}
           </View>
       </ScrollView>
     );
-  }else{
-    return ready ? <Loading/> :  (
-    
-      /*
-        return 구문 안에서는 {슬래시 + * 방식으로 주석
-      */
-      
-  
-      <ScrollView style={styles.container}>
-        <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'MainPage'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
-          <StatusBar style="black" />
-          {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
-          <Text style={styles.weather}>오늘의 날씨: {weather.temp + '°C   ' + weather.condition} </Text>
-          <TouchableOpacity style={styles.loginButton} onPress={()=>{
-            if(istermagree){
-              navigation.navigate('tipmake')
-            }else{
-              Alert.alert("이용약관 동의 안됨","이용약관을 동의 하셔야 글을 쓰실수 있습니다. 지금 바로 이용약관 창으로 이동하시겠습니까?",[
-                {
-                  text:"예",
-                  onPress: () => navigation.navigate("Termagree")
-                },
-                {
-                  text:"아니요",
-                  onPress: () => null
-                }
-              ])
-            }
-            }}>
-            <Text style={styles.aboutButtonText}>글 쓰기</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.loginButton} onPress={()=>{
-            let service = global.service.service
-            if(service == "kakao"){navigation.navigate('kakaoLogout')}
-            if(service == "naver"){navigation.navigate('NaverLogout')}
-          }}>
-            <Text style={styles.aboutButtonText}>로그아웃</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.aboutButton} onPress={()=>{navigation.navigate('AboutPage')}}>
-            <Text style={styles.aboutButtonText}>소개 페이지</Text>
-          </TouchableOpacity>
-          <Image style={styles.mainImage} source={main}/>
-          <ScrollView style={styles.middleContainer} horizontal indicatorStyle={"white"}>
-              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{category('전체보기')}}><Text style={styles.middleButtonTextAll}>전체보기</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton01} onPress={()=>{category('생활')}}><Text style={styles.middleButtonText}>생활</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton02} onPress={()=>{category('재테크')}}><Text style={styles.middleButtonText}>재테크</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton03} onPress={()=>{category('반려견')}}><Text style={styles.middleButtonText}>반려견</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'LikePage'}]})}}><Text style={styles.middleButtonText}>꿀팁 찜</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton04} onPress={()=>{navigation.reset({index: 0, routes:[{name:'WritePage'}]})}}><Text style={styles.middleButtonText}>내가 쓴 글</Text></TouchableOpacity>
-          </ScrollView>
-          <View style={styles.cardContainer}>
-              {/* 하나의 카드 영역을 나타내는 View */}
-              {
-              cateState.map((content,i)=>{
-                  return (<Card content={content} key={i} navigation={navigation}/>)
-              })
-              }
-                          {Platform.OS === 'ios' ? (
-                  <AdMobBanner
-                    bannerSize="fullBanner"
-                    servePersonalizedAds={true}
-                    adUnitID="ca-app-pub-8113412540427082/4459695930"
-                    style={styles.banner}
-                  />
-              ) : (
-                  <AdMobBanner
-                    bannerSize="fullBanner"
-                    servePersonalizedAds={true}
-                    adUnitID="ca-app-pub-8113412540427082/6526907333"
-                    style={styles.banner}
-                  />
-              )}
-          </View>
-      </ScrollView>
-    );    
-  }
  
 }
 
@@ -335,23 +241,27 @@ weather:{
   },
   mainImage: {
     //컨텐츠의 넓이 값
-    width:'90%',
+    width:'80%',
     //컨텐츠의 높이 값
-    height:200,
+    height:158,
     //컨텐츠의 모서리 구부리기
     borderRadius:10,
     marginTop:20,
+    marginLeft:20,
+    marginRight:20,
+    resizeMode:"contain",
     //컨텐츠 자체가 앱에서 어떤 곳에 위치시킬지 결정(정렬기능)
     //각 속성의 값들은 공식문서에 고대로~ 나와 있음
     alignSelf:"center"
   },
   middleContainer:{
-    marginTop:20,
+    marginTop:50,
     marginLeft:10,
-    height:60
+    width:"100%",
+    fiex:1
   },
   middleButtonAll: {
-    width:100,
+    width:"92%",
     height:50,
     padding:15,
     backgroundColor:"#20b2aa",
@@ -360,7 +270,7 @@ weather:{
     margin:7
   },
   middleButton01: {
-    width:100,
+    width:"92%",
     height:50,
     padding:15,
     backgroundColor:"#fdc453",
@@ -369,7 +279,7 @@ weather:{
     margin:7
   },
   middleButton02: {
-    width:100,
+    width:"92%",
     height:50,
     padding:15,
     backgroundColor:"#fe8d6f",
@@ -377,7 +287,7 @@ weather:{
     margin:7
   },
   middleButton03: {
-    width:100,
+    width:"92%",
     height:50,
     padding:15,
     backgroundColor:"#9adbc5",
@@ -385,10 +295,10 @@ weather:{
     margin:7
   },
   middleButton04: {
-    width:100,
+    width:"92%",
     height:50,
     padding:15,
-    backgroundColor:"#f886a8",
+    backgroundColor:"blue",
     borderRadius:15,
     margin:7
   },

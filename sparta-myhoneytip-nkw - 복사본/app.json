@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "sparta-myhoneytip-nkw",
-    "slug": "sparta-myhoneytip-nkw",
-    "version": "1.0.4",
+    "name": "[비공식] 스파르타코딩클럽 커뮤니티",
+    "slug": "unoffcial-sparta-community",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,14 +19,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.4",
-      "bundleIdentifier": "com.myhoneytip.nkw",
+      "buildNumber": "1.0.0",
+      "bundleIdentifier": "com.nkw.spartacommunity",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-8113412540427082~9712022613"
       }
     },
     "android": {
-      "package": "com.myhoneytip.nkw",
+      "package": "com.nkw.spartacommunity",
        "versionCode": 5,
        "googleServicesFile": "./google-service.json",
        "useNextNotificationsApi": true,
