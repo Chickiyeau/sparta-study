@@ -10,7 +10,6 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, BackHandle
 import Card from '../components/Card';
 import Loading from '../components/Loading';
 import { StatusBar } from 'expo-status-bar';
-import * as Location from "expo-location";
 import axios from "axios";
 import {firebase_db} from "../firebaseConfig";
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -123,7 +122,7 @@ export default function MainPage({navigation,route}) {
 
 
 
-  const getLocation = async () => {
+  /*const getLocation = async () => {
     //수많은 로직중에 에러가 발생하면
     //해당 에러를 포착하여 로직을 멈추고,에러를 해결하기 위한 catch 영역 로직이 실행
     try {
@@ -155,7 +154,7 @@ export default function MainPage({navigation,route}) {
       //혹시나 위치를 못가져올 경우를 대비해서, 안내를 준비합니다
       Alert.alert("위치를 찾을 수가 없습니다.", "앱을 껏다 켜볼까요?");
     }
-  }
+  }*/
 
     const category = (cate) => {
         if(cate == "전체보기"){
