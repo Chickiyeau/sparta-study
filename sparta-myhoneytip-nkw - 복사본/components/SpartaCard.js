@@ -11,6 +11,7 @@ export default function SpartaCard({content,navigation}){
     let array = []
     const detail = () => {
       array.push({content})
+      global.mode = "API"
       navigation.navigate('Detailsparta', {content})
       //console.log(content.desc)s
         //Linking.openURL(`https://spartacodingclub.kr/community/fastqna/all/${content.id}/${content.title}`)

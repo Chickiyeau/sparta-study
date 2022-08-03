@@ -183,6 +183,7 @@ export default function Detailsparta({route, navigation, beforeid}){
                             imagelist.push(image+image2.split('undefined')[1].replace('\">',""))
                         })
                     }
+                    console.log(author, id, desc, createdAt, isTutor, isWriter, profile, imagelist)
                     desc = desc.replace(/\r/gi, "")
                     desc = desc.replace(/<p><br><\/p>/g, "")
                     desc = desc.replace(/<\/p>/g, '\n')
@@ -197,6 +198,7 @@ export default function Detailsparta({route, navigation, beforeid}){
                     let comm = {
                         author, id, desc, createdAt, isTutor, isWriter, profile, imagelist
                     }
+                    
                     array.push(comm)
                     
     
@@ -227,6 +229,7 @@ export default function Detailsparta({route, navigation, beforeid}){
     }
     useEffect(() => {
         title = content.title
+      if(global.mode == "API"){
         if(beforeid == undefined){
             getcomment()
         }else{
@@ -235,6 +238,7 @@ export default function Detailsparta({route, navigation, beforeid}){
                 //getcomment()
             }
         }
+      }
 
         const backAction = () => {
       
@@ -255,8 +259,13 @@ if(content.week == 100){
 }else{
     curcourse = `즉문즉답 > ${content.courseTitle} > ${content.week}주차`
 }
-let date = content.createdAt.split("T")[0].split("-")
-let time = content.createdAt.split("T")[1].split(".")[0].split(":")
+let descmap = []
+let date = ``
+let time = ``
+let a = `  `
+if(content.createdAt != null){
+date = content.createdAt.split("T")[0].split("-")
+time = content.createdAt.split("T")[1].split(".")[0].split(":")
 let ms = content.createdAt.split("T")[1].split(".")[1].replace("Z", "")
 let aa = ``
 let hour = ``
@@ -299,11 +308,11 @@ desc = desc.replace(/<Text></sg, '<Text style={styles.lt}><')
 //desc = mapStringToComponent(desc);
 
 let descsplit = desc.split("\n")
-let descmap = []
+
 descsplit.map((value, i) => {
   mapStringToComponent(value, descmap)
 })
-//console.log(descmap)
+console.log(descmap)
 
 if(chai < 1000 * 60)
   a = '방금';
@@ -323,6 +332,8 @@ else if(chai < 1000 * 60 * 60 * 24 * 30 * 12)
     curcourse = `즉문즉답 > ${content.courseTitle} > ${content.week}주차`
 }
 date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분 `
+}
+  if(content.imagelist != null){
     if(content.imagelist.length != 0){
         return (
             <ScrollView style={styles.main}> 
@@ -405,6 +416,28 @@ date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분
             </ScrollView>
         )        
     }
+  }else{
+    return (
+      <ScrollView style={styles.main}> 
+          <View style={styles.cardText}>
+          <View style={styles.cardTop}>
+        <Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'contain',borderRadius:5}} source={{uri:content.profile}} />
+          <Text style={styles.cardTitle} numberOfLines={1}> 관리자</Text>
+        </View>
+              <Text style={styles.cardTitle}>{content.title}</Text>
+              <Text style={styles.cardDate}>공지사항</Text>
+              <View style={styles.cardDesc}>
+                <Image style={styles.cardImage} source={{uri:content.image}}/>
+                <Text>{content.desc}</Text>
+              </View>
+          
+          </View>
+          <View style={styles.input}>
+
+          </View>
+      </ScrollView>
+  )        
+  }
 }
 
 const styles = StyleSheet.create({

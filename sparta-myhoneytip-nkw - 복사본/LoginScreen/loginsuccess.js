@@ -26,9 +26,6 @@ export default function loginsuccess({route, navigation}){
     const[data,setdata] = useState()
 
     useEffect(() => {
-      firebase_db.ref('/pushindex').once('value').then((index) => {
-        setpushIndex(index);
-      })
       firebase_db.ref(`/user/${id}`).once('value').then((user) => {
         if(user.hasChildren() == false){
           setdata("nodata")
@@ -91,7 +88,7 @@ export default function loginsuccess({route, navigation}){
         
       }
       console.log(data)
-      navigation.reset({index: 0, routes:[{name:'MainPage'}]})
+      //navigation.reset({index: 0, routes:[{name:'MainPage'}]})
     }
 
     return ( {service,nickname,profile_image,birthday,email},

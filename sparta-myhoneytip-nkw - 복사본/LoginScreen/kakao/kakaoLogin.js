@@ -14,6 +14,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import '../../global.js'
 
 
+
+
 export const kakaoGlobal = () => {
     const [nickname, setnickname] = useState('nickname')
     const [email, setemail] = useState('email')
@@ -34,7 +36,7 @@ const redirectUri = AuthSession.makeRedirectUri({useProxy,});
 WebBrowser.maybeCompleteAuthSession();
  
 export default function kakaoLogin({ navigation }) {
-    webView = {
+    this.webView= {
         canGoBack: false,
         ref: null,
     }
@@ -73,6 +75,9 @@ export default function kakaoLogin({ navigation }) {
         var condition = data.indexOf(exp);
 
         if (condition != -1) {
+            this.webView.ref.stopLoading(true)
+            console.log(data)
+            
 
             var request_code = data.substring(condition + exp.length);
 
@@ -85,6 +90,48 @@ export default function kakaoLogin({ navigation }) {
         }
 
     };
+
+//https://online.spartacodingclub.kr/api/v1/oauth/kakao/login?code=
+
+
+const requestSparta = async (token) => {
+
+    var returnValue = "none";
+
+    var request_token_url = "https://online.spartacodingclub.kr/api/v1/oauth/kakao/token";
+
+
+
+    axios({
+
+        method: "get",
+
+        url: request_token_url,
+
+        withCredentials:true,
+
+        headers: {
+
+            'Content-Type': 'application/x-www-form-urlencoded',
+            code: token,
+
+        },
+
+    }).then(function (response) {
+        returnValue = response;
+        console.log('token',returnValue)
+        //console.log(response.request.header)
+        //requestplayer(returnValue)
+
+
+
+    }).catch(function (error) {
+
+        console.log('error', error);
+
+    });
+
+};
 
  
 
@@ -108,11 +155,9 @@ export default function kakaoLogin({ navigation }) {
 
                 grant_type: 'authorization_code',
 
-                client_id: '2e726e0391587bdf6db6c878ca69e208',
+                client_id: '535068688f1a8bca1c21a9445ede0a89',
 
-                redirect_uri: 'https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw',
-
-                client_screct: '2CvUYsuq8y9NksDqbkFckSm6QrlwIzqB',
+                redirect_uri: 'https://online.spartacodingclub.kr/api/v1/oauth/kakao/login',
 
                 code: request_code,
 
@@ -127,7 +172,7 @@ export default function kakaoLogin({ navigation }) {
 
         }).catch(function (error) {
 
-            console.log('error', error);
+            console.log('error', error.response);
 
         });
 
@@ -153,6 +198,7 @@ export default function kakaoLogin({ navigation }) {
         }).then(function (response) {
 
             returnValue = response.data;
+            console.log(returnValue)
             let nickname = response.data.kakao_account.profile.nickname;
             let gender = response.data.kakao_account.gender;
             let id = response.data.id
@@ -161,7 +207,7 @@ export default function kakaoLogin({ navigation }) {
             let profile_image = response.data.kakao_account.profile.profile_image_url
             let birthday = response.data.kakao_account.birthday
             let email = response.data.kakao_account.email
-            console.log(returnValue)
+            
 
             const userSettings = {
                 nickname,
@@ -169,10 +215,9 @@ export default function kakaoLogin({ navigation }) {
                 service,
                 birthday,
                 email,
-                toggleSetting2,
               };
 
-            navigation.navigate('loginsuccess', {service,nickname,profile_image,birthday,email,id,gender})
+            //navigation.navigate('loginsuccess', {service,nickname,profile_image,birthday,email,id,gender})
 
  
 
@@ -197,17 +242,17 @@ export default function kakaoLogin({ navigation }) {
                 scalesPageToFit={false}
                 
                 ref={(webView) => { this.webView.ref = webView; }}
-                onNavigationStateChange={(navState) => { this.webView.canGoBack = navState.canGoBack; }}
+                onNavigationStateChange={(navState) => {this.webView.canGoBack = navState.canGoBack; }}
 
                 style={{ marginTop: 30 }}
 
-                source={{ uri: 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=2e726e0391587bdf6db6c878ca69e208&redirect_uri=https://auth.expo.io/@ruddls030/sparta-myhoneytip-nkw' }}
+                source={{ uri: 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=535068688f1a8bca1c21a9445ede0a89&redirect_uri=https://online.spartacodingclub.kr/api/v1/oauth/kakao/login' }}
 
                 injectedJavaScript={runFirst}
-
+                
                 javaScriptEnabled={true}
 
-                onMessage={(event) => { LogInProgress(event.nativeEvent["url"]); }}
+                onShouldStartLoadWithRequest={(event) => {if(event.url.includes("code")){LogInProgress(event.url);return true;}else{return true;}}}
 
             // onMessage ... :: webview에서 온 데이터를 event handler로 잡아서 logInProgress로 전달
 

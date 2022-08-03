@@ -28,7 +28,7 @@ import {
 } from 'expo-ads-admob';
 
 const Drawer = createDrawerNavigator();
-export default function MainPage({navigation,route}) {
+export default function Noti({navigation,route}) {
   console.disableYellowBox = true;
   //return 구문 밖에서는 슬래시 두개 방식으로 주석
 
@@ -103,14 +103,7 @@ export default function MainPage({navigation,route}) {
 
     const backAction = () => {
       
-      Alert.alert('잠시만요!', '정말 앱을 종료하시겠나요?', [
-        {
-          text: '아니요',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        { text: '네', onPress: () => BackHandler.exitApp() },
-      ]);
+        RootNavigation.navigate("MainPage")
       return true;
     };
 
@@ -188,7 +181,7 @@ export default function MainPage({navigation,route}) {
   }
   
   function goInfo(){
-    navigation.reset({index: 0, routes:[{name:'noti'}]})
+
   }
     return ready ? <Loading/> :  (
       /*
@@ -200,23 +193,15 @@ export default function MainPage({navigation,route}) {
           
           <TouchableOpacity style={styles.refresh} onPress={() => {navigation.reset({index: 0, routes:[{name:'MainPage'}]})}}><Text style={styles.refreshtext}>눌러서 새로 고침</Text></TouchableOpacity>
           <StatusBar style="black" />
-          {/* <Text style={styles.title}>나만의 꿀팁</Text> */}
-          <Image style={styles.mainImage} source={main}/>
-
-          <ScrollView style={styles.middleContainer} indicatorStyle={"white"}>
-          <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{navigation.reset({index: 0, routes:[{name:'SelectLogin'}]}),global.selpage = 'quiz'}}><Text style={styles.middleButtonTextAll}>즉문즉답</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButtonAll} onPress={()=>{navigation.reset({index: 0, routes:[{name:'sparta'}]}),global.selpage = 'quiz'}}><Text style={styles.middleButtonTextAll}>즉문즉답</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton01} onPress={()=>{navigation.reset({index: 0, routes:[{name:'spartaja'}]}),global.selpage = 'free'}}><Text style={styles.middleButtonTextAll}>자유게시판</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton02} onPress={()=>{goSlack()}}><Text style={styles.middleButtonTextAll}>슬랙</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton03} onPress={()=>{goHomePage()}}><Text style={styles.middleButtonTextAll}>홈페이지</Text></TouchableOpacity>
-              <TouchableOpacity style={styles.middleButton04} onPress={()=>{goGather()}}><Text style={styles.middleButtonTextAll}>스온스 (게더)</Text></TouchableOpacity>
-          </ScrollView>
+        <View style={styles.titlecontainer}>
+            <Text style={styles.title}>공지 사항</Text>
+            </View>
           <View style={styles.cardContainer}>
               {/* 하나의 카드 영역을 나타내는 View */}
              {
-               /*cateState.map((content,i)=>{
+               cateState.map((content,i)=>{
                   return (<Card content={content} key={i} navigation={navigation}/>)
-              })*/
+              })
               }
           </View>
       </ScrollView>
@@ -235,9 +220,18 @@ const styles = StyleSheet.create({
     //폰트 두께
     fontWeight: '700',
     //위 공간으로 부터 이격
-    marginTop:50,
+    marginTop:5,
     //왼쪽 공간으로 부터 이격
-    marginLeft:20
+    marginLeft:20,
+    textAlign:"center"
+  },
+  titlecontainer: {
+    width:"85%",
+    backgroundColor:"magenta",
+    alignSelf:"center",
+    marginTop:10,
+    paddingBottom:5,
+    borderRadius:10
   },
 weather:{
     alignSelf:"flex-end",
@@ -361,7 +355,7 @@ weather:{
    },
    refresh: {
     backgroundColor:"pink",
-    width:350,
+    width:"90%",
     height:40,
     borderRadius:10,
     alignSelf:"flex-end",

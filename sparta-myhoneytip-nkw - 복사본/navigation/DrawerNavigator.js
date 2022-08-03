@@ -15,6 +15,7 @@ import loginsuccess, {route} from '../LoginScreen/loginsuccess';
 import Selcourse from '../spartacomm/Selcourse';
 import DetailPage from '../pages/DetailPage';
 import Viewsparta from '../spartacomm/Viewsparta';
+import Noti from '../spartacomm/Noti';
 import { registerForPushNotificationsAsync } from '../components/Alert';
 
 import { nicname2 } from '../pages/Settings';
