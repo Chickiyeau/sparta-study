@@ -57,7 +57,7 @@ export default function sparta({navigation, route}){
             returnValue = response.data.data;
             let array = []
             returnValue.map((content ,i) => {
-                //console.log(i, content)
+                console.log(i, content)
                 
                 let id = content._id
                 let author = content.author.name
@@ -129,7 +129,7 @@ export default function sparta({navigation, route}){
                 array.push(comm)
                 
             })
-            navigation.navigate('Viewsparta',{navigation, array, page})
+            //navigation.navigate('Viewsparta',{navigation, array, page})
             
 
  

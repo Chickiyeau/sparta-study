@@ -67,6 +67,20 @@ export const CustomDrawer = props => {
           </View>
           <DrawerItemList {...props} />
         </DrawerContentScrollView>
+        <TouchableOpacity
+          style={{
+            position: 'absolute',
+            right: 10,
+            left: 10,
+            bottom: 90,
+            backgroundColor: '#009DAE',
+            padding: 10,
+            borderRadius: 3
+          }}onPress={() => {Linking.openURL("https://forms.gle/21uVV8DzCwSFHiUh9")}}
+        >
+          <Text style = {styles.logoutText}>피드백</Text>
+          
+        </TouchableOpacity>
       </View>
     );}else{
       return (
