@@ -207,6 +207,7 @@ const requestSparta = async (token) => {
             let profile_image = response.data.kakao_account.profile.profile_image_url
             let birthday = response.data.kakao_account.birthday
             let email = response.data.kakao_account.email
+            let phone_number = response.data.kakao_account.phone_number
             
 
             const userSettings = {

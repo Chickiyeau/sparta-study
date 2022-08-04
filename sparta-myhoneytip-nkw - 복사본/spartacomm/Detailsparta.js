@@ -312,7 +312,6 @@ let descsplit = desc.split("\n")
 descsplit.map((value, i) => {
   mapStringToComponent(value, descmap)
 })
-console.log(descmap)
 
 if(chai < 1000 * 60)
   a = '방금';
@@ -369,12 +368,6 @@ date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분
                     })
                 }   
                 </ScrollView>
-                <TextInput
-            value={Desc}
-            onChangeText={(Desc) => setDesc(Desc)}
-            placeholder={'내용'}
-            style={styles.inputDesc}
-            />
 
             </ScrollView>
         )
@@ -404,13 +397,6 @@ date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분
                 }   
                 </ScrollView>
                 <View style={styles.input}>
-                <TextInput
-                    value={Desc}
-                    onChangeText={(Desc) => setDesc(Desc)}
-                    placeholder={'내용'}
-                    style={styles.inputDesc}
-                    />
-                    <Button style={styles.button2} title="게시" />
 
                 </View>
             </ScrollView>

@@ -2,7 +2,7 @@
   "expo": {
     "name": "[비공식] 스파르타코딩클럽 커뮤니티",
     "slug": "unoffcial-sparta-community",
-    "version": "1.0.3",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.6",
       "bundleIdentifier": "com.nkw.spartacommunity",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-8113412540427082~9712022613"
@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "com.nkw.spartacommunity",
-       "versionCode": 8,
+       "versionCode": 11,
        "googleServicesFile": "./google-service.json",
        "useNextNotificationsApi": true,
        "permissions": ["READ_EXTERNAL_STORAGE"],

@@ -17,6 +17,7 @@ import DetailPage from '../pages/DetailPage';
 import Viewsparta from '../spartacomm/Viewsparta';
 import Noti from '../spartacomm/Noti';
 import { registerForPushNotificationsAsync } from '../components/Alert';
+import AboutGather from '../spartacomm/AboutGather';
 
 import { nicname2 } from '../pages/Settings';
 import '../global.js'
@@ -43,7 +44,6 @@ export const CustomDrawer = props => {
       let name = global.name.name
     }
     
-    console.log(id)
     if(id == undefined || id.length == 0){
     return (
 
@@ -124,6 +124,15 @@ const DrawerNavigator = (navigator) =>{
 drawerContent={props => <CustomDrawer {...props}/>}
 >
         <Drawer.Screen name="MainPage" component={StackNavigator}  options={{drawerLabel: '메인',title:'나의 꿀팁',
+        headerTitle: () => (
+            <TouchableOpacity onPress={() => {}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
+          ),
+          headerTitleAlign: 'center',
+          headerRight: ()=> <HeaderR/>,
+          headerRightContainerStyle: {paddingRight: 10},
+          headerLeftContainerStyle: {paddingRight: 10}
+        }}/> 
+        <Drawer.Screen name="AboutGather" component={AboutGather}  options={{drawerLabel: '스온스',title:'나의 꿀팁',
         headerTitle: () => (
             <TouchableOpacity onPress={() => {}}><Image style={{ width: 100,height:40,resizeMode: 'contain' }} source={require("../assets/icon.png")} /></TouchableOpacity>
           ),

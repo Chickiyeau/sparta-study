@@ -184,7 +184,8 @@ export default function MainPage({navigation,route}) {
   }
 
   function goGather(){
-    Linking.openURL('https://app.gather.town/app/uqfFhchUsf1fCPsi/study')
+    navigation.reset({index: 0, routes:[{name:'AboutGather'}]})
+    //Linking.openURL('https://app.gather.town/app/uqfFhchUsf1fCPsi/study')
   }
   
   function goInfo(){
@@ -261,10 +262,10 @@ weather:{
     marginTop:50,
     marginLeft:10,
     width:"100%",
-    fiex:1
+    alignSelf:'center'
   },
   noti: {
-    width:"92%",
+    width:"97%",
     height:50,
     padding:15,
     backgroundColor:"red",
@@ -273,46 +274,52 @@ weather:{
     margin:7
   },
   middleButtonAll: {
-    width:"92%",
+    width:"97%",
     height:50,
     padding:15,
     backgroundColor:"#20b2aa",
     borderColor:"deeppink",
     borderRadius:15,
-    margin:7
+    marginleft:8,
+    marginBottom:7
+
   },
   middleButton01: {
-    width:"92%",
+    width:"97%",
     height:50,
     padding:15,
     backgroundColor:"#fdc453",
     borderColor:"deeppink",
     borderRadius:15,
-    margin:7
+    marginleft:8,
+    marginBottom:7
   },
   middleButton02: {
-    width:"92%",
+    width:"97%",
     height:50,
     padding:15,
     backgroundColor:"#fe8d6f",
     borderRadius:15,
-    margin:7
+    marginleft:8,
+    marginBottom:7
   },
   middleButton03: {
-    width:"92%",
+    width:"97%",
     height:50,
     padding:15,
     backgroundColor:"#9adbc5",
     borderRadius:15,
-    margin:7
+    marginleft:8,
+    marginBottom:7
   },
   middleButton04: {
-    width:"92%",
+    width:"97%",
     height:50,
     padding:15,
     backgroundColor:"blue",
     borderRadius:15,
-    margin:7
+    marginleft:8,
+    marginBottom:7
   },
   middleButtonText: {
     color:"#fff",
@@ -360,11 +367,12 @@ weather:{
    },
    refresh: {
     backgroundColor:"pink",
-    width:350,
+    width:"95%",
     height:40,
     borderRadius:10,
     alignSelf:"flex-end",
-    marginRight:20,
+    marginLeft:8,
+    marginRight:10,
     marginTop:10
   },
   refreshtext: {
