@@ -19,6 +19,7 @@ export default function AboutGather({route, navigation, beforeid}){
     useEffect(() => {
 
         const backAction = () => {
+          clearInterval()
       
                 navigation.goBack()
     
@@ -48,14 +49,14 @@ export default function AboutGather({route, navigation, beforeid}){
 
     let nowdate = new Date(year, month, day, hours, minutes, seconds)
 
-    let week = ['일', '월', '화', '수', '목', '금', '토' ];
+    let week = [ '일요일', '월요일', '화효일', '수요일', '목요일', '금요일', '토요일' ];
     let gather = ['일요일 오후 02:00 ~ 05:00',
     '월요일 오후 08:00 ~ 11:00','화요일 오후 08:00 ~ 11:00','수요일 오후 08:00 ~ 11:00','목요일 오후 08:00 ~ 11:00','금요일 없음','토요일 오후 02:00 ~ 05:00']
     let list = []
     gather.map((value, i) => {
       mapStringToComponent(value, list, nowdate)
     })
-    if(week[nowdate.getDay()].includes("금"))
+    if(week[nowdate.getUTCDay()].includes("금"))
     {
       write = new Date(nowdate.setUTCHours(14,0,0,0))
       write = new Date(write.setDate(7))
@@ -66,31 +67,22 @@ export default function AboutGather({route, navigation, beforeid}){
     nowdate = new Date(year, month, day, hours, minutes, seconds)
     let elti = ``
 
-    if(nowdate.getUTCHours() >= 17 && (week[nowdate.getDay()].includes('토') || week[nowdate.getDay()].includes('일'))){
-      if(week[nowdate.getDay()].includes("토")){      
-        write = new Date(nowdate.setUTCHours(14,0,0,0))
-        write = new Date(write.setDate(write.getDate()+1))
-      }   
-      if(week[nowdate.getDay()].includes("일")){      
-        write = new Date(nowdate.setUTCHours(23,0,0,0))
-        write = new Date(write.setDate(write.getDate()+1))
-      }   
-    }
 
-    if(nowdate.getUTCHours() >= 23 && (week[nowdate.getDay()].includes('월') || week[nowdate.getDay()].includes('화') || week[nowdate.getDay()].includes('수') || week[nowdate.getDay()].includes("목") || week[nowdate.getDay()].includes("금"))){
-      if(week[nowdate.getDay()].includes('월') || week[nowdate.getDay()].includes('화') || week[nowdate.getDay()].includes('수') || week[nowdate.getDay()].includes('일')){
-        write = new Date(write.setDate(write.getDate()+1))
+
+    if(nowdate.getUTCHours() >= 23 && (week[nowdate.getUTCDay()].includes('월') || week[nowdate.getUTCDay()].includes('화') || week[nowdate.getUTCDay()].includes('수') || week[nowdate.getUTCDay()].includes("목") || week[nowdate.getUTCDay()].includes("금"))){
+      if(week[nowdate.getUTCDay()].includes('월') || week[nowdate.getUTCDay()].includes('화') || week[nowdate.getUTCDay()].includes('수') || week[nowdate.getUTCDay()].includes('일')){
+        write = new Date(write.setUTCDate(write.getUTCDate()+1))
       }
-      if(week[nowdate.getDay()].includes("목")){      
+      if(week[nowdate.getUTCDay()].includes("목요일")){      
         write = new Date(nowdate.setUTCHours(14,0,0,0))
-        write = new Date(write.setDate(write.getDate()+2))
+        write = new Date(write.setUTCDate(write.getUTCDate()+2))
       }
-      if(week[nowdate.getDay()].includes("금")){      
+      if(week[nowdate.getUTCDay()].includes("금요일")){      
         write = new Date(nowdate.setUTCHours(14,0,0,0))
-        write = new Date(write.setDate(write.getDate()+1))
+        write = new Date(write.setUTCDate(write.getUTCDate()+1))
       }
-      if(week[nowdate.getDay()].includes("토")){
-        write = new Date(write.setDate(7))
+      if(week[nowdate.getUTCDay()].includes("토요일")){
+        write = new Date(write.setUTCDate(write.getUTCDate()+1))
         write = new Date(nowdate.setUTCHours(14,0,0,0))
       }
       nowdate = new Date(year, month, day, hours, minutes, seconds)
@@ -99,15 +91,43 @@ export default function AboutGather({route, navigation, beforeid}){
       elti = write.getTime() - nowdate.getTime()
       console.log(elti)
     }else{
-      if(week[nowdate.getDay()].includes("금")){      
+      if(week[nowdate.getUTCDay()].includes("목요일")){      
         write = new Date(nowdate.setUTCHours(14,0,0,0))
-        write = new Date(write.setDate(write.getDate()+1))
+        write = new Date(write.setUTCDate(write.getUTCDate()+2))
+        nowdate = new Date(year, month, day, hours, minutes, seconds)
+      }
+      if(week[nowdate.getUTCDay()].includes("금요일")){      
+        write = new Date(nowdate.setUTCHours(14,0,0,0))
+        write = new Date(write.setUTCDate(write.getUTCDate()+1))
+        nowdate = new Date(year, month, day, hours, minutes, seconds)
+      }
+      if(nowdate.getUTCHours() >= 17 && (week[nowdate.getUTCDay()].includes('토요일') || week[nowdate.getUTCDay()].includes('일요일'))){
+        console.log("here")
+        if(week[nowdate.getUTCDay()].includes("토요일")){      
+          write = new Date(nowdate.setUTCHours(14,0,0,0))
+          write = new Date(write.setUTCDate(write.getUTCDate()+1))
+          nowdate = new Date(year, month, day, hours, minutes, seconds)
+        }   
+        if(week[nowdate.getUTCDay()].includes("일요일")){      
+          write = new Date(nowdate.setUTCHours(20,0,0,0))
+          write = new Date(write.setUTCDate(write.getUTCDate()+1))
+          console.log(write)
+          nowdate = new Date(year, month, day, hours, minutes, seconds)
+        }   
+      }else{
+        if(week[nowdate.getUTCDay()].includes("토요일")){      
+          write = new Date(nowdate.setUTCHours(14,0,0,0))
+          nowdate = new Date(year, month, day, hours, minutes, seconds)
+        }   
+        if(week[nowdate.getUTCDay()].includes("일요일")){      
+          write = new Date(nowdate.setUTCHours(14,0,0,0))
+          nowdate = new Date(year, month, day, hours, minutes, seconds)
+        }           
       }
       elti = write.getTime() - nowdate.getTime()
     }
     console.log(nowdate.getUTCDay())
     console.log(nowdate.getUTCDate())
-    console.log(nowdate.get)
     
 
     let chai = elti
@@ -123,29 +143,34 @@ export default function AboutGather({route, navigation, beforeid}){
         a,
       ));
     else if(chai < 1000 * 60 * 60)
-      a += Math.floor(chai / (1000 * 60)) + ' 분전',
+      a += Math.floor(chai / (1000 * 60)) + ' 분 '+Math.floor(((chai % (1000 * 60 * 60)) % (1000 * 60)/1000))+' 초전',
       b = (React.createElement(
         RN['Text'],
         {style:{marginLeft:5,textAlign:"center",color:"orange",fontSize:30}}, // here may be an object with attributes if your node has any
         a,
       ));
     else if(chai < 1000 * 60 * 60 * 24)
-      a += Math.floor(chai / (1000 * 60 * 60)) + ' 시간전',
+      a += Math.floor(chai / (1000 * 60 * 60)) + ' 시간 '+Math.floor((chai % (1000 * 60 * 60)) / (1000 * 60))+' 분 '+Math.floor(((chai % (1000 * 60 * 60)) % (1000 * 60)/1000))+' 초전',
+      //console.log(Math.floor(((chai % (1000 * 60 * 60)) % (1000 * 60)/1000))),
       b = (React.createElement(
         RN['Text'],
         {style:{marginLeft:5,textAlign:"center",color:"blue",fontSize:30}}, // here may be an object with attributes if your node has any
         a,
       ));
     else if(chai < 1000 * 60 * 60 * 24 * 30)
-      a += Math.floor(chai / (1000 * 60 * 60 * 24)) + ' 일전',
+      a += Math.floor(chai / (1000 * 60 * 60 * 24)) + ' 일 '+Math.floor((chai % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) + ' 시간 '+Math.floor((chai % (1000 * 60 * 60)) / (1000 * 60))+' 분 '+Math.floor(((chai % (1000 * 60 * 60)) % (1000 * 60)/1000))+' 초전',
       b = (React.createElement(
         RN['Text'],
         {style:{marginLeft:5,textAlign:"center",color:"blue",fontSize:30}}, // here may be an object with attributes if your node has any
         a,
       ));
     else if(chai < 1000 * 60 * 60 * 24 * 30 * 12)
-      a += Math.floor(chai / (1000 * 60 * 60 * 24 * 30)) + ' 달전';
-
+      a += Math.floor(chai / (1000 * 60 * 60 * 24 * 30)) + ' 달 '+Math.floor((chai % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24)) + ' 일 '+Math.floor(((chai % (1000 * 60 * 60 * 24 * 30)) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) + ' 시간 '+Math.floor((chai % (1000 * 60 * 60)) / (1000 * 60))+' 분 '+Math.floor(((chai % (1000 * 60 * 60)) % (1000 * 60)/1000))+' 초전',
+      b = (React.createElement(
+        RN['Text'],
+        {style:{marginLeft:5,textAlign:"center",color:"blue",fontSize:30}}, // here may be an object with attributes if your node has any
+        a,
+      ));
     if(a.includes("-")){
         b = (React.createElement(
           RN['Text'],
@@ -160,9 +185,9 @@ export default function AboutGather({route, navigation, beforeid}){
     
 
     function mapStringToComponent(stringToRender, list, nowdate) {
-      
+      nowdate = new Date(year, month, day, hours, minutes, seconds)
        // result of this regex ["<Text>hello</Text>", "Text", "hello"]
-        if(stringToRender.includes(week[nowdate.getDay()])){
+        if(stringToRender.includes(week[nowdate.getUTCDay()])){
             list.push(React.createElement(
               RN['Text'],
               {style:{color:"green",marginLeft:5,fontSize:20,textAlign:"center"}}, // here may be an object with attributes if your node has any
@@ -191,6 +216,7 @@ export default function AboutGather({route, navigation, beforeid}){
           <View style={styles.cardDesc}>{list.map((value) => {return(value)})}</View>
           <Text style={styles.title}>시작까지 남은시간</Text>
           {b}
+          <Text style={{textAlign:"center",fontWeight:"500"}}>랙 유발로 인해 자동 새로고침 기능은 없습니다.</Text>
           <TouchableOpacity style={styles.middleButton04} onPress={()=>{goGather()}}><Text style={styles.middleButtonTextAll}>스온스 (게더)로 입장하기 ( 크롬 필수 )</Text></TouchableOpacity>
       </ScrollView>
         

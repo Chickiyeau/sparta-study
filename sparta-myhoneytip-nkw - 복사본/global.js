@@ -6,6 +6,7 @@ global.search_keyword = []
 global.course = []
 global.courseKeyword = []
 global.mode = []
+global.nowpage = []
 
 //미사용
 global.name = []

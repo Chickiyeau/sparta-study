@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet,TouchableOpacity, Alert, RefreshControl, useWindowDimensions} from 'react-native'
+import RN, {View, Image, Text, StyleSheet,TouchableOpacity, Alert, RefreshControl, useWindowDimensions} from 'react-native'
 import {firebase_db} from "../firebaseConfig"
 import '../global.js'
 import AutoHeightImage from "react-native-auto-height-image";
@@ -27,6 +27,18 @@ export default function SpartaCardComment({content,navigation}){
     }, []);
         
     let desc = content.desc
+
+    let lt = React.createElement(
+      RN['Text'],
+      {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+      '<',
+    )
+
+    let gt = React.createElement(
+      RN['Text'],
+      {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+      '>',
+    )
 
   let date = content.createdAt.split("T")[0].split("-")
   let time = content.createdAt.split("T")[1].split(".")[0].split(":")

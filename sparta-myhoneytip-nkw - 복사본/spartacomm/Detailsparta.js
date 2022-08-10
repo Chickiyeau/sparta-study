@@ -24,8 +24,34 @@ export default function Detailsparta({route, navigation, beforeid}){
     let week = content.week
     let title = content.title
     let image = content.image
+
+    let lt = React.createElement(
+      RN['Text'], 
+      {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+      '<',
+    )
+
+    let gt = React.createElement(
+      RN['Text'],
+      {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+      '>',
+    )
     
     function mapStringToComponent(stringToRender, list) {
+      let haslt = false
+      let hasgt = false
+      if(stringToRender.includes("{lt}")){
+        haslt = true
+        //stringToRender = stringToRender.replace(/{lt}/g, "")
+      }else{
+        haslt = false
+      }
+      if(stringToRender.includes("{gt}")){
+        hasgt = true
+        //stringToRender = stringToRender.replace(/{gt}/g, "")
+      }else{
+        hasgt = false
+      }
       let parseResult = stringToRender.match(/<([a-z]*)>(.*)<\/[a-z]*>/i);
       if(parseResult == null){
         parseResult = stringToRender.match(/<([a-z]*) (.*)<\/[a-z]*>/i);
@@ -33,7 +59,6 @@ export default function Detailsparta({route, navigation, beforeid}){
       
        // result of this regex ["<Text>hello</Text>", "Text", "hello"]
       if (parseResult !== null && parseResult.length == 3) {
-        
         let [, compName, innerText] = parseResult;
         let style = ''
         if(innerText.includes("style")){
@@ -42,22 +67,75 @@ export default function Detailsparta({route, navigation, beforeid}){
             code = style[0]
             innerText = innerText.replace(code, "")
             code = code.replace(">", "")
-            code = '{'+code+'}'     
-            
-            list.push(React.createElement(
-              RN[compName],
-              {style:{color:"pink"}}, // here may be an object with attributes if your node has any
-              innerText,
-            ));
+            code = '{'+code+'}'
+            if(haslt == true && hasgt == true){
+              list.push(React.createElement(
+                RN[compName],
+                {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                lt,innerText,gt,
+              ));
+            }else{
+              if(haslt == true){
+                list.push(React.createElement(
+                  RN[compName],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  lt,innerText,
+                ));
+              }else{
+                if(hasgt == true){
+                  list.push(React.createElement(
+                    RN[compName],
+                    {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                    innerText,gt,
+                  ));
+                }else{
+                  list.push(React.createElement(
+                    RN[compName],
+                    {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                    innerText,
+                  ));                  
+                }
+              }
+
+            }
+              list.push(React.createElement(
+                RN[compName],
+                {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                innerText,
+              ));
           }
         }else{
           if(innerText.length != 1){
             if(compName == 'Text'){
-              list.push(React.createElement(
-                RN[compName],
-                null, // here may be an object with attributes if your node has any
-                innerText,
-              ));
+              if(haslt == true && hasgt == true){
+                list.push(React.createElement(
+                  RN[compName],
+                  null, // here may be an object with attributes if your node has any
+                  lt,innerText.split(/t}/g)[1],gt,
+                ));
+              }else{
+                if(haslt == true){
+                  list.push(React.createElement(
+                    RN[compName],
+                    null, // here may be an object with attributes if your node has any
+                    lt,innerText,
+                  ));
+                }else{
+                  if(hasgt == true){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText,gt,
+                    ));
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText,
+                    ));
+                  }
+                }
+              }
             }else{
               if(compName == 'head'){
                 list.push(React.createElement(
@@ -189,8 +267,8 @@ export default function Detailsparta({route, navigation, beforeid}){
                     desc = desc.replace(/<\/p>/g, '\n')
                     desc = desc.replace(/<[^>]*>?/g, '')
                     desc = desc.replace(/;/g,"")
-                    desc = desc.replace(/&lt/g,'<')
-                    desc = desc.replace(/&gt/g,'>')
+                    desc = desc.replace(/&lt/g,'{lt}')
+                    desc = desc.replace(/&gt/g,'{gt}')
                     desc = desc.replace(/&nbsp/gi, ' ')
                     desc = desc.replace(/{/gi, '\n{\n')
                     desc = desc.replace(/}/gi, '\n}\n')

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Image, Text, StyleSheet,TouchableOpacity, Alert, RefreshControl, Linking} from 'react-native'
+import RN, {View, Image, Text, StyleSheet,TouchableOpacity, Alert, RefreshControl, Linking} from 'react-native'
 import {firebase_db} from "../firebaseConfig"
 import '../global.js'
 import { ReloadInstructions } from 'react-native/Libraries/NewAppScreen';

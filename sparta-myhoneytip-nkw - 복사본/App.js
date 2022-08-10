@@ -16,6 +16,8 @@ import {
   useNavigationContainerRef,
 } from '@react-navigation/native';
 import { NativeBaseProvider } from 'native-base';
+import './global.js'
+import { ref } from 'firebase/storage';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -57,12 +59,13 @@ export default function App() {
       // The line below uses the expo-firebase-analytics tracker
       // https://docs.expo.io/versions/latest/sdk/firebase-analytics/
       // Change this line to use another Mobile analytics SDK
-      await Analytics.logEvent('now',currentRouteName);
+      
+      await console.log('now',currentRouteName);
     }
 
     // Save the current route name for later comparison
     routeNameRef.current = currentRouteName;
-    console.log("now",currentRouteName)
+    //console.log("now",currentRouteName)
   }}
   
   >
