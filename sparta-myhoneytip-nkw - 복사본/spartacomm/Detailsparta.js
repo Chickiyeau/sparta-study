@@ -1,5 +1,5 @@
 import React,{useState, useEffect, PureComponent} from 'react';
-import RN, {BackHandler, ScrollView, Text, StyleSheet, Alert, Image, View, useWindowDimensions, Button, Animated } from 'react-native';
+import RN, {BackHandler, ScrollView, Text, StyleSheet, Alert, Image, View, useWindowDimensions, Share, Animated } from 'react-native';
 import SpartaCardComment from '../components/SpartaCardComment';
 import * as Linking from 'expo-linking';
 import AutoHeightImage from "react-native-auto-height-image";
@@ -418,6 +418,7 @@ descsplit.map((value, i) => {
   mapStringToComponent(value, descmap)
 })
 
+
 if(chai < 1000 * 60)
   a = '방금';
 else if(chai < 1000 * 60 * 60)
@@ -437,6 +438,12 @@ else if(chai < 1000 * 60 * 60 * 24 * 30 * 12)
 }
 date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분 `
 }
+
+const share = () => {
+  Share.share({
+      message:`https://spartacodingclub.kr/community/fastqna/all/${id}/${content.title}`,
+  });
+}
   if(content.imagelist != null){
     if(content.imagelist.length != 0){
         return (
@@ -445,6 +452,7 @@ date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분
                 <View style={styles.cardTop}>
               <Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'contain',borderRadius:5}} source={{uri:content.profile}} />
                 <Text style={styles.cardTitle} numberOfLines={1}> {content.author}</Text>
+                <TouchableOpacity onPress={() => {share()}}><Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'contain',borderRadius:5}} source={require('../assets/share.png')}></Image></TouchableOpacity>
               </View>
                     <Text style={styles.cardTitle}>{content.title}</Text>
                     <Text style={styles.cardDate}>{curcourse}</Text>
@@ -483,6 +491,7 @@ date = `${date[0]}년 ${date[1]}월 ${date[2]}일 ${aa} ${hour}시 ${time[1]}분
                 <View style={styles.cardTop}>
               <Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'contain',borderRadius:5}} source={{uri:content.profile}} />
                 <Text style={styles.cardTitle} numberOfLines={1}> {content.author}</Text>
+                <TouchableOpacity onPress={() => {share()}}><Image style={{ width: 20,height:20,margin:(0,0,0,3),resizeMode: 'cover',borderRadius:5}} source={require('../assets/share.png')}></Image></TouchableOpacity>
               </View>
                     <Text style={styles.cardTitle}>{content.title}</Text>
                     <Text style={styles.cardDate}>{curcourse}</Text>
@@ -554,7 +563,8 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
       fontSize:20,
-      fontWeight:"700"
+      fontWeight:"700",
+      marginRight:"auto"
     },
     cardDesc: {
       fontSize:15
@@ -607,7 +617,8 @@ const styles = StyleSheet.create({
     cardTop:{
         flexDirection:"row",
         borderBottomWidth:0.5,
-        borderBottomColor:"#aaa"
+        borderBottomColor:"#aaa",
+        flex:1
       },
       inputDesc: {
         width: 300,
