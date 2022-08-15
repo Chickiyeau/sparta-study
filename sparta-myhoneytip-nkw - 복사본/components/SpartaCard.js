@@ -27,6 +27,17 @@ export default function SpartaCard({content,navigation}){
     let curcourse = ``
 
 
+    let lt = React.createElement(
+      RN['Text'], 
+      {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+      '<',
+    )
+
+    let gt = React.createElement(
+      RN['Text'],
+      {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+      '>',
+    )
 
     if(global.selpage.toString() == "free"){
       console.log("success")
@@ -73,6 +84,185 @@ export default function SpartaCard({content,navigation}){
     let chai = elti
 
     let a = ``
+    let descmap = []
+
+    function mapStringToComponent(stringToRender, list) {
+
+      let haslt = false
+      let hasgt = false
+      if(stringToRender.includes("{lt}")){
+        haslt = true
+        //stringToRender = stringToRender.replace(/{lt}/g, "")
+      }else{
+        haslt = false
+      }
+      if(stringToRender.includes("{gt}")){
+        hasgt = true
+        //stringToRender = stringToRender.replace(/{gt}/g, "")
+      }else{
+        hasgt = false
+      }
+      let parseResult = stringToRender.match(/<([a-z]*)>(.*)<\/[a-z]*>/i);
+      if(parseResult == null){
+        parseResult = stringToRender.match(/<([a-z]*) (.*)<\/[a-z]*>/i);
+      }
+      
+       // result of this regex ["<Text>hello</Text>", "Text", "hello"]
+      if (parseResult !== null && parseResult.length == 3) {
+        let [, compName, innerText] = parseResult;
+        let style = ''
+        if(innerText.includes("style")){
+          style = innerText.match(/style={styles.([a-z]*)}>/i)
+          if(style != null){
+            code = style[0]
+            innerText = innerText.replace(code, "")
+            code = code.replace(">", "")
+            code = '{'+code+'}'
+            if(haslt == true && hasgt == true){
+              list.push(React.createElement(
+                RN[compName],
+                {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1]
+              ));
+            }else{
+              if(haslt == true){
+                list.push(React.createElement(
+                  RN[compName],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  innerText.split(/{lt}/g)[0],lt,innerText.split(/{lt}/g)[1]
+                ));
+              }else{
+                if(hasgt == true){
+                  list.push(React.createElement(
+                    RN[compName],
+                    {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                    innerText.split(/{gt}/g)[0].replace("{lt}", ""),gt,innerText.split(/{gt}/g)[1]
+                  ));
+                }else{
+                  list.push(React.createElement(
+                    RN[compName],
+                    {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                    innerText,
+                  ));                  
+                }
+              }
+
+            }
+              list.push(React.createElement(
+                RN[compName],
+                {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                innerText,
+              ));
+          }
+        }else{
+          
+          if(innerText.length != 1){
+            if(compName == 'Text'){
+              if(haslt == true && hasgt == true){
+                if(innerText.includes("{gt}{lt}/")){
+                  if(innerText.split(/{gt}/g)[0].includes("{lt}")){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{gt}/g)[0].split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].split(/{lt}/g)[1],gt,innerText.split(/{lt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),lt,innerText.split(/{gt}/g)[1].replace("{lt}",""),gt
+                    ));   
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{gt}/g)[0],gt,innerText.split(/{lt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),lt,innerText.split(/{gt}/g)[1].replace("{lt}",""),gt
+                    ));   
+                  }
+             
+                }else{
+                  if(innerText.split(/{gt}/g)[1].includes("{lt}")){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1].split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[1].split(/{lt}/g)[1],gt
+                    ));
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1]
+                    ));
+                  }
+
+                }
+
+              }else{
+                if(haslt == true){
+                  list.push(React.createElement(
+                    RN[compName],
+                    null, // here may be an object with attributes if your node has any
+                    innerText.split(/{lt}/g)[0],lt,innerText.split(/{lt}/g)[1]
+                  ));
+                }else{
+                  if(hasgt == true){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{gt}/g)[0].replace("{lt}", ""),gt,innerText.split(/{gt}/g)[1]
+                    ));
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText,
+                    ));
+                  }
+                }
+              }
+            }else{
+              if(compName == 'head'){
+                list.push(React.createElement(
+                  RN['Text'],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  '<head>',
+                ));
+              }
+
+              if(compName == 'body'){
+                list.push(React.createElement(
+                  RN['Text'],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  '<body>',
+                ));
+              }
+            }
+          }
+        }
+
+        
+
+      }else{
+        if(stringToRender != ""){
+          list.push(React.createElement(
+            RN['Text'],
+            null, // here may be an object with attributes if your node has any
+            stringToRender,
+          ));
+        }
+      }
+    
+      return null
+    } 
+    let desc = `<Text>${content.desc}</Text>`
+
+desc = desc.replace(/\n/gi, '</Text>\n<Text>')
+
+desc = desc.replace(/<Text><\/Text>/g, "")
+
+desc = desc.replace(/<Text></sg, '<Text style={styles.lt}><')
+
+//desc = mapStringToComponent(desc);
+
+let descsplit = desc.split("\n")
+
+descsplit.map((value, i) => {
+  mapStringToComponent(value, descmap)
+})
 
     if(chai < 1000 * 60)
       a += Math.floor(chai / 1000 / 60) + ' 초전';

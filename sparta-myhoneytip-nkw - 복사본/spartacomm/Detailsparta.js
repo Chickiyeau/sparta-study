@@ -72,21 +72,21 @@ export default function Detailsparta({route, navigation, beforeid}){
               list.push(React.createElement(
                 RN[compName],
                 {style:{color:"pink"}}, // here may be an object with attributes if your node has any
-                lt,innerText,gt,
+                innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1]
               ));
             }else{
               if(haslt == true){
                 list.push(React.createElement(
                   RN[compName],
                   {style:{color:"pink"}}, // here may be an object with attributes if your node has any
-                  lt,innerText,
+                  innerText.split(/{lt}/g)[0],lt,innerText.split(/{lt}/g)[1]
                 ));
               }else{
                 if(hasgt == true){
                   list.push(React.createElement(
                     RN[compName],
                     {style:{color:"pink"}}, // here may be an object with attributes if your node has any
-                    innerText,gt,
+                    innerText.split(/{gt}/g)[0].replace("{lt}", ""),gt,innerText.split(/{gt}/g)[1]
                   ));
                 }else{
                   list.push(React.createElement(
@@ -108,24 +108,51 @@ export default function Detailsparta({route, navigation, beforeid}){
           if(innerText.length != 1){
             if(compName == 'Text'){
               if(haslt == true && hasgt == true){
-                list.push(React.createElement(
-                  RN[compName],
-                  null, // here may be an object with attributes if your node has any
-                  lt,innerText.split(/t}/g)[1],gt,
-                ));
+                if(innerText.includes("{gt}{lt}/")){
+                  if(innerText.split(/{gt}/g)[0].includes("{lt}")){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{gt}/g)[0].split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].split(/{lt}/g)[1],gt,innerText.split(/{lt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),lt,innerText.split(/{gt}/g)[1].replace("{lt}",""),gt
+                    ));   
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{gt}/g)[0],gt,innerText.split(/{lt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),lt,innerText.split(/{gt}/g)[1].replace("{lt}",""),gt
+                    ));   
+                  }
+             
+                }else{
+                  if(innerText.split(/{gt}/g)[1].includes("{lt}")){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1].split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[1].split(/{lt}/g)[1],gt
+                    ));
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1]
+                    ));
+                  }
+
+                }
+
               }else{
                 if(haslt == true){
                   list.push(React.createElement(
                     RN[compName],
                     null, // here may be an object with attributes if your node has any
-                    lt,innerText,
+                    innerText.split(/{lt}/g)[0],lt,innerText.split(/{lt}/g)[1]
                   ));
                 }else{
                   if(hasgt == true){
                     list.push(React.createElement(
                       RN[compName],
                       null, // here may be an object with attributes if your node has any
-                      innerText,gt,
+                      innerText.split(/{gt}/g)[0].replace("{lt}", ""),gt,innerText.split(/{gt}/g)[1]
                     ));
                   }else{
                     list.push(React.createElement(
@@ -270,8 +297,8 @@ export default function Detailsparta({route, navigation, beforeid}){
                     desc = desc.replace(/&lt/g,'{lt}')
                     desc = desc.replace(/&gt/g,'{gt}')
                     desc = desc.replace(/&nbsp/gi, ' ')
-                    desc = desc.replace(/{/gi, '\n{\n')
-                    desc = desc.replace(/}/gi, '\n}\n')
+                    desc = desc.replace(/{/gi, '{')
+                    desc = desc.replace(/}/gi, '}')
                     desc = desc.replace(/@/gi, '\n@')
                     let comm = {
                         author, id, desc, createdAt, isTutor, isWriter, profile, imagelist
@@ -603,4 +630,4 @@ const styles = StyleSheet.create({
       lt:{
         color:"#FFFF00"
       }
-});
+}); 

@@ -25,8 +25,178 @@ export default function SpartaCardComment({content,navigation}){
       setRefreshing(true);
       wait(2000).then(() => setRefreshing(false));
     }, []);
+    let descmap = []
+
+    function mapStringToComponent(stringToRender, list) {
+
+      let haslt = false
+      let hasgt = false
+      if(stringToRender.includes("{lt}")){
+        haslt = true
+        //stringToRender = stringToRender.replace(/{lt}/g, "")
+      }else{
+        haslt = false
+      }
+      if(stringToRender.includes("{gt}")){
+        hasgt = true
+        //stringToRender = stringToRender.replace(/{gt}/g, "")
+      }else{
+        hasgt = false
+      }
+      let parseResult = stringToRender.match(/<([a-z]*)>(.*)<\/[a-z]*>/i);
+      if(parseResult == null){
+        parseResult = stringToRender.match(/<([a-z]*) (.*)<\/[a-z]*>/i);
+      }
+      
+       // result of this regex ["<Text>hello</Text>", "Text", "hello"]
+      if (parseResult !== null && parseResult.length == 3) {
+        let [, compName, innerText] = parseResult;
+        let style = ''
+        if(innerText.includes("style")){
+          style = innerText.match(/style={styles.([a-z]*)}>/i)
+          if(style != null){
+            code = style[0]
+            innerText = innerText.replace(code, "")
+            code = code.replace(">", "")
+            code = '{'+code+'}'
+            if(haslt == true && hasgt == true){
+              list.push(React.createElement(
+                RN[compName],
+                {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1]
+              ));
+            }else{
+              if(haslt == true){
+                list.push(React.createElement(
+                  RN[compName],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  innerText.split(/{lt}/g)[0],lt,innerText.split(/{lt}/g)[1]
+                ));
+              }else{
+                if(hasgt == true){
+                  list.push(React.createElement(
+                    RN[compName],
+                    {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                    innerText.split(/{gt}/g)[0].replace("{lt}", ""),gt,innerText.split(/{gt}/g)[1]
+                  ));
+                }else{
+                  list.push(React.createElement(
+                    RN[compName],
+                    {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                    innerText,
+                  ));                  
+                }
+              }
+
+            }
+              list.push(React.createElement(
+                RN[compName],
+                {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                innerText,
+              ));
+          }
+        }else{
+          
+          if(innerText.length != 1){
+            if(compName == 'Text'){
+              if(haslt == true && hasgt == true){
+                if(innerText.includes("{gt}{lt}/")){
+                  if(innerText.split(/{gt}/g)[0].includes("{lt}")){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{gt}/g)[0].split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].split(/{lt}/g)[1],gt,innerText.split(/{lt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),lt,innerText.split(/{gt}/g)[1].replace("{lt}",""),gt
+                    ));   
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{gt}/g)[0],gt,innerText.split(/{lt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),lt,innerText.split(/{gt}/g)[1].replace("{lt}",""),gt
+                    ));   
+                  }
+             
+                }else{
+                  if(innerText.split(/{gt}/g)[1].includes("{lt}")){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1].split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[1].split(/{lt}/g)[1],gt
+                    ));
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{lt}/g)[0],lt,innerText.split(/{gt}/g)[0].replace(innerText.split(/{lt}/g)[0], "").replace("{lt}", "").trim(),gt,innerText.split(/{gt}/g)[1]
+                    ));
+                  }
+
+                }
+
+              }else{
+                if(haslt == true){
+                  list.push(React.createElement(
+                    RN[compName],
+                    null, // here may be an object with attributes if your node has any
+                    innerText.split(/{lt}/g)[0],lt,innerText.split(/{lt}/g)[1]
+                  ));
+                }else{
+                  if(hasgt == true){
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText.split(/{gt}/g)[0].replace("{lt}", ""),gt,innerText.split(/{gt}/g)[1]
+                    ));
+                  }else{
+                    list.push(React.createElement(
+                      RN[compName],
+                      null, // here may be an object with attributes if your node has any
+                      innerText,
+                    ));
+                  }
+                }
+              }
+            }else{
+              if(compName == 'head'){
+                list.push(React.createElement(
+                  RN['Text'],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  '<head>',
+                ));
+              }
+
+              if(compName == 'body'){
+                list.push(React.createElement(
+                  RN['Text'],
+                  {style:{color:"pink"}}, // here may be an object with attributes if your node has any
+                  '<body>',
+                ));
+              }
+            }
+          }
+        }
+
         
-    let desc = content.desc
+
+      }else{
+        if(stringToRender != ""){
+          list.push(React.createElement(
+            RN['Text'],
+            null, // here may be an object with attributes if your node has any
+            stringToRender,
+          ));
+        }
+      }
+    
+      return null
+    } 
+    
+    let desc = `<Text>${content.desc}</Text>`
+
+desc = desc.replace(/\n/gi, '</Text>\n<Text>')
+
+desc = desc.replace(/<Text><\/Text>/g, "")
+
+desc = desc.replace(/<Text></sg, '<Text style={styles.lt}><')
 
     let lt = React.createElement(
       RN['Text'],
@@ -39,6 +209,12 @@ export default function SpartaCardComment({content,navigation}){
       {style:{color:"pink"}}, // here may be an object with attributes if your node has any
       '>',
     )
+    let descsplit = desc.split("\n")
+
+    descsplit.map((value, i) => {
+      mapStringToComponent(value, descmap)
+    })
+    console.log(descmap)    
 
   let date = content.createdAt.split("T")[0].split("-")
   let time = content.createdAt.split("T")[1].split(".")[0].split(":")
@@ -108,7 +284,7 @@ export default function SpartaCardComment({content,navigation}){
                         />
                     </View>
                     <Text style={styles.cardDesc2}>이미지를 터치하면 이미지의 링크로 이동합니다.</Text>
-                      <Text style={styles.cardDesc}>{desc}</Text>
+                      <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                       <Text style={styles.cardDate}>{content.author}  튜터, 작성자          {a}</Text>
                       
                   </View>
@@ -131,7 +307,7 @@ export default function SpartaCardComment({content,navigation}){
                         />
                     </View>
                     <Text style={styles.cardDesc2}>이미지를 터치하면 이미지의 링크로 이동합니다.</Text>
-                      <Text style={styles.cardDesc}>{desc}</Text>
+                    <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                       <Text style={styles.cardDate}>{content.author}  튜터          {a}</Text>
                       
                   </View>
@@ -156,7 +332,7 @@ export default function SpartaCardComment({content,navigation}){
                         />
                     </View>
                     <Text style={styles.cardDesc2}>이미지를 터치하면 이미지의 링크로 이동합니다.</Text>
-                      <Text style={styles.cardDesc}>{desc}</Text>
+                    <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                       <Text style={styles.cardDate}>{content.author} 작성자       {a}</Text>
                       
                   </View>
@@ -180,7 +356,7 @@ export default function SpartaCardComment({content,navigation}){
                         <Text style={styles.cardDesc2}>이미지를 터치하면 이미지의 링크로 이동합니다.</Text>
                     </View>
                     
-                      <Text style={styles.cardDesc}>{desc}</Text>
+                    <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                       <Text style={styles.cardDate}>{content.author}       {a}</Text>
                       
                   </View>
@@ -194,7 +370,7 @@ export default function SpartaCardComment({content,navigation}){
           return(
             <View style={styles.card} onPress={() => detail()}>
                 <View style={styles.cardText}>
-                    <Text style={styles.cardDesc}>{desc}</Text>
+                <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                     <Text style={styles.cardDate}>{content.author}  튜터, 작성자       {a}</Text>
                     
                 </View>
@@ -204,7 +380,7 @@ export default function SpartaCardComment({content,navigation}){
           return(
             <View style={styles.card} onPress={() => detail()}>
                 <View style={styles.cardText}>
-                    <Text style={styles.cardDesc}>{desc}</Text>
+                <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                     <Text style={styles.cardDate}>{content.author}  튜터       {a}</Text>
                     
                 </View>
@@ -216,7 +392,7 @@ export default function SpartaCardComment({content,navigation}){
           return(
             <View style={styles.card} onPress={() => detail()}>
                 <View style={styles.cardText}>
-                    <Text style={styles.cardDesc}>{desc}</Text>
+                <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                     <Text style={styles.cardDate}>{content.author} 작성자        {a}</Text>
                     
                 </View>
@@ -226,7 +402,7 @@ export default function SpartaCardComment({content,navigation}){
           return(
             <View style={styles.card} onPress={() => detail()}>
                 <View style={styles.cardText}>
-                    <Text style={styles.cardDesc}>{desc}</Text>
+                <View style={styles.cardDesc}>{descmap.map((value) => {return(value)})}</View>
                     <Text style={styles.cardDate}>{content.author}       {a}</Text>
                     
                 </View>
