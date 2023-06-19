@@ -20,7 +20,7 @@ export default function LikePage({navigation}) {
             firebase_db.ref('/like/'+user_id).once('value').then((snapshot) => {
                 
                 console.log("파이어베이스에서 데이터 가져왔습니다!!")
-                let tip = snapshot.val();
+`                let tip = snapshot.val();
                 let tip_list = Object.values(tip)
                 if(tip_list.length > 0){
                     setTip(tip_list)
@@ -29,7 +29,7 @@ export default function LikePage({navigation}) {
                 }else{
                     Alert.alert("불러올 데이터가 없습니다!","먼저 찜을 해주세요!")
                     navigation.reset({index: 0, routes:[{name:'MainPage'}]})
-                }
+                }`
             
             });
         

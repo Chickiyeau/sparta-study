@@ -20,14 +20,6 @@ import { registerForPushNotificationsAsync } from '../components/Alert';
 import * as Notifications from 'expo-notifications';
 import '../global.js'
 
-import {
-  setTestDeviceIDAsync,
-  AdMobBanner,
-  AdMobInterstitial,
-  PublisherBanner,
-  AdMobRewarded
-} from 'expo-ads-admob';
-
 const Drawer = createDrawerNavigator();
 export default function MainPage({navigation,route}) {
   console.disableYellowBox = true;
@@ -217,21 +209,6 @@ export default function MainPage({navigation,route}) {
                   return (<Card content={content} key={i} navigation={navigation}/>)
               })
               }
-                          {Platform.OS === 'ios' ? (
-                  <AdMobBanner
-                    bannerSize="fullBanner"
-                    servePersonalizedAds={true}
-                    adUnitID="ca-app-pub-8113412540427082/4459695930"
-                    style={styles.banner}
-                  />
-              ) : (
-                  <AdMobBanner
-                    bannerSize="fullBanner"
-                    servePersonalizedAds={true}
-                    adUnitID="ca-app-pub-8113412540427082/6526907333"
-                    style={styles.banner}
-                  />
-              )}
           </View>
       </ScrollView>
     );
@@ -292,21 +269,6 @@ export default function MainPage({navigation,route}) {
                   return (<Card content={content} key={i} navigation={navigation}/>)
               })
               }
-                          {Platform.OS === 'ios' ? (
-                  <AdMobBanner
-                    bannerSize="fullBanner"
-                    servePersonalizedAds={true}
-                    adUnitID="ca-app-pub-8113412540427082/4459695930"
-                    style={styles.banner}
-                  />
-              ) : (
-                  <AdMobBanner
-                    bannerSize="fullBanner"
-                    servePersonalizedAds={true}
-                    adUnitID="ca-app-pub-8113412540427082/6526907333"
-                    style={styles.banner}
-                  />
-              )}
           </View>
       </ScrollView>
     );    
